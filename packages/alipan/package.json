@@ -1,0 +1,33 @@
+{
+  "name": "@asunajs/alipan",
+  "version": "0.0.14",
+  "description": "",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "bin": "cli.js",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "cli.js"
+  ],
+  "scripts": {
+    "build": "tsup --minify --dts --target node14 --format cjs --entry index.ts --entry qinglong.ts && tsup --minify --target node14 --external ./index cli.ts"
+  },
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "alipan"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asunajs/alipan-core": "workspace:^",
+    "@asunajs/push": "workspace:^",
+    "@asunajs/utils": "workspace:^",
+    "@asunajs/utils-pure": "workspace:^",
+    "@catlair/node-got": "^0.0.10",
+    "@types/secp256k1": "^4.0.6",
+    "secp256k1": "^5.0.0"
+  }
+}

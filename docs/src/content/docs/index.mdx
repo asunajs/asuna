@@ -1,0 +1,32 @@
+---
+title: Welcome to ASign.js
+description: 一个最没用的签到小工具集合
+template: splash
+hero:
+  tagline: 一个最没用的签到小工具集合
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: 开始使用
+      link: /start/getting-started
+      icon: right-arrow
+      variant: primary
+    - text: 在 Github 中查看源码
+      link: https://github.com/asunajs/asign
+      icon: external
+			attrs: 
+				- target: _blank
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Next steps
+
+<CardGrid stagger>
+  <Card title="安装" icon="pencil">
+    使用 `npm install @asunajs/xxxx` 快速安装到项目
+  </Card>
+  <Card title="配置" icon="setting">
+    编辑你的 `asign.json5` 文件以完成配置
+  </Card>
+</CardGrid>

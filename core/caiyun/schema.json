@@ -1,0 +1,53 @@
+{
+  "title": "config",
+  "description": "移动云盘配置",
+  "type": "object",
+  "required": ["token", "phone"],
+  "properties": {
+    "token": {
+      "description": "cookie authorization 字段",
+      "type": "string"
+    },
+    "phone": {
+      "description": "手机号",
+      "type": "string"
+    },
+    "auth": {
+      "description": "auth_token",
+      "type": "string"
+    },
+    "shake": {
+      "type": "object",
+      "description": "摇一摇",
+      "properties": {
+        "enable": {
+          "description": "是否开启该功能",
+          "type": "boolean",
+          "default": false
+        },
+        "num": {
+          "description": "摇一摇次数",
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "delay": {
+          "description": "每次间隔时间（秒）",
+          "type": "number",
+          "default": 1
+        }
+      }
+    },
+    "garden": {
+      "type": "object",
+      "description": "果园",
+      "properties": {
+        "enable": {
+          "description": "是否开启该功能",
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  }
+}

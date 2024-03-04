@@ -1,0 +1,24 @@
+{
+  "name": "@asunajs/push",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {},
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "qinglong"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asunajs/push-core": "workspace:^",
+    "@asunajs/utils": "workspace:^",
+    "hpagent": "^1.2.0",
+    "nodemailer": "^6.9.10"
+  }
+}

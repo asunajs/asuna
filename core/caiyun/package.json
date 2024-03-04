@@ -1,0 +1,28 @@
+{
+  "name": "@asunajs/caiyun-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "schema": "json-schema-defaults schema.json > defaults.json && json2ts schema.json > config.d.ts"
+  },
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "caiyun",
+    "10086"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asunajs/types": "workspace:^",
+    "@asunajs/utils": "workspace:^",
+    "@asunajs/utils-pure": "workspace:^",
+    "json-schema-defaults": "^0.4.0",
+    "json-schema-to-typescript": "^13.1.2"
+  }
+}

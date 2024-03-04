@@ -1,0 +1,23 @@
+{
+  "name": "@asunajs/bilicomic-core",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {},
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "bilicomic"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asunajs/types": "workspace:^",
+    "@asunajs/utils": "workspace:^",
+    "@asunajs/utils-pure": "workspace:^"
+  }
+}

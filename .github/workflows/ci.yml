@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: ['main']
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    name: Build
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+          # 不要使用缓存，会让你变得不幸，瞎几把命中
+      # - name: Cache turbo build setup
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: .turbo
+      #     key: ${{ runner.os }}-turbo-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-turbo-
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Move Files
+        run: |
+          mkdir dist
+          for d in wps/*; do
+            dir=$(basename $d)
+            if test -d "$d/dist"; then
+              cp "$d/dist/wps.js" "dist/wps-$dir.js"
+            fi
+          done
+          for d in packages/*; do
+            dir=$(basename $d)
+            if test -d "$d/dist"; then
+              cp "$d/dist/index.js" "dist/local-$dir.js"
+              echo ";(async () => { await module.exports.run(); })();" >> "dist/local-$dir.js"
+            fi
+          done
+          sed -i '/dist/d' .gitignore
+
+      - name: Push files
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: Update wps and minjs files
+          author_name: catlair
+          author_email: i@thefish.icu
+          new_branch: assets
+          add: dist
+          push: origin assets --set-upstream --force
