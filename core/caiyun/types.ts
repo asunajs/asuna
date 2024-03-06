@@ -1,6 +1,6 @@
 import type { ApiType, GardenApiType } from './api';
 import { LoggerType } from '@asunajs/utils';
-import { Config } from './config';
+import { Untyped as Config } from './config';
 
 export interface M {
   api: ApiType;
