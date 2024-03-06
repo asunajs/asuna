@@ -70,9 +70,10 @@ export async function main(config: any, option?: Option) {
     api: createApi(http),
     config,
     gardenApi: createGardenApi(http),
-    logger: logger,
-    DATA: DATA,
-    sleep: sleep,
+    logger,
+    DATA,
+    sleep,
+    store: {},
   };
 
   logger.info(`==============`);

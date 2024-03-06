@@ -14,6 +14,10 @@ export interface M {
     mcloudRequested: string;
   };
   sleep: (time: number) => Promise<number>;
+  store: {
+    files?: string[];
+    [key: string]: any;
+  };
 }
 
 export interface QuerySpecToken {

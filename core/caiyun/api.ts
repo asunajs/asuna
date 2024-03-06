@@ -194,12 +194,12 @@ export function createApi(http: Http) {
         `${caiyunUrl}/market/playoffic/followSignInfo?isWx=true`
       );
     },
-    getDisk: function getDisk(account: string | number, catalogID: string) {
+    getDisk(account: string | number, catalogID: string) {
       return http.post<DiskResult>(
         `${yun139Url}/orchestration/personalCloud/catalog/v1.0/getDisk`,
         {
           commonAccountInfo: { account: String(account) },
-          catalogID: catalogID,
+          catalogID,
           catalogType: -1,
           sortDirection: 1,
           catalogSortType: 0,
@@ -288,22 +288,20 @@ export function createApi(http: Http) {
         }
       );
     },
-    clickTask: function clickTask(id: number) {
+    clickTask(id: number) {
       return http.get<{ code: number; msg: string }>(
         `${caiyunUrl}/market/signin/task/click?key=task&id=${id}`
       );
     },
-    getTaskList: function getTaskList(
-      marketname: 'sign_in_3' | 'newsign_139mail' = 'sign_in_3'
-    ) {
+    getTaskList(marketname: 'sign_in_3' | 'newsign_139mail' = 'sign_in_3') {
       return http.get<TaskList>(
         `${caiyunUrl}/market/signin/task/taskList?marketname=${marketname}&clientVersion=`
       );
     },
-    receive: function receive() {
+    receive() {
       return http.get(`${caiyunUrl}/market/signin/page/receive`);
     },
-    shake: function shake() {
+    shake() {
       return http.post<Shake>(
         `${caiyunUrl}/market/shake-server/shake/shakeIt?flag=1`
       );
@@ -313,6 +311,38 @@ export function createApi(http: Http) {
     },
     finishHecheng1T() {
       return http.get(`${caiyunUrl}/market/signin/hecheng1T/finish?flag=true`);
+    },
+    getOutLink(account: string, coIDLst: string[], dedicatedName: string) {
+      return http.post<Orchestration<{ getOutLinkRes: any }>>(
+        `${yun139Url}/orchestration/personalCloud-rebuild/outlink/v1.0/getOutLink`,
+        {
+          getOutLinkReq: {
+            subLinkType: 0,
+            encrypt: 1,
+            coIDLst,
+            caIDLst: [],
+            pubType: 1,
+            dedicatedName,
+            period: 1,
+            periodUnit: 1,
+            viewerLst: [],
+            extInfo: {
+              isWatermark: 0,
+              shareChannel: '3001',
+            },
+            commonAccountInfo: {
+              account,
+              accountType: 1,
+            },
+          },
+        }
+      );
+    },
+    blindbox() {
+      return http.post(`${caiyunUrl}/ycloud/blindbox/user/info`);
+    },
+    openBlindbox() {
+      return http.post(`${caiyunUrl}/ycloud/blindbox/draw/openBox?from=main`);
     },
   };
 }

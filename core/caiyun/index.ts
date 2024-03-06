@@ -1,4 +1,4 @@
-import { randomHex } from '@asunajs/utils-pure';
+import { randomHex, setStoreArray } from '@asunajs/utils-pure';
 import type { M } from './types';
 import { gardenTask } from './garden';
 
@@ -14,7 +14,7 @@ async function request<T extends (...args: any[]) => any>(
   try {
     const { code, message, msg, result } = await api(...args);
     if (code !== 0) {
-      $.logger.error(`${name}失败`, message || msg);
+      $.logger.error(`${name}失败`, code, message || msg);
     } else {
       return result;
     }
@@ -203,7 +203,7 @@ async function uploadFileDaily($: M) {
     return;
   }
   const contentIDs = await pcUploadFileRequest($, path);
-  contentIDs && (await deleteFiles($, contentIDs));
+  contentIDs && setStoreArray($.store, 'files', contentIDs);
 }
 
 async function createNoteDaily($: M) {
@@ -238,7 +238,7 @@ async function dailyTask($: M) {
   const doingList: number[] = [];
 
   for (const taskItem of day) {
-    if (taskItem.state === 'FINISH') continue;
+    if (taskItem.state === 'FINISH' || taskItem.enable !== 1) continue;
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
       await taskFuncList[taskItem.id]?.($);
       doingList.push(taskItem.id);
@@ -250,6 +250,42 @@ async function dailyTask($: M) {
     if (!day) return;
     for (const taskItem of day) {
       if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH')
+        $.logger.info(`完成：${taskItem.name}`);
+    }
+  }
+}
+
+async function shareTime($: M) {
+  try {
+    const files = $.store.files;
+    if (!files || !files[0]) {
+      $.logger.info(`未获取到文件列表，跳过分享任务`);
+      return;
+    }
+    const { code, message } = await $.api.getOutLink(
+      $.config.phone,
+      [files[0]],
+      ''
+    );
+    if (code === '0') return true;
+    $.logger.error(`分享链接失败`, code, message);
+  } catch (error) {
+    $.logger.error(`分享链接异常`, error);
+  }
+}
+
+async function hotTask($: M) {
+  $.logger.info(`------【热门任务】------`);
+  const { time } = await request($, $.api.getTaskList, '获取任务列表');
+  if (!time) return;
+  const taskIds = [434];
+  const taskFuncList = { 434: shareTime };
+
+  for (const taskItem of time) {
+    if (taskItem.state === 'FINISH' || taskItem.enable !== 1) continue;
+    if (!taskIds.includes(taskItem.id)) continue;
+    if (await _clickTask($, taskItem.id, taskItem.currstep)) {
+      (await taskFuncList[taskItem.id]?.($)) &&
         $.logger.info(`完成：${taskItem.name}`);
     }
   }
@@ -313,6 +349,15 @@ async function shakeTask($: M) {
   }
 }
 
+async function afterTask($: M) {
+  // 删除文件
+  try {
+    $.store.files && (await deleteFiles($, $.store.files));
+  } catch (error) {
+    $.logger.error('afterTask 异常', error);
+  }
+}
+
 export async function run($: M) {
   const { config } = $;
 
@@ -322,6 +367,7 @@ export async function run($: M) {
     wxDraw,
     monthTaskOnMail,
     dailyTask,
+    hotTask,
     receive,
   ];
 
@@ -338,4 +384,6 @@ export async function run($: M) {
     await task($);
     await $.sleep(1000);
   }
+
+  await afterTask($);
 }

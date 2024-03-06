@@ -52,3 +52,14 @@ export async function asyncForEach<I = any>(
     }
   }
 }
+
+export function setStoreArray(
+  store: Record<string, any>,
+  key: string,
+  values: any[]
+) {
+  if (Reflect.has(store, key)) {
+    return Reflect.set(store, key, Reflect.get(store, key).concat(values));
+  }
+  return Reflect.set(store, key, values);
+}
