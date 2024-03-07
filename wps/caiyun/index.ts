@@ -12,11 +12,11 @@ import {
   refreshToken,
   run,
 } from '@asunajs/caiyun-core';
+import type { Untyped } from '@asunajs/caiyun-core/config';
 
-export type Config = {
+type Config = Partial<Untyped> & {
   token: string;
   phone: string;
-  auth?: string;
 };
 
 export async function main(index, config: Config, option?) {
@@ -64,13 +64,14 @@ export async function main(index, config: Config, option?) {
 
   const http = createRequest({ cookieJar, getHeaders });
 
-  const $ = {
+  const $: M = {
     api: createApi(http),
     logger: logger as any,
     DATA,
     sleep: Time.sleep,
-    config,
+    config: config as any,
     gardenApi: createGardenApi(http),
+    store: {},
   };
 
   jwtToken = await refreshToken($, config.phone);
