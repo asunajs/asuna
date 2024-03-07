@@ -7,6 +7,7 @@
     "build": "turbo run build",
     "schema": "turbo run schema --cache-dir=.turbo",
     "ci:publish": "pnpm publish -r",
+    "ci:version": "changeset version && pnpm install",
     "docs:dev": "pnpm --filter docs dev",
     "docs:build": "pnpm --filter docs build",
     "docs:preview": "pnpm --filter docs preview",
