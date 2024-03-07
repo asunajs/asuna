@@ -20,6 +20,12 @@ export interface M {
   };
 }
 
+export interface BaseType<T = any> {
+  code: number;
+  msg: string;
+  result: T;
+}
+
 export interface QuerySpecToken {
   success: boolean;
   code: string;
@@ -328,4 +334,51 @@ export type CreateBatchOprTask = Orchestration<{
   createBatchOprTaskRes: {
     taskID: string;
   };
+}>;
+
+/**
+ * code 0 为成功
+ * code 200106 成功，但未中
+ * code 200105 成功，但未中
+ */
+export type OpenBlindbox = BaseType<{
+  prizeId: number;
+  cloudNum: number;
+  prizeName: string;
+  prizeType: number;
+}>;
+
+export type BlindboxInfo = BaseType<
+  {
+    id: number;
+    marketName: 'National_BlindBox';
+    clientType: 0;
+    taskId: number;
+    taskName: string;
+    taskDesc: string;
+    taskImg: string;
+    taskUrl: string;
+    sort: number;
+    memo: string; // '{"btnTxtDone":"已完成"}';
+    btnTxt: string;
+    /** 0 未注册，1 已注册，2 已完成 */
+    status: 0 | 1 | 2;
+    count: 0;
+    taskSize: 0;
+    taskFrequency: 1;
+    needRegister: 0;
+  }[]
+>;
+
+export type BlindboxUser = BaseType<{
+  /** 剩余次数 */
+  chanceNum: number;
+  /** 当天第一次 */
+  firstTime: number;
+  /** 完成任务次数 */
+  taskNum: 0;
+  limitMobile: 0;
+  /** 中国移动？1 为是 */
+  isChinaMobile: 1 | 2;
+  isNewUser: 1;
 }>;

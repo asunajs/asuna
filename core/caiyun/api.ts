@@ -14,6 +14,9 @@ import type {
   CreateBatchOprTask,
   Orchestration,
   Shake,
+  OpenBlindbox,
+  BlindboxUser,
+  BlindboxInfo,
 } from './types';
 
 export * from './gardenApi';
@@ -338,11 +341,55 @@ export function createApi(http: Http) {
         }
       );
     },
-    blindbox() {
-      return http.post(`${caiyunUrl}/ycloud/blindbox/user/info`);
+    getBlindboxTask() {
+      return http.post<BlindboxInfo>(
+        `${caiyunUrl}/market/task-service/task/api/blindBox/queryTaskInfo`,
+        {
+          marketName: 'National_BlindBox',
+          clientType: 1,
+        },
+        {
+          headers: {
+            accept: 'application/json',
+          },
+        }
+      );
+    },
+    registerBlindboxTask(taskId: number) {
+      return http.post(
+        `${caiyunUrl}/market/task-service/task/api/blindBox/register`,
+        {
+          marketName: 'National_BlindBox',
+          taskId,
+        },
+        {
+          headers: {
+            accept: 'application/json',
+          },
+        }
+      );
+    },
+    blindboxUser() {
+      return http.post<BlindboxUser>(
+        `${caiyunUrl}/ycloud/blindbox/user/info`,
+        {},
+        {
+          headers: {
+            accept: 'application/json',
+          },
+        }
+      );
     },
     openBlindbox() {
-      return http.post(`${caiyunUrl}/ycloud/blindbox/draw/openBox?from=main`);
+      return http.post<OpenBlindbox>(
+        `${caiyunUrl}/ycloud/blindbox/draw/openBox?from=main`,
+        {},
+        {
+          headers: {
+            accept: 'application/json',
+          },
+        }
+      );
     },
   };
 }

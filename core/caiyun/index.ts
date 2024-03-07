@@ -167,20 +167,8 @@ async function deleteFiles($: M, ids: string[]) {
   }
 }
 
-async function getParentCatalogID($: M) {
-  try {
-    const { resultCode, resultMsg, resultData } = await $.api.queryBatchList();
-    if (resultCode === 200) {
-      const listItem = resultData.list[0];
-      if (!listItem) return '00019700101000000001';
-      const path = listItem.dynamicContentInfos[0]?.path;
-      if (path && path.includes('/')) return path.split('/')[0];
-      return path;
-    }
-    $.logger.error(`获取文件夹 id 失败`, resultMsg);
-  } catch (error) {
-    $.logger.error(`获取文件夹 id 异常`, error);
-  }
+function getParentCatalogID() {
+  return '00019700101000000001';
 }
 
 async function getNoteAuthToken($: M) {
@@ -197,12 +185,7 @@ async function uploadFileDaily($: M) {
     $.logger.info(`接收任务失败，跳过上传任务`);
     return;
   }
-  const path = await getParentCatalogID($);
-  if (!path) {
-    $.logger.info(`上传路径不存在，跳过上传任务`);
-    return;
-  }
-  const contentIDs = await pcUploadFileRequest($, path);
+  const contentIDs = await pcUploadFileRequest($, getParentCatalogID());
   contentIDs && setStoreArray($.store, 'files', contentIDs);
 }
 
@@ -233,7 +216,7 @@ async function _clickTask($: M, id: number, currstep: number) {
 async function dailyTask($: M) {
   $.logger.info(`------【每日】------`);
   const { day } = await request($, $.api.getTaskList, '获取任务列表');
-  if (!day) return;
+  if (!day || !day.length) return $.logger.info(`无任务列表，结束`);
   const taskFuncList = { 106: uploadFileDaily, 107: createNoteDaily };
   const doingList: number[] = [];
 
@@ -349,10 +332,69 @@ async function shakeTask($: M) {
   }
 }
 
+async function openBlindbox($: M) {
+  try {
+    const { code, msg, result } = await $.api.openBlindbox();
+    switch (code) {
+      case 0:
+        return $.logger.info('获得', result.prizeName);
+      case 200105:
+      case 200106:
+        return $.logger.info(msg);
+      default:
+        return $.logger.warn('开盲盒失败', code, msg);
+    }
+  } catch (error) {
+    $.logger.error('openBlindbox 异常', error);
+  }
+}
+
+async function registerBlindboxTask($: M, taskId: number) {
+  await request($, $.api.registerBlindboxTask, '注册盲盒', taskId);
+}
+
+async function getBlindboxCount($: M) {
+  try {
+    const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务');
+    if (!taskList) return;
+    const taskIds = taskList.reduce((taskIds, task) => {
+      if (task.status === 0) taskIds.push(task.taskId);
+      return taskIds;
+    }, []);
+    for (const taskId of taskIds) {
+      await registerBlindboxTask($, taskId);
+    }
+  } catch (error) {}
+}
+
+async function blindboxTask($: M) {
+  $.logger.info(' ------【开盲盒】------');
+  try {
+    await getBlindboxCount($);
+    const { result, code, msg } = await $.api.blindboxUser();
+    if (!result || code !== 0) {
+      $.logger.error('获取盲盒信息失败', code, msg);
+      return await openBlindbox($);
+    }
+    if (result.isChinaMobile === 1) {
+      $.logger.debug(`尊敬的移不动用户`);
+    }
+    if (result?.chanceNum === 0) {
+      $.logger.info('今日无机会');
+      return;
+    }
+    for (let index = 0; index < result.chanceNum; index++) {
+      await openBlindbox($);
+    }
+  } catch (error) {
+    $.logger.error('开盲盒任务异常', error);
+  }
+}
+
 async function afterTask($: M) {
   // 删除文件
   try {
-    $.store.files && (await deleteFiles($, $.store.files));
+    $.store && $.store.files && (await deleteFiles($, $.store.files));
   } catch (error) {
     $.logger.error('afterTask 异常', error);
   }
@@ -368,6 +410,7 @@ export async function run($: M) {
     monthTaskOnMail,
     dailyTask,
     hotTask,
+    blindboxTask,
     receive,
   ];
 
