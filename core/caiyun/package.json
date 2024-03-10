@@ -1,0 +1,19 @@
+{
+  "name": "@asign/caiyun-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": ["index.js"],
+  "scripts": {
+    "schema": "tsx untyped.mts"
+  },
+  "keywords": ["sign", "airscript", "wps", "caiyun", "10086"],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asign/types": "workspace:^",
+    "@asign/utils": "workspace:^",
+    "@asign/utils-pure": "workspace:^",
+    "untyped": "^1.4.2"
+  }
+}

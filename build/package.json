@@ -1,0 +1,14 @@
+{
+  "name": "@asign/build",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": [],
+  "scripts": {},
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@swc/core": "^1.4.1"
+  }
+}

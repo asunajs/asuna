@@ -1,0 +1,19 @@
+{
+  "name": "@asign/alipan-wps",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "files": [],
+  "scripts": {
+    "build": "tsup --config ../../build/tsup-wps.config.ts --env.WPS_NAME alipan"
+  },
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asign/alipan-core": "workspace:^",
+    "@asign/build": "workspace:^",
+    "@asign/utils-pure": "workspace:^",
+    "@asign/wps-utils": "workspace:^"
+  }
+}

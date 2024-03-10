@@ -1,0 +1,15 @@
+{
+  "name": "@asign/wps-utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": [],
+  "scripts": {},
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asign/push-core": "workspace:^",
+    "@asign/utils-pure": "workspace:^"
+  }
+}

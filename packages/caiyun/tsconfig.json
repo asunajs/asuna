@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "target": "es6",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "moduleResolution": "NodeNext",
+    "outDir": "./",
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules", "dist"]
+}

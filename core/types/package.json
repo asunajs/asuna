@@ -1,0 +1,8 @@
+{
+  "name": "@asign/types",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "author": "catlair",
+  "license": "MIT"
+}

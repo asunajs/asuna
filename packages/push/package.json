@@ -1,0 +1,29 @@
+{
+  "name": "@asunajs/push",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": ["index.js", "index.d.ts"],
+  "scripts": {
+    "prepublish": "copyfiles package.json CHANGELOG.md dist/",
+    "build": "tsup --dts-resolve"
+  },
+  "keywords": ["qinglong"],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asign/push-core": "workspace:^",
+    "@asign/utils": "workspace:^",
+    "@types/nodemailer": "^6.4.14"
+  },
+  "optionalDependencies": {
+    "hpagent": "^1.2.0",
+    "nodemailer": "^6.9.10"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

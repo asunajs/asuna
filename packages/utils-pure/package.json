@@ -1,0 +1,11 @@
+{
+  "name": "@asign/utils-pure",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": ["index.js"],
+  "scripts": {},
+  "keywords": ["sign", "airscript", "wps"],
+  "author": "catlair",
+  "license": "MIT"
+}

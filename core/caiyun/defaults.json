@@ -1,0 +1,10 @@
+{
+  "shake": {
+    "enable": false,
+    "num": 15,
+    "delay": 2
+  },
+  "garden": {
+    "enable": false
+  }
+}

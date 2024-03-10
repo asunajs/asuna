@@ -1,0 +1,14 @@
+{
+  "name": "@asign/push-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": [],
+  "scripts": {},
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asign/types": "workspace:^"
+  }
+}
