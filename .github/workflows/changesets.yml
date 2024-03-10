@@ -2,8 +2,7 @@ name: Changesets
 on:
   push:
     branches:
-      - main
-      - dev
+      - release
     paths-ignore:
       - '**/*.md'
       - 'docs/**'
@@ -39,14 +38,13 @@ jobs:
       - name: install dependencies
         run: pnpm install
 
-      - name: build
-        run: pnpm build
-
       - name: create and publish versions
         uses: changesets/action@v1.4.6
         with:
           publish: pnpm ci:publish
           version: pnpm ci:version
+          commit: "ci: changesets versions"
+          title: "ci: changesets versions"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
