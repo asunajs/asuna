@@ -1,46 +1,15 @@
-import type { Method } from '@asign/types'
+import type {
+  ApiData,
+  ApiOptions,
+  Bark,
+  Method,
+  TgBot,
+  TwoIm,
+  WorkWeixin,
+  WorkWeixinBot,
+} from './types.d'
 
-export interface Email {
-  pass: string
-  from: string
-  port?: number
-  host: string
-  to?: string
-}
-
-export interface WorkWeixin {
-  msgtype: 'text' | 'markdown' | 'textcard' | 'mpnews'
-  touser: string
-  agentid: number
-  corpsecret: string
-  corpid: string
-  [x: string]: any
-}
-
-export interface WorkWeixinBot {
-  url: string
-  msgtype: 'text' | 'markdown'
-  [x: string]: any
-}
-
-export interface ApiOptions {
-  http: {
-    fetch: any
-  }
-  logger: {
-    info: any
-    debug: any
-    error: any
-  }
-}
-
-export interface ApiData {
-  method?: Method
-  headers?: Record<string, string>
-  timeout?: number
-  url: string
-  data?: Record<string, any>
-}
+export * from './types.d'
 
 async function _send(
   { logger, http }: ApiOptions,
@@ -48,14 +17,19 @@ async function _send(
   options: Record<string, any>,
 ) {
   try {
-    const data = await http.fetch({
+    const requestOptions: Record<string, any> = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       timeout: 10000,
       ...options,
-    })
+    }
+    if (Reflect.has(options, 'data') && Reflect.has(options.data, 'agent')) {
+      requestOptions.agent = options.data.agent
+      delete options.data.agent
+    }
+    const data = await http.fetch(requestOptions)
     const { errcode, code, err } = data
     if (errcode || err || ![0, 200, undefined].some((c) => code === c)) {
       return logger.error(`${name}发送失败`, JSON.stringify(data))
@@ -210,16 +184,6 @@ export async function workWeixinBot(
   })
 }
 
-export interface TgBot {
-  apiHost?: string
-  token: string
-  chat_id: string | number
-  disable_web_page_preview?: boolean
-  proxy?: string
-  agent?: any
-  [x: string]: any
-}
-
 export async function tgBot(
   apiOption: ApiOptions,
   {
@@ -227,7 +191,7 @@ export async function tgBot(
     token,
     disable_web_page_preview = true,
     agent,
-    ...option
+    ...options
   }: TgBot,
   title: string,
   text: string,
@@ -236,9 +200,72 @@ export async function tgBot(
     url: `https://${apiHost}/bot${token}/sendMessage`,
     data: {
       disable_web_page_preview,
-      ...option,
+      ...options,
       text: `${title}\n\n${text}`,
     },
     agent,
   })
+}
+
+/**
+ * bark ios 推送
+ * https://bark.day.app/
+ */
+
+export async function bark(
+  apiOption: ApiOptions,
+  { key, level = 'passive', ...options }: Bark,
+  title: string,
+  text: string,
+) {
+  return _send(apiOption, 'Bark ios 推送', {
+    url: `https://api.day.app/${key}`,
+    data: {
+      body: text,
+      title,
+      level,
+      ...options,
+    },
+  })
+}
+
+/**
+ * TwoIm 回逍
+ * https://2im.cn/
+ */
+export async function twoIm(
+  apiOption: ApiOptions,
+  { key, sid, query, msgtype = 'text', ...options }: TwoIm,
+  title: string,
+  text: string,
+) {
+  const urlSearch = new URLSearchParams({ key, sid })
+  if (query) {
+    Object.entries(query).forEach(([key, value]) => {
+      urlSearch.append(key, String(value))
+    })
+  }
+
+  return _send(apiOption, 'Bark ios 推送', {
+    url: `https://api.2im.cn/push?${urlSearch.toString()}`,
+    data: {
+      msgtype,
+      content: text,
+      title,
+      ...options,
+    },
+  })
+}
+
+export function getAllPush() {
+  return {
+    pushplus,
+    serverChan,
+    workWeixin,
+    workWeixinBot,
+    tgBot,
+    bark,
+    twoIm,
+    customPost,
+  }
 }
