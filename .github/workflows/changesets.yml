@@ -4,7 +4,6 @@ on:
     branches:
       - release
     paths-ignore:
-      - '**/*.md'
       - 'docs/**'
 env:
   CI: true
