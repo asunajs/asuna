@@ -1,11 +1,10 @@
 {
   "name": "@asunajs/caiyun",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "移动云盘签到",
   "main": "index.ts",
   "types": "index.d.ts",
   "bin": "cli.js",
-  "files": ["index.js", "index.d.ts", "cli.js"],
   "scripts": {
     "prepublish": "copyfiles package.json CHANGELOG.md dist/",
     "build": "tsup --dts-resolve"

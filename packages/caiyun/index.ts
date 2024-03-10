@@ -17,15 +17,29 @@ import { CookieJar } from '@catlair/node-got/cookie'
 
 export type Config = {
   token: string
-  phone: string
-  auth?: string
 }
 export type Option = { pushData?: LoggerPushData[] }
 
+function getAuthInfo(basicToken: string) {
+  basicToken = basicToken.replace('Basic ', '')
+
+  const rawToken = Buffer.from(basicToken, 'base64').toString('utf-8')
+  const [_, phone, authToken] = rawToken.split(':')
+
+  return {
+    phone,
+    authToken,
+    basicToken,
+  }
+}
+
 export async function main(config: any, option?: Option) {
-  const basicToken = config.token.startsWith('Basic')
-    ? config.token
-    : `Basic ${config.token}`
+  const { phone, authToken, basicToken } = getAuthInfo(config.token)
+
+  config.phone = phone
+  config.auth = authToken
+  config.token = `Basic ${basicToken}`
+
   const cookieJar = new CookieJar()
   const logger = await createLogger({ pushData: option?.pushData })
   const baseUA =
@@ -48,7 +62,7 @@ export async function main(config: any, option?: Option) {
           if (options.url.hostname === 'caiyun.feixin.10086.cn') {
             jwtToken && (options.headers['jwttoken'] = jwtToken)
           } else {
-            options.headers['authorization'] = basicToken
+            options.headers['authorization'] = config.token
           }
           // @ts-ignore
           if (options.native) {
