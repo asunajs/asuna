@@ -6,7 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "schema": "turbo run schema --cache-dir=.turbo",
-    "ci:publish": "pnpm publish --no-git-checks -F \"@asunajs/*\"",
+    "ci:publish": "pnpm run build && pnpm publish --no-git-checks -F \"@asunajs/*\"",
     "ci:version": "changeset version && pnpm install",
     "docs:dev": "pnpm --filter docs dev",
     "docs:build": "pnpm --filter docs build",
@@ -21,6 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.6.0",
+    "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@types/node": "^20.11.17",
     "copyfiles": "^2.4.1",
