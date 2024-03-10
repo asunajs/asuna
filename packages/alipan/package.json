@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/alipan",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "阿里云盘签到",
   "main": "index.ts",
   "types": "index.d.ts",
