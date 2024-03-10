@@ -1,14 +1,7 @@
 export * from '@asign/push-core'
 
 import type { ApiOptions, Email } from '@asign/push-core'
-import {
-  customPost,
-  pushplus,
-  serverChan,
-  tgBot,
-  workWeixin,
-  workWeixinBot,
-} from '@asign/push-core'
+import { getAllPush } from '@asign/push-core'
 
 export async function email(
   { logger }: { logger: ApiOptions['logger'] },
@@ -55,15 +48,7 @@ export async function sendNotify(
   title: string,
   text: string,
 ) {
-  const cbs = {
-    pushplus,
-    serverChan,
-    workWeixin,
-    email,
-    workWeixinBot,
-    customPost,
-    tgBot,
-  }
+  const cbs = { email, ...getAllPush() }
   for (const [name, d] of Object.entries(data)) {
     const cb = cbs[name]
     if (!cb || !data) continue
