@@ -3,7 +3,6 @@
   "version": "0.0.2",
   "description": "",
   "main": "index.ts",
-  "files": ["index.js", "index.d.ts"],
   "scripts": {
     "prepublish": "copyfiles package.json CHANGELOG.md dist/",
     "build": "tsup --dts-resolve"
