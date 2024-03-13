@@ -10,6 +10,6 @@ export default defineConfig({
   target: 'node14',
   format: 'cjs',
   dts: true,
-  external: ['consola'].concat(Object.keys(dependencies)),
+  external: Object.keys(dependencies),
   minifySyntax: true,
 })

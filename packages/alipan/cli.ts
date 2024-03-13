@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import { resolve } from 'path'
-import { run } from './index'
+import { dirname, resolve } from 'path'
+import { run } from './index.js'
+import { fileURLToPath } from 'url'
 ;(async () => {
-  await run(resolve(__dirname, process.argv[2]))
+  await run(resolve(dirname(fileURLToPath(import.meta.url)), process.argv[2]))
 })()

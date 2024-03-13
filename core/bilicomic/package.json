@@ -1,6 +1,7 @@
 {
   "name": "@asign/bilicomic-core",
   "version": "0.0.1",
+  "type": "module",
   "description": "",
   "main": "index.ts",
   "files": ["index.js"],
@@ -10,7 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "@asign/types": "workspace:^",
-    "@asign/utils": "workspace:^",
+    "@asunajs/utils": "workspace:^",
     "@asign/utils-pure": "workspace:^"
   }
 }

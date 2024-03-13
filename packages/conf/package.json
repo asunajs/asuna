@@ -1,36 +1,36 @@
 {
-  "name": "@asunajs/utils",
+  "name": "@asunajs/conf",
   "version": "0.0.0",
-  "description": "utils",
-  "type": "module",
+  "description": "配置读取",
   "exports": {
     ".": {
       "import": "./index.ts"
     }
   },
+  "type": "module",
   "scripts": {
     "prepublish": "copyfiles package.json README.md dist/",
     "build": "tsup --dts-resolve"
   },
-  "keywords": ["asign"],
   "author": "catlair",
   "license": "MIT",
   "publishConfig": {
     "directory": "dist",
     "linkDirectory": false,
+    "access": "public",
     "exports": {
       ".": {
         "types": "./index.d.ts",
-        "import": "./index.js",
-        "require": "./index.cjs"
+        "import": "./index.js"
       }
     },
-    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.12",
-    "consola": "^3.2.3",
-    "lodash-es": "^4.17.21"
+    "@asunajs/utils": "workspace:^",
+    "defu": "^6.1.4",
+    "jiti": "^1.21.0",
+    "magicast": "^0.3.3",
+    "yaml": "^2.4.1"
   }
 }

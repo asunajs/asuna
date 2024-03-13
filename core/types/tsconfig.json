@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "ESNext",
     "target": "ESNext",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "moduleResolution": "NodeNext",
-    "lib": ["ESNext"]
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext"],
+    "rootDir": "./"
   }
 }

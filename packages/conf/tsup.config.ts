@@ -6,7 +6,6 @@ export default defineConfig({
   platform: 'node',
   minify: true,
   target: 'node14',
-  format: ['cjs', 'esm'],
+  format: 'esm',
   dts: true,
-  external: ['nodemailer', 'hpagent'],
 })

@@ -1,7 +1,10 @@
 import { readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
 import { defineConfig } from 'tsup'
-import { transform } from '.'
+import { transform } from './index.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig((options) => {
   const { WPS_NAME } = options.env

@@ -1,8 +1,8 @@
 import { randomHex } from '@asign/utils-pure'
-import type { DeviceRoom, M } from './types'
+import type { DeviceRoom, M } from './types.js'
 
-export * from './types'
-export * from './api'
+export * from './types.js'
+export * from './api.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,

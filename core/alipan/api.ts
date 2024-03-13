@@ -10,7 +10,7 @@ import type {
   DeviceRoomRewardInfoToday,
   BaseResult,
   DeviceRoomRewardEnergy,
-} from './types'
+} from './types.js'
 import type { Http } from '@asign/types'
 
 export function createApi(http: Http) {

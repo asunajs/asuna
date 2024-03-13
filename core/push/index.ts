@@ -7,9 +7,9 @@ import type {
   TwoIm,
   WorkWeixin,
   WorkWeixinBot,
-} from './types.d'
+} from './types.js'
 
-export * from './types.d'
+export * from './types.js'
 
 async function _send(
   { logger, http }: ApiOptions,

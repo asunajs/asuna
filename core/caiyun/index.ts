@@ -1,9 +1,10 @@
 import { randomHex, setStoreArray } from '@asign/utils-pure'
-import type { M } from './types'
-import { gardenTask } from './garden'
+import { gardenTask } from './garden.js'
+import type { M } from './types.js'
 
-export * from './types'
-export * from './api'
+export * from './types.js'
+export * from './api.js'
+export * from './config.d.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,

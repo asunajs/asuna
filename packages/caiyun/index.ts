@@ -5,15 +5,11 @@ import {
   refreshToken,
   run as runCore,
 } from '@asign/caiyun-core'
-import {
-  type LoggerPushData,
-  createLogger,
-  getConfig,
-  sleep,
-} from '@asign/utils'
+import { type LoggerPushData, createLogger, sleep } from '@asunajs/utils'
+import { loadConfig } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
-import { CookieJar } from '@catlair/node-got/cookie'
+import { CookieJar } from 'tough-cookie'
 
 export type Config = {
   token: string
@@ -102,27 +98,24 @@ export async function main(config: any, option?: Option) {
  * 本地运行
  * @param path 配置文件地址
  */
-export async function run(path = './asign.json') {
-  let _config: {
+export async function run(path: string) {
+  const { config } = loadConfig<{
     caiyun: Config[]
     message?: Record<string, any>
+  }>(path)
+
+  if (!config) {
+    throw new Error('配置文件为空')
   }
 
-  try {
-    _config = getConfig(path)
-  } catch (error) {
-    console.error('获取配置失败')
-    console.error(error)
-  }
+  const caiyun = config.caiyun
 
-  const config = _config.caiyun
-
-  if (!config || !config.length || !config[0].token)
+  if (!caiyun || !caiyun.length || !caiyun[0].token)
     return console.error('未找到配置文件/变量')
 
   const pushData: LoggerPushData[] = []
 
-  for (const c of config) {
+  for (const c of caiyun) {
     if (!c.token) continue
     try {
       await main(c, { pushData })
@@ -131,11 +124,9 @@ export async function run(path = './asign.json') {
     }
   }
 
-  if (pushData.length && _config.message) {
-    if (
-      _config.message.onlyError &&
-      !pushData.some((el) => el.type === 'error')
-    ) {
+  if (pushData.length && config.message) {
+    const message = config.message
+    if (message.onlyError && !pushData.some((el) => el.type === 'error')) {
       return
     }
     const msg = pushData
@@ -147,8 +138,8 @@ export async function run(path = './asign.json') {
           logger: await createLogger(),
           http: { fetch: (op: any) => createRequest().request(op) },
         },
-        _config.message,
-        _config.message.title || 'asign 运行推送',
+        message,
+        message.title || 'asign 运行推送',
         msg,
       ))
   }
