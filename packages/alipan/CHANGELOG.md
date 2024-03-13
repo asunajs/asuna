@@ -1,5 +1,12 @@
 # @asunajs/alipan
 
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [[`10130fa`](https://github.com/asunajs/asign/commit/10130faedb0383d0f3611bb5585077f685ef26b0)]:
+  - @asunajs/push@0.0.4
+
 ## 0.0.16
 
 ### Patch Changes
