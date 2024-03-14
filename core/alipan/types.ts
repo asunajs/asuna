@@ -1,5 +1,5 @@
-import type { ApiType } from './api'
-import { LoggerType } from '@asign/utils'
+import { LoggerType } from '@asunajs/utils'
+import type { ApiType } from './api.js'
 
 export interface M {
   api: ApiType

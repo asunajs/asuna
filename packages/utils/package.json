@@ -1,14 +1,37 @@
 {
-  "name": "@asign/utils",
+  "name": "@asunajs/utils",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.ts",
-  "files": ["index.js"],
-  "scripts": {},
-  "keywords": ["sign", "airscript", "wps"],
+  "description": "utils",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "scripts": {
+    "prepublish": "copyfiles package.json README.md dist/",
+    "build": "tsup --dts-resolve"
+  },
+  "keywords": ["asign"],
   "author": "catlair",
   "license": "MIT",
+  "publishConfig": {
+    "directory": "dist",
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.js",
+        "require": "./index.cjs"
+      }
+    },
+    "main": "index.cjs",
+    "module": "index.js",
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
-    "consola": "^3.2.3"
+    "@types/lodash-es": "^4.17.12",
+    "consola": "^3.2.3",
+    "lodash-es": "^4.17.21"
   }
 }

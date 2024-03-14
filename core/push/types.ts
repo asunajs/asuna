@@ -1,6 +1,6 @@
-import { Method } from '@asign/types'
+import type { Method } from '@asign/types'
 
-export { Method }
+export type { Method }
 
 export interface ApiData {
   method?: Method

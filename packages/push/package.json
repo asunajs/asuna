@@ -1,10 +1,15 @@
 {
   "name": "@asunajs/push",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
-  "main": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
   "scripts": {
-    "prepublish": "copyfiles package.json CHANGELOG.md dist/",
+    "prepublish": "copyfiles package.json README.md dist/",
     "build": "tsup --dts-resolve"
   },
   "keywords": ["qinglong"],
@@ -12,7 +17,6 @@
   "license": "MIT",
   "devDependencies": {
     "@asign/push-core": "workspace:^",
-    "@asign/utils": "workspace:^",
     "@types/nodemailer": "^6.4.14"
   },
   "optionalDependencies": {
@@ -21,7 +25,15 @@
   },
   "publishConfig": {
     "directory": "dist",
-    "main": "index.js",
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.js",
+        "require": "./index.cjs"
+      }
+    },
+    "main": "index.cjs",
+    "module": "index.js",
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   }

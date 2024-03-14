@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.ts",
+  "type": "module",
   "files": ["index.js"],
   "scripts": {
     "schema": "tsx untyped.mts"
@@ -12,7 +13,7 @@
   "license": "MIT",
   "devDependencies": {
     "@asign/types": "workspace:^",
-    "@asign/utils": "workspace:^",
+    "@asunajs/utils": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "untyped": "^1.4.2"
   }

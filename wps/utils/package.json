@@ -1,5 +1,6 @@
 {
   "name": "@asign/wps-utils",
+  "type": "module",
   "version": "0.0.1",
   "description": "",
   "main": "index.ts",

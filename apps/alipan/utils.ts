@@ -1,4 +1,4 @@
-import { sha256 } from '@asign/utils'
+import { sha256 } from '@asunajs/utils'
 import { ecdsaSign, publicKeyCreate } from 'secp256k1'
 
 export function getSignature(nonce: number, user_id: string, deviceId: string) {

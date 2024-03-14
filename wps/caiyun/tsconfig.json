@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "module": "NodeNext",
-    "target": "es6",
+    "target": "ESNext",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
     "moduleResolution": "NodeNext",
-    "lib": ["ESNext"]
-  }
+    "lib": ["ESNext"],
+    "outDir": "./"
+  },
+  "exclude": ["node_modules", "dist"]
 }
