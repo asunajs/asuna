@@ -1,5 +1,11 @@
 # @asunajs/alipan
 
+## 0.1.0
+
+### Minor Changes
+
+- [`83b9236`](https://github.com/asunajs/asign/commit/83b923631ca60c6bf6a4ad6f14c3206093cbc76e) Thanks [@catlair](https://github.com/catlair)! - feat: 迁移至 esm
+
 ## 0.0.16
 
 ### Patch Changes
