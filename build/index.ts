@@ -1,5 +1,7 @@
 import * as swc from '@swc/core'
 
+export * from './tsup.js'
+
 export async function transform(inputCode: string) {
   const code = inputCode
     .replaceAll(

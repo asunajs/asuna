@@ -5,11 +5,11 @@ import {
   refreshToken,
   run as runCore,
 } from '@asign/alipan-core'
-import { type LoggerPushData, createLogger, sleep } from '@asign/utils'
+import { type LoggerPushData, createLogger, sleep } from '@asunajs/utils'
 import { randomHex } from '@asign/utils-pure'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
-import { getSignature } from './utils'
+import { getSignature } from './utils.js'
 
 function getXSignature(DATA: M['DATA'], userId: string) {
   if (DATA['x-signature']) {

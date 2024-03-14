@@ -1,18 +1,18 @@
 import {
-  createCookieJar,
-  createRequest,
-  getPushConfig,
-  sendWpsNotify,
-} from '@asign/wps-utils'
-import { createLogger, getHostname } from '@asign/utils-pure'
-import {
   M,
   createApi,
   createGardenApi,
   refreshToken,
   run,
 } from '@asign/caiyun-core'
-import type { Untyped } from '@asign/caiyun-core/config'
+import type { Untyped } from '@asign/caiyun-core'
+import { createLogger, getHostname } from '@asign/utils-pure'
+import {
+  createCookieJar,
+  createRequest,
+  getPushConfig,
+  sendWpsNotify,
+} from '@asign/wps-utils'
 
 type Config = Partial<Untyped> & {
   token: string

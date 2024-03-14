@@ -1,0 +1,49 @@
+{
+  "name": "@asunajs/caiyun",
+  "version": "0.0.15",
+  "description": "移动云盘签到",
+  "main": "./index.ts",
+  "type": "module",
+  "types": "./index.d.ts",
+  "bin": "cli.js",
+  "scripts": {
+    "prepublish": "copyfiles package.json README.md dist/",
+    "build": "tsup"
+  },
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "caiyun",
+    "10086"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "dependencies": {
+    "@asunajs/conf": "workspace:^",
+    "@asunajs/push": "workspace:^",
+    "@catlair/node-got": "^0.0.10",
+    "tough-cookie": "^4.1.3"
+  },
+  "devDependencies": {
+    "@asign/build": "workspace:^",
+    "@asign/caiyun-core": "workspace:^",
+    "@asunajs/utils": "workspace:^",
+    "@types/tough-cookie": "^4.0.5",
+    "dotenv": "^16.4.4"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.mjs",
+        "require": "./index.cjs"
+      }
+    },
+    "main": "./index.cjs",
+    "module": "./index.mjs",
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

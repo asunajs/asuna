@@ -1,6 +1,7 @@
 {
   "name": "@asign/qinglong-api",
   "version": "0.0.1",
+  "type": "module",
   "description": "",
   "main": "index.ts",
   "files": ["index.js"],

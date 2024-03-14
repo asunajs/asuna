@@ -1,6 +1,9 @@
 import crypto from 'crypto'
-import path from 'path'
 import fs from 'fs'
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+export { set as setIn } from 'lodash-es'
 
 export function sleep(time: number) {
   return new Promise<number>((res) => setTimeout(() => res(time), time))
@@ -54,7 +57,8 @@ export function readJsonFile(path: string) {
  */
 export function getConfig(name: string) {
   const resolveCwd = (str: string) => path.resolve(process.cwd(), str)
-  const resolveDir = (str: string) => path.resolve(__dirname, str)
+  const resolveDir = (str: string) =>
+    path.resolve(dirname(fileURLToPath(import.meta.url)), str)
   const configPath = Array.from(
     new Set<string>([
       resolveCwd(name + '5'),
@@ -64,6 +68,10 @@ export function getConfig(name: string) {
     ]),
   ).find((path) => fs.existsSync(path))
   return configPath ? readJsonFile(configPath) : undefined
+}
+
+export function isObject(value: any) {
+  return value && typeof value === 'object' && !Array.isArray(value)
 }
 
 export type LoggerType = Awaited<ReturnType<typeof createLogger>>

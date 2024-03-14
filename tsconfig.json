@@ -6,6 +6,8 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "moduleResolution": "NodeNext",
-    "lib": ["ESNext"]
-  }
+    "lib": ["ESNext"],
+    "rootDir": "./"
+  },
+  "exclude": ["node_modules", "dist"]
 }

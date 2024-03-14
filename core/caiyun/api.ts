@@ -1,4 +1,4 @@
-import type { TaskList } from './TaskType'
+import type { TaskList } from './TaskType.js'
 import type { Http } from '@asign/types'
 import type {
   QuerySpecToken,
@@ -17,9 +17,9 @@ import type {
   OpenBlindbox,
   BlindboxUser,
   BlindboxInfo,
-} from './types'
+} from './types.js'
 
-export * from './gardenApi'
+export * from './gardenApi.js'
 
 export function createApi(http: Http) {
   const yun139Url = 'https://yun.139.com'
