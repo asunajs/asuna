@@ -48,6 +48,9 @@ const { resolve } = require('path');
 
 (async () => {
   await run(resolve(process.cwd(), './asign.json')); // 按需修改路径
+
+  // 或者默认路径
+  // await run();
 })();
 ```
 
@@ -64,10 +67,6 @@ const { resolve } = require('path');
   ]
 }
 ```
-
-## 环境变量
-
-- ASIGN_ALIPAN_TOKEN：refreshToken
 
 ## 开发进度
 

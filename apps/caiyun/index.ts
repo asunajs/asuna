@@ -2,17 +2,20 @@ import {
   type M,
   createApi,
   createGardenApi,
-  refreshToken,
+  getJwtToken,
   run as runCore,
+  getOldConfig,
+  createNewAuth,
 } from '@asign/caiyun-core'
 import { type LoggerPushData, createLogger, sleep } from '@asunajs/utils'
-import { loadConfig } from '@asunajs/conf'
+import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
 import { CookieJar } from 'tough-cookie'
 
 export type Config = {
-  token: string
+  token?: string
+  auth: string
 }
 export type Option = { pushData?: LoggerPushData[] }
 
@@ -20,24 +23,31 @@ function getAuthInfo(basicToken: string) {
   basicToken = basicToken.replace('Basic ', '')
 
   const rawToken = Buffer.from(basicToken, 'base64').toString('utf-8')
-  const [_, phone, authToken] = rawToken.split(':')
+  const [platform, phone, authToken] = rawToken.split(':')
 
   return {
     phone,
     authToken,
     basicToken,
+    platform,
   }
 }
 
 export async function main(config: any, option?: Option) {
-  const { phone, authToken, basicToken } = getAuthInfo(config.token)
+  const logger = await createLogger({ pushData: option?.pushData })
+  const { phone, authToken, basicToken, platform } = getAuthInfo(config.auth)
+
+  if (phone.length !== 11 || !phone.startsWith('1')) {
+    logger.info(`auth 格式解析错误，请查看是否填写正确的 auth`)
+    return
+  }
 
   config.phone = phone
-  config.auth = authToken
-  config.token = `Basic ${basicToken}`
+  config.auth = `Basic ${basicToken}`
+  config.token = authToken
+  config.platform = platform
 
   const cookieJar = new CookieJar()
-  const logger = await createLogger({ pushData: option?.pushData })
   const baseUA =
     'Mozilla/5.0 (Linux; Android 13; 22041216C Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.178 Mobile Safari/537.36'
 
@@ -58,7 +68,7 @@ export async function main(config: any, option?: Option) {
           if (options.url.hostname === 'caiyun.feixin.10086.cn') {
             jwtToken && (options.headers['jwttoken'] = jwtToken)
           } else {
-            options.headers['authorization'] = config.token
+            options.headers['authorization'] = config.auth
           }
           // @ts-ignore
           if (options.native) {
@@ -88,39 +98,51 @@ export async function main(config: any, option?: Option) {
 
   logger.info(`==============`)
   logger.info(`登录账号【${config.phone}】`)
-  jwtToken = await refreshToken($, config.phone)
+  jwtToken = await getJwtToken($)
   if (!jwtToken) return
+
   await runCore($)
+  const newAuth = await createNewAuth($)
   logger.info(`==============\n\n`)
+  return newAuth
 }
 
 /**
  * 本地运行
- * @param path 配置文件地址
+ * @param inputPath 配置文件地址
  */
-export async function run(path: string) {
-  const { config } = loadConfig<{
+export async function run(inputPath?: string) {
+  const { config, path } = loadConfig<{
     caiyun: Config[]
     message?: Record<string, any>
-  }>(path)
+  }>(inputPath)
 
   if (!config) {
     throw new Error('配置文件为空')
   }
 
+  const logger = await createLogger()
+
   const caiyun = config.caiyun
 
-  if (!caiyun || !caiyun.length || !caiyun[0].token)
-    return console.error('未找到配置文件/变量')
+  if (!caiyun || !caiyun.length) return logger.error('未找到配置文件/变量')
 
   const pushData: LoggerPushData[] = []
 
-  for (const c of caiyun) {
-    if (!c.token) continue
+  for (let index = 0; index < caiyun.length; index++) {
+    const c = caiyun[index]
+    getOldConfig(c)
+    if (!c.auth) {
+      logger.error('该配置中不存在 auth')
+      continue
+    }
     try {
-      await main(c, { pushData })
+      const newAuth = await main(c, { pushData })
+      if (newAuth) {
+        rewriteConfigSync(path, ['caiyun', index, 'auth'], newAuth)
+      }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
     }
   }
 

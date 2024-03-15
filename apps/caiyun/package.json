@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/caiyun",
-  "version": "0.0.15",
+  "version": "0.1.0",
   "description": "移动云盘签到",
   "main": "./index.ts",
   "type": "module",
@@ -45,5 +45,15 @@
     "module": "./index.mjs",
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "repository": {
+    "url": "git+https://github.com/asunajs/asign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asunajs/asign/issues"
+  },
+  "engines": {
+    "node": ">= 14.12.1"
+  },
+  "homepage": "https://as.js.cool"
 }

@@ -21,7 +21,7 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: 8
-  
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
@@ -42,8 +42,8 @@ jobs:
         with:
           publish: pnpm ci:publish
           version: pnpm ci:version
-          commit: "ci: changesets versions"
-          title: "ci: changesets versions"
+          commit: 'ci: changesets versions'
+          title: 'ci: changesets versions'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

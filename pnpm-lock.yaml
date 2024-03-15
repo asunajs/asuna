@@ -47,6 +47,9 @@ importers:
 
   apps/alipan:
     dependencies:
+      '@asunajs/conf':
+        specifier: workspace:^
+        version: link:../../packages/conf
       '@asunajs/push':
         specifier: workspace:^
         version: link:../../packages/push

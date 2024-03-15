@@ -1,4 +1,3 @@
-import { writeFileSync } from 'fs'
 import {
   type M,
   createApi,
@@ -10,6 +9,7 @@ import { randomHex } from '@asign/utils-pure'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
 import { getSignature } from './utils.js'
+import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 
 function getXSignature(DATA: M['DATA'], userId: string) {
   if (DATA['x-signature']) {
@@ -83,42 +83,37 @@ export async function main({ token }: Config, option?: Option) {
  * 本地运行
  * @param path 配置文件地址
  */
-export async function run(path = './asign.json') {
-  let _config: {
+export async function run(inputPath?: string) {
+  const { config, path } = loadConfig<{
     alipan: Config[]
     message?: Record<string, any>
-  }
-  let isConfigFile = false
-  try {
-    _config = require(path)
-    isConfigFile = true
-  } catch {
-    const { ASIGN_ALIPAN_TOKEN } = process.env
-    if (!ASIGN_ALIPAN_TOKEN) return
-    _config = {
-      alipan: ASIGN_ALIPAN_TOKEN.split('@').map((token) => ({ token })),
-    }
-  }
+  }>(inputPath)
 
-  const config = _config.alipan
+  const logger = await createLogger()
 
-  if (!config || !config.length || !config[0].token)
-    return console.error('未找到配置文件/变量')
+  const alipan = config.alipan
+
+  if (!alipan || !alipan.length || !alipan[0].token)
+    return logger.error('未找到配置文件/变量')
 
   const pushData = []
 
-  for (const c of config) {
+  for (let index = 0; index < alipan.length; index++) {
+    const c = alipan[index]
     if (!c.token) continue
     try {
-      c.token = await main(c, { pushData })
+      const token = await main(c, { pushData })
+      if (token) {
+        rewriteConfigSync(path, ['alipan', index, 'token'], token)
+      }
     } catch (error) {
-      console.error(error)
+      logger.error(error)
     }
   }
 
-  if (pushData.length && _config.message) {
+  if (pushData.length && config.message) {
     if (
-      _config.message.onlyError &&
+      config.message.onlyError &&
       !pushData.some((el) => el.type === 'error')
     ) {
       return
@@ -132,15 +127,9 @@ export async function run(path = './asign.json') {
           logger: await createLogger(),
           http: { fetch: (op: any) => createRequest().request(op) },
         },
-        _config.message,
+        config.message,
         'asign 运行推送',
         msg,
       ))
   }
-
-  isConfigFile &&
-    writeFileSync(
-      path,
-      JSON.stringify(Object.assign(_config, { alipan: config }), null, 2),
-    )
 }

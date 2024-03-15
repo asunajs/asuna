@@ -1,4 +1,4 @@
-import { randomHex, setStoreArray } from '@asign/utils-pure'
+import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
 import type { M } from './types.js'
 
@@ -50,13 +50,24 @@ async function signInWxApi($: M) {
   return await request($, $.api.signInfoInWx, '微信签到')
 }
 
-export async function refreshToken($: M, phone: string) {
-  const ssoToken = await getSsoTokenApi($, phone)
+export async function getJwtToken($: M) {
+  const ssoToken = await getSsoTokenApi($, $.config.phone)
   if (!ssoToken) return
 
-  const jwtToken = await getJwtTokenApi($, ssoToken)
+  return await getJwtTokenApi($, ssoToken)
+}
 
-  return jwtToken
+export async function refreshToken($: M) {
+  try {
+    const { token, phone } = $.config
+    const tokenXml = await $.api.authTokenRefresh(token, phone)
+    if (!tokenXml) {
+      return $.logger.error(`authTokenRefresh 失败`)
+    }
+    return getXmlElement(tokenXml, 'token')
+  } catch (error) {
+    $.logger.error(`刷新 token 失败`, error)
+  }
 }
 
 async function signIn($: M) {
@@ -430,4 +441,55 @@ export async function run($: M) {
   }
 
   await afterTask($)
+}
+
+/**
+ * 兼容旧配置，现在只要求配置 auth （且 auth 是老版本的 token）
+ */
+export function getOldConfig(config: any) {
+  const isAuthToken = (str: string) => str.includes('|')
+  // 只有 token
+  if (config.token && !config.auth) {
+    config.auth = config.token
+    config.token = undefined
+    return
+  }
+  // 只有 auth
+  if (config.auth && !config.token) {
+    return
+  }
+  // token 和 auth 都有
+  if (config.token && config.auth) {
+    config.auth = isAuthToken(config.auth) ? config.token : config.auth
+    return
+  }
+}
+
+export function getTokenExpireTime(token: string) {
+  return Number(token.split('|')[3])
+}
+
+/**
+ * 获取是否需要刷新
+ * @description 有效期 30 天，还有 5 天，需要刷新
+ */
+export function isNeedRefresh(token: string) {
+  const expireTime = getTokenExpireTime(token)
+  return expireTime - Date.now() < 432000000
+}
+
+export async function createNewAuth($: M) {
+  const config = $.config
+  if (!isNeedRefresh(config.token)) {
+    return
+  }
+  $.logger.info('尝试生成新的 auth')
+  const token = await refreshToken($)
+  if (token) {
+    return Buffer.from(
+      // @ts-ignore
+      `${config.platform}:${config.phone}:${token}`,
+    ).toString('base64')
+  }
+  $.logger.error('生成新 auth 失败')
 }

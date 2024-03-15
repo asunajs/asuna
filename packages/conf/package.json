@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/conf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "配置读取",
   "exports": {
     ".": {
@@ -34,5 +34,15 @@
     "jiti": "^1.21.0",
     "magicast": "^0.3.3",
     "yaml": "^2.4.1"
-  }
+  },
+  "repository": {
+    "url": "git+https://github.com/asunajs/asign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asunajs/asign/issues"
+  },
+  "engines": {
+    "node": ">= 14.12.1"
+  },
+  "homepage": "https://as.js.cool"
 }

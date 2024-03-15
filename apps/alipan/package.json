@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/alipan",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "type": "module",
   "description": "阿里云盘签到",
   "main": "index.ts",
@@ -19,6 +19,7 @@
   "author": "catlair",
   "license": "MIT",
   "dependencies": {
+    "@asunajs/conf": "workspace:^",
     "@asunajs/push": "workspace:^",
     "@catlair/node-got": "^0.0.10",
     "secp256k1": "^5.0.0"
@@ -43,5 +44,15 @@
     "module": "./index.mjs",
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "repository": {
+    "url": "git+https://github.com/asunajs/asign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asunajs/asign/issues"
+  },
+  "engines": {
+    "node": ">= 14.12.1"
+  },
+  "homepage": "https://as.js.cool"
 }
