@@ -1,5 +1,14 @@
 # @asunajs/caiyun
 
+## 0.1.1
+
+### Patch Changes
+
+- [`5254bde`](https://github.com/asunajs/asign/commit/5254bde5c123c83dd2791e9e8f701623f08274e6) Thanks [@catlair](https://github.com/catlair)! - feat: refreshToken
+
+- Updated dependencies [[`5254bde`](https://github.com/asunajs/asign/commit/5254bde5c123c83dd2791e9e8f701623f08274e6)]:
+  - @asunajs/conf@0.0.3
+
 ## 0.0.14
 
 ### Patch Changes
