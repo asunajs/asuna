@@ -2,12 +2,13 @@ export * from './js.js'
 export * from './object.js'
 export * from './yaml.js'
 
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, extname, join } from 'path'
-import { parseJavaScript } from './js.js'
-import { parseObject } from './object.js'
-import { parseYAML } from './yaml.js'
+import { parseJavaScript, setInJavaScript } from './js.js'
+import { parseObject, setInObject } from './object.js'
+import { parseYAML, setInYAML } from './yaml.js'
 import { fileURLToPath } from 'url'
+import { setIn } from '@asunajs/utils'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -86,5 +87,37 @@ export function loadConfig<T = any>(
   return {
     path: configPath,
     config,
+  }
+}
+
+export function setInConfig(filepath: string, path: any[], value: any): string {
+  const code = readFileSync(filepath, 'utf8')
+  switch (extname(filepath)) {
+    case '.json': {
+      const json = parseObject(code)
+      setIn(json, path, value)
+      return JSON.stringify(json, null, 2)
+    }
+    case '.json5':
+      return setInObject(code, path, value)
+    case '.js':
+    case '.ts':
+    case '.mjs':
+    case '.mts':
+    case '.cjs':
+    case '.cts':
+      return setInJavaScript(code, path, value)
+    case '.yaml':
+    case '.yml':
+      return setInYAML(code, path, value)
+    default:
+      return
+  }
+}
+
+export function rewriteConfigSync(filepath: string, path: any[], value: any) {
+  const code = setInConfig(filepath, path, value)
+  if (code) {
+    writeFileSync(filepath, code)
   }
 }

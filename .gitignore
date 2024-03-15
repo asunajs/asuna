@@ -141,7 +141,10 @@ index.js
 .turbo
 
 wps.js
+asign.config*
 asign.json*
+asign.yml
+asign.yaml
 
 packages/demo
 

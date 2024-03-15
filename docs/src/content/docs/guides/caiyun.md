@@ -70,7 +70,7 @@ const caiyun = require('@asunajs/caiyun');
 const { resolve } = require('path');
 
 (async () => {
-  await caiyun.run(resolve(process.cwd(), './asign.json5')); // 按需修改路径
+  await caiyun.run(resolve(process.cwd(), './asign.json')); // 按需修改路径
 })();
 ```
 
@@ -84,9 +84,7 @@ const { resolve } = require('path');
 {
   "caiyun": [
     {
-      "token": "登录帐号的 authorization，从<https://yun.139.com/>的 COOKIE 或其它端主页抓取（'可以'删除开头的 `Basic `，直接 `cG` 开头）",
-      "phone": "登录帐号的手机号 ",
-      "auth": "（可选）登录账号的 auth_token，从<https://yun.139.com/>的 COOKIE 或 PC 客户端获取",
+      "auth": "登录帐号的 authorization，从<https://yun.139.com/>的 COOKIE 或其它端主页抓取（'可以'删除开头的 `Basic `，直接 `cG` 开头）",
       "shake": {
         "enable": false,
         "num": 15,
