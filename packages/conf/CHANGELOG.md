@@ -1,5 +1,11 @@
 # @asunajs/conf
 
+## 0.0.3
+
+### Patch Changes
+
+- [`f40af0b`](https://github.com/asunajs/asign/commit/f40af0bef74a1d3773406f9917f7d753c4f06ea7) Thanks [@catlair](https://github.com/catlair)! - feat: rewriteConfigSync
+
 ## 0.0.1
 
 ### Patch Changes
