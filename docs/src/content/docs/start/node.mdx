@@ -1,0 +1,129 @@
+---
+title: Node.js 说明
+description: Node.js 说明
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+Node.js 是 JavaScript 的服务器端运行环境，本项目基于 Node.js 开发。
+
+所以要想使用本项目，需要安装 Node.js，所以你需要阅读本章节，当然也有特例：
+
+1. 如果您已经了解过 Node.js，并且安装 18+ 的 LTS 版本可以跳过本章节。
+
+2. 如果你的运行环境不是 Node.js，例如 WPS/Deno 等，可以跳过本章节。
+
+3. 如果你不需要在本地计算机/服务器直接使用 Node.js 运行此脚本，而是使用青龙面板/云函数 等已经带有 Node.js 14+ LTS 的运行环境，可直接查看 [npm 介绍](#npm-介绍)。
+
+4. 如果你不需要了解 Node.js，也可以跳过本章节，但如果遇到与此有关的错误，请自行百度解决，Github Issue 一律不提供支持。
+
+## 安装 Node.js
+
+:::tip[提示]
+请选择 LTS（Long Term Support/长期支持）版本，也就是偶数号的版本，例如 14、16、18 等。
+
+建议选择 18+ 的 LTS 版本（最低请至少为 14），因为本项目使用了最新的 JavaScript 特性。
+:::
+
+对于访问国外网络良好的用户，可以使用官网直接下载最新的 LTS 版本（截至 2024 年 10 月应该都是 20 版本）。
+
+<LinkCard title="Node.js 官网" href="https://nodejs.org/" />
+
+网络情况糟糕的朋友可以选择镜像站下载，windows 用户在镜像链接中找到 `node-vx.x.x-x64.msi` 文件下载即可（`x.x.x` 为版本）。下载后双击打开，一直选 next （下一步）即可。
+
+<LinkCard
+  title="阿里镜像站"
+  href="https://registry.npmmirror.com/binary.html?path=node/latest/"
+/>{' '}
+
+如果不想使用阿里云，还可以使用各大高校的镜像站，打开以下链接后可以切换高校，在使用方法中找到类似 `https://mirrors.ustc.edu.cn/node/` 的链接打开即可， `utsc` 换成目标学校的名称。
+
+<LinkCard
+  title="MirrorZ 高校镜像"
+  href="https://help.mirrors.cernet.edu.cn/nodejs-release"
+/>
+
+如果对安装不熟悉，建议查看教程或者百度搜索相关教程。
+
+<LinkCard
+  title="菜鸟教程（安装）"
+  href="https://www.runoob.com/nodejs/nodejs-install-setup.html"
+/>
+
+### 查看 Node.js 版本
+
+```bash title="查看 Node.js 版本"
+node -v
+npm -v
+```
+
+## npm 介绍
+
+npm 是 Node.js 的包管理工具，用于安装和管理 Node.js 的模块。
+
+[npmjs.com](https://npmjs.com) 是 npm 的官网，可以在此查看最新的模块列表。
+
+本项目也会以 js 模块的形式发布到 npmjs.com。
+
+通常情况下安装好 Node.js 后，npm 就会自动安装在 Node.js 的安装目录下。如果你使用某些 Linux 发行版，并使用了包管理器安装 Node.js，那么可能需要手动安装 npm（我想使用这些发行版的用户应该知道怎么安装了）。
+
+### 查看 npm 版本
+
+```bash title="查看 npm 版本"
+npm -v
+```
+
+### npm 常用命令
+
+<CardGrid>
+<LinkCard
+  title="npm 超详细教程 - 稀土掘金"
+  href="https://juejin.cn/post/6875271902269538312?from=search-suggest"
+/>
+
+<LinkCard
+  title="NPM 使用介绍 - 菜鸟教程"
+  href="https://www.runoob.com/nodejs/nodejs-npm.html"
+/>
+</CardGrid>
+
+安装包
+
+```bash frame="none"
+npm install <package>
+# 例如安装 全局的 alipan（需要加上 -g）
+npm install -g @asunajs/alipan
+# 安装到当前目录
+npm install @asunajs/alipan
+```
+
+安装指定版本的包（后面加上`@版本号`）
+
+```bash frame="none"
+# 指定安装版本 全局
+npm install -g @asunajs/alipan@0.1.0
+# 指定安装版本 当前目录
+npm install @asunajs/alipan@0.1.0
+```
+
+卸载包（命令与上面类似）
+
+```bash frame="none"
+npm uninstall -g <package>
+# 例如卸载 全局 的 alipan
+npm uninstall -g @asunajs/alipan
+# 卸载当前目录的包
+npm uninstall @asunajs/alipan
+```
+
+### pnpm
+
+[pnpm](https://pnpm.io/zh/) 与 npm 类似，但是 pnpm 是第三方的包管理工具，相比 npm 在某些方面存在一定优势，本项目开发基于 pnpm。但这并不表示你必须使用 pnpm，如果你不喜欢 pnpm，可以使用 npm 或者另一个热门的包管理工具 [yarn](https://yarnpkg.com/)。
+
+pnpm 在基本使用上与 npm 类似。
+
+```bash title="安装 pnpm"
+npm install -g pnpm
+pnpm -v
+```

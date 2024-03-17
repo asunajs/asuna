@@ -1,0 +1,88 @@
+---
+title: 本地环境
+description: 在原生环境中使用
+sidebar:
+  order: 0
+---
+
+:::note[提示]
+由于文档通用性，xxxx 表示具体的模块名，具体模块名在每个模块的参考处就有，之后不再额外说明。
+
+教程以 windows11 为例
+
+若使用 Linux 则以 ArchLinux 为例
+:::
+
+## npm 包
+
+:::tip[你知道吗？]
+当 npm 下载缓慢时可以换源，详情百度。也可以 `npm install -g nru` 安装 nru，然后 `nru u taobao` 选择淘宝源，需要 npm 源的时候 `nru u npm` 选择 npm 源。
+
+如果需要了解哪个源更快，使用 `nru test` 测试一下。
+:::
+
+### 创建工作目录
+
+在合适的地方新建一个目录，例如我在 D 盘下创建了一个 `asign` 的文件夹（请使用英文或数字的组合，而不是其它字符）
+
+### 初始化项目
+
+在刚才创建的文件夹下右键，选择【在终端中打开】。或者文件管理器打开刚才创建的文件夹后，在上面的路径栏输入 cmd ，然后回车
+
+![win11_open_cmd.](@assets/images/win11_open_cmd.png)
+
+```bash title="初始化项目"
+npm init -y
+```
+
+你会得到一个 `package.json` 文件，编辑它，新增一行
+
+```diff lang="json"
+{
+  "name": "asign",
+  "version": "1.0.0",
++  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
+}
+```
+
+```bash title="安装 xxx，以 caiyun 为例"
+npm install @asunajs/caiyun
+```
+
+很慢？忘记上面说的换源了？
+
+你得到了 `node_modules` 文件夹
+
+### 编写脚本
+
+`随便一个名字.js`，这里我是 `index.js`
+
+```js
+import { run } from '@asunajs/caiyun';
+
+await run();
+```
+
+### 编辑配置文件
+
+参考 [配置文件](/start/config/)
+
+### 运行脚本
+
+```bash title="运行脚本"
+node index.js
+```
+
+## windows 下定时运行
+
+:::tip[提示]
+文档在建设中，精力有限，欢迎 PR
+:::

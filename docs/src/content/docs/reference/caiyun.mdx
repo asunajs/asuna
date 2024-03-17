@@ -1,7 +1,13 @@
 ---
-title: 中国移动云盘
-description: 中国移动云盘使用文档
+title: 移动云盘
+description: 移动云盘使用文档
+sidebar:
+  order: 1
 ---
+
+## Node.js 依赖名
+
+[`@asunajs/caiyun`](https://www.npmjs.com/package/@asunajs/caiyun)
 
 ## 当前支持功能
 
@@ -9,7 +15,7 @@ description: 中国移动云盘使用文档
 - [x] 公共号每日签到
 - [x] 公众号抽奖
 - [x] 每日任务-上传
-- [x] 每日任务-云笔记
+- [x] ~~每日任务-云笔记~~（官方下线）
 - [x] APP 抽奖（摇一摇）
 - [x] 浇水种树-云盘 APP（需要上传的未实现）
 - [x] 浇水种树-邮箱 APP
@@ -60,25 +66,13 @@ exports.handler = async function (event, context, callback) {
 };
 ```
 
-### 青龙面板
-
-1. 在脚本管理里新建一个文件，`名字随意.js`，例如：`asign_caiyun.js`
-2. 复制以下代码
-
-```js
-const caiyun = require('@asunajs/caiyun');
-const { resolve } = require('path');
-
-(async () => {
-  await caiyun.run(resolve(process.cwd(), './asign.json')); // 按需修改路径
-})();
-```
-
-3. 在脚本管理里新建一个文件，`asign.json`，（也可以是其他，但是得修改上面得运行代码），配置文件内容参考 [配置文件](#配置文件)
-
 ## 配置文件
 
-与 js 文件同目录的 `asign.json` 文件
+:::tip[提示]
+ts 转文档正在编写中，故此处只提供大概配置方式
+:::
+
+以 JSON 为例。
 
 ```json
 {

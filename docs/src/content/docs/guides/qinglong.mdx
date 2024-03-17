@@ -1,0 +1,80 @@
+---
+title: 青龙面板
+description: 在青龙面板中使用
+sidebar:
+  order: 9
+---
+
+:::danger[危险]
+**免责声明：**
+
+由于青龙本身没有官方文档，且青龙面板各个版本可能存在较大差别，所以本教程仅供参考，本人不对文档的时效性负责。
+
+在代码没有成功运行之前的任何错误（包括但不限于：依赖安装失败或者连接超时；定时未启动；程序更新失败或版本未变更为最新；确认已经安装依赖但程序提示未找到 xxx；使用 cli 参数未成功传递到程序或程序解析参数错误）。本人概不负责，不提供任何帮助，请不要在 Github Issue 中提问。
+
+最后，愿天帝保佑于你。
+:::
+
+:::note[提示]
+由于文档通用性，xxxx 表示具体的模块名，具体模块名在每个模块的参考处就有，之后不再额外说明。
+:::
+
+## 拉取代码运行
+
+:::tip[提示]
+该功能处于 todolist 阶段，目前仅支持通过 npm 安装。
+
+值得注意的是，由于部分依赖较大，打包为单文件代码时可能到达 10M 的大小。
+:::
+
+## 使用 npm 运行
+
+### 安装 Node 依赖
+
+在侧边栏依赖管理中添加 Node 依赖
+
+```bash frame="none"
+@asunajs/xxxxx
+
+# 例如
+@asunajs/caiyun
+```
+
+:::tip[你知道吗？]
+如果出现类似于
+
+```bash frame="none"
+开始安装依赖 bilioutils，开始时间 2023/8/15 20:30:31
+WARN using --force Recommended protections disabled.
+```
+
+依赖一直（长时间）在安装中可能是仓库源地址的问题，切换 npm 源。
+
+:::
+
+### 创建脚本
+
+`asign.js` 或其它任何合法文件名，后缀为 `.js`，内容如下（xxxx 替换为具体模块名）：
+
+```js
+require('@asunajs/xxxx').run();
+```
+
+上面代码将使用默认配置路径，想要自定义请向 run 函数传递路径参数 `run('xxxxx')`;
+
+### 更新脚本
+
+删除依赖 `@asunajs/xxxx`，并重新安装该依赖即可（并不一定有效）。
+
+自动更新可以手动添加一个任务，运行命令为 `pnpm remove @asunajs/xxxx && pnpm add @asunajs/xxxx`（并不一定有效，与版本有关）
+
+### 创建配置文件
+
+参考 [配置文件](/start/config/)
+
+### 定时任务
+
+参考链接（链接所有者非本人，不保证可用性）
+
+- https://xd520.cn:5010/index.php/archives/184/
+- https://www.cnblogs.com/Sky-seeker/p/17344462.html

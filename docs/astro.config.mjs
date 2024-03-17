@@ -19,10 +19,6 @@ export default defineConfig({
           autogenerate: { directory: 'guides' },
         },
         {
-          label: '推送',
-          autogenerate: { directory: 'push' },
-        },
-        {
           label: '参考',
           autogenerate: { directory: 'reference' },
         },

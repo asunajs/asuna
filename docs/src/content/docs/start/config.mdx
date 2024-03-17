@@ -1,0 +1,241 @@
+---
+title: 配置文件
+description: 配置文件
+---
+
+import {
+  LinkCard,
+  CardGrid,
+  Tabs,
+  TabItem,
+} from '@astrojs/starlight/components';
+
+:::caution[特别说明]
+这里将说明配置文件的格式，命名以及放置路径，甚至内部实现原理，后续详细的配置处将不再一一重复说明，请不要让我看到你放的 `配置文件放哪里啊`、`怎么配置多账号啊` 这样毫无营养的狗屁。
+:::
+
+## Node.js 环境
+
+Node.js 支持多种格式的配置文件，请直接跳转到您喜欢的格式查看。
+
+- `.json` 推荐
+- `.json5`
+- `.{js,ts,mjs,mts,cjs,cts}`
+- `.{yml,yaml}`
+
+### JSON
+
+JSON 是一种数据传输格式，并不适合用来做配置文件，之所以推荐使用，是因为对人不方便，但是对机器来说非常方便。
+
+```json title="一个 JSON 例子.json"
+{
+  "caiyun": [
+    {
+      "auth": "GM6ashkdajdhasdasdbnakj"
+    }
+  ],
+  "alipan": [
+    {
+      "token": "askdjahdjakshdgjhasgdhj"
+    }
+  ],
+  "message": {
+    "hello": "world"
+  }
+}
+```
+
+:::note[注意]
+本项目读取 `.json` 后缀的文件时并不是使用的 JSON 语法解析，但是写入时是 JSON 语法。
+
+详细请参考下一节的 JSON5
+:::
+
+### JSON5
+
+:::note[注意]
+本项目读取 `.json5` 后缀的文件不管写入还是读取都不是 JSON5 语法。而是 JavaScript Object（采用 [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function) 函数加载）。
+:::
+
+实际上，本项目的 JSON5/JSON 是当成 JavaScript Object 处理的（JSON 写入后格式会变回为 json），并且可以通过 $env 获取环境变量。
+
+```json5 title="另一个 JSON5 例子.json"
+{
+  // 这是一个数组
+  caiyun: [
+    {
+      auth: 'GM6ashkdajdhasdasdbnakj',  // 10086 的账号
+    },
+    {
+      // 这是不建议的写法，这里的 $env.CAIYUN_AUTH 会在 auth 刷新后覆盖为 "shkdajdhasxxxx"
+      auth: $env.CAIYUN_AUTH,
+    },
+  ],
+  // 这也是一个数组
+  alipan: [
+    {
+      token: 'askdjahdjakshdgjhasgdhj',
+    },
+  ],
+  message: {
+    pushplus: {
+      token: $env.PUSHPLUS_TOKEN, // 直接使用环境变量的 PUSHPLUS_TOKEN
+    },
+    title: 'hello' + 'world' + '这是js的语法哦'
+  },
+}
+```
+
+:::caution[警告]
+caiyun 的 auth、alipan 的 token 等会自动更新的字段不要使用非字符串字面量，因为最终它们都会被覆写为字符串字面量。
+:::
+
+### JavaScript/TypeScript
+
+:::note[注意]
+ts/js 的支持还在适配中，目前暂时无法使用
+:::
+
+前面的 JSON5 好像就是一个笑话，因为本来就支持 JavaScript/TypeScript。（推荐 mjs 或 mts）
+
+<Tabs>
+
+<TabItem label="asign.config.mjs">
+    
+```js frame="none"
+
+const messageTitle = 'hello' + 'world' + '这是 js 的语法哦'
+
+export default {
+  caiyun: [
+    {
+      // 和上面的 JSON5 一样，这里需要直接写
+      auth: 'GM6ashkdajdhasdasdbnakj',
+    },
+  ],
+  alipan: [
+    {
+      token: 'askdjahdjakshdgjhasgdhj',
+    },
+  ],
+  message: {
+    pushplus: {
+      // 这里不使用 $env ，而是直接使用 node 的 api
+      token: process.env.PUSHPLUS_TOKEN,
+    },
+    title: messageTitle,
+  },
+};
+
+````
+
+</TabItem>
+
+<TabItem label="asign.config.js">
+
+```js frame="none"
+const messageTitle = 'hello' + 'world' + '这是 js 的语法哦'
+
+module.exports = {
+  caiyun: [
+    {
+      // 和上面的 JSON5 一样，这里需要直接写
+      auth: 'GM6ashkdajdhasdasdbnakj',
+    },
+  ],
+  alipan: [
+    {
+      token: 'askdjahdjakshdgjhasgdhj',
+    },
+  ],
+  message: {
+    pushplus: {
+      // 这里不使用 $env ，而是直接使用 node 的 api
+      token: process.env.PUSHPLUS_TOKEN,
+    },
+    title: messageTitle,
+  },
+};
+
+````
+
+  </TabItem>
+
+</Tabs>
+
+PS：采用 [jiti](https://unjs.io/packages/jiti) 实现 ts/esm/cjs 的兼容
+
+### YAML
+
+不做过多介绍
+
+<CardGrid>
+  <LinkCard title="官网 yaml.org" href="https://yaml.org/" />
+  <LinkCard title="本项目解析器 yaml@2" href="https://github.com/eemeli/yaml" />
+</CardGrid>
+
+为啥是 `yaml@2` 而不是 `js-yaml`，因为我要保留注释写入
+
+## 配置简介
+
+以下都以 JSON 为例。
+
+```json
+{
+  "caiyun": [
+    {
+      "auth": "GM6ashkdajdhasdasdbnakj"
+    }
+  ],
+  "alipan": [
+    {
+      "token": "askdjahdjakshdgjhasgdhj"
+    }
+  ],
+  "message": {
+    "hello": "world"
+  }
+}
+```
+
+- caiyun/alipan 等等字段都是包含的功能的名称，后面的配置将直接应用到对应的功能上，具体内容见具体功能的指南。
+- message 是推送消息的配置，详见推送。
+
+### 多账号
+
+以 alipan 为例，`[` 开头 `]` 结尾的叫做数组，数组可以包含多个对象，每个对象就是一个账号。
+
+举个栗子
+
+```json
+{
+  "alipan": [
+    {
+      "token": "askdjahdjakshdgjhasgdhj"
+    },
+    {
+      "token": "asdla';dla;sdlk"
+    }
+  ]
+}
+```
+
+## 配置路径
+
+配置的名称必须是以下之一（加载顺序排序）：
+
+- `asign.json`（推荐）
+- `asign.json5`
+- `asign.config.js`
+- `asign.config.ts`
+- `asign.config.mjs`
+- `asign.config.mts`
+- `asign.config.cts`
+- `asign.config.cjs`
+- `asign.yaml`
+- `asign.yml`
+
+这一个文件需要放置在：
+
+1. 你运行命令的目录下（linux 运行 `ls`，windows 运行 `dir` 就能看到这个文件为准，或其下的 config 目录）
+2. 被允许的脚本的同级目录下（也就是它的旁边，或其下的 config 目录）
