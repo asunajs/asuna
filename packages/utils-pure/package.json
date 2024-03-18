@@ -4,9 +4,30 @@
   "description": "",
   "type": "module",
   "main": "index.ts",
-  "files": ["index.js"],
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "files": [
+    "index.js"
+  ],
   "scripts": {},
-  "keywords": ["sign", "airscript", "wps"],
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps"
+  ],
   "author": "catlair",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.ts"
+      }
+    },
+    "main": "index.ts",
+    "module": "index.ts"
+  }
 }

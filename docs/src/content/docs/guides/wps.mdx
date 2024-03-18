@@ -8,3 +8,42 @@ sidebar:
 :::tip[提示]
 文档在建设中，精力有限，欢迎 PR
 :::
+
+## 配置
+
+创建任意表格（普通或智能）
+
+authorization 的获取暂时参考 https://www.52pojie.cn/thread-1890786-1-1.html
+
+只需要配置 A 列，B 列 C 列建议留空预留其他配置，其他列无所谓
+
+| 行列 | A                          | B   | C   | D      | E                | ...    |
+| ---- | -------------------------- | --- | --- | ------ | ---------------- | ------ |
+| 1    | 第一个用户的 authorization | 如  |     |        | 这里可以写上备注 |        |
+| 2    | 第二个用户的 authorization |     | 空  |        |                  |        |
+| 3    | 三                         |     |     | 你好呀 |                  |        |
+| 4    | Basic cGM6cxxxxxxxx        | 空  |     |        |                  | 刘亦菲 |
+| 5    | cGM6xxxxx 也行，大概       |     |     |        | 王语嫣           |        |
+| ...  | 。                         |     | 野  |        |                  | 小龙女 |
+
+## 使用
+
+![create_wps_1](@assets/images/create_wps_1.png)
+
+1. 点击效率
+2. 高级开发
+3. AirScript 脚本编辑器
+4. 新建
+5. 写个名字
+6. 粘贴代码 （https://gitee.com/asunajs/asign/blob/assets/dist/wps-caiyun.js#）
+
+![create_wps_2](@assets/images/create_wps_2.png)
+
+7. 点击那啥
+8. 添加服务
+9. 添加邮件和网络
+
+![create_wps_3](@assets/images/create_wps_3.png)
+
+10. 点击运行
+11. 确定授权

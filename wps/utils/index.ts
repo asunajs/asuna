@@ -104,8 +104,12 @@ export function createRequest({
 }
 
 export function getPushConfig() {
-  const usedRange = Application.Sheets.Item('推送').UsedRange,
-    cells = usedRange.Columns.Cells,
+  const usedRange = Application.Sheets.Item('推送').UsedRange
+  if (!usedRange) {
+    console.log('未开启推送')
+    return {}
+  }
+  const cells = usedRange.Columns.Cells,
     columnEnd = Math.min(50, usedRange.ColumnEnd),
     rowEnd = Math.min(50, usedRange.RowEnd)
 
