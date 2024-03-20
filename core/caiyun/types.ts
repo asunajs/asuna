@@ -25,6 +25,9 @@ export interface M {
       /** 完成次数 */
       count: number
     }
+    hc1T?: {
+      lastUpdate: number
+    }
   }
 }
 

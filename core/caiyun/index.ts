@@ -15,7 +15,7 @@ async function request<T extends (...args: any[]) => any>(
   try {
     const { code, message, msg, result } = await api(...args)
     if (code !== 0) {
-      $.logger.error(`${name}失败`, code, message || msg)
+      $.logger.fatal(`${name}失败`, code, message || msg)
     } else {
       return result
     }
@@ -29,7 +29,7 @@ export async function getSsoTokenApi($: M, phone: number | string) {
   try {
     const specToken = await $.api.querySpecToken(phone)
     if (!specToken.success) {
-      $.logger.error('获取 ssoToken 失败', specToken.message)
+      $.logger.fatal('获取 ssoToken 失败', specToken.message)
       return
     }
     return specToken.data.token
@@ -233,7 +233,7 @@ async function _clickTask($: M, id: number, currstep: number) {
 }
 
 async function dailyTask($: M) {
-  $.logger.info(`------【每日】------`)
+  $.logger.start('------【每日】------')
   const { day } = await request($, $.api.getTaskList, '获取任务列表')
   if (!day || !day.length) return $.logger.info(`无任务列表，结束`)
   const taskFuncList = { 106: uploadFileDaily, 107: createNoteDaily }
@@ -251,7 +251,7 @@ async function dailyTask($: M) {
     const { day } = await request($, $.api.getTaskList, '获取任务列表')
     if (!day || !day.length) return
     for (const taskItem of day) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.info(`完成：${taskItem.name}`)
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
     }
   }
 }
@@ -260,7 +260,7 @@ async function shareTime($: M) {
   try {
     const files = $.store.files
     if (!files || !files[0]) {
-      $.logger.info(`未获取到文件列表，跳过分享任务`)
+      $.logger.fail(`未获取到文件列表，跳过分享任务`)
       return
     }
     const { code, message } = await $.api.getOutLink(
@@ -269,14 +269,14 @@ async function shareTime($: M) {
       '',
     )
     if (code === '0') return true
-    $.logger.error(`分享链接失败`, code, message)
+    $.logger.fail(`分享链接失败`, code, message)
   } catch (error) {
     $.logger.error(`分享链接异常`, error)
   }
 }
 
 async function hotTask($: M) {
-  $.logger.info(`------【热门任务】------`)
+  $.logger.start('------【热门任务】------')
   const { time } = await request($, $.api.getTaskList, '获取任务列表')
   if (!time) return
   const taskIds = [434]
@@ -287,7 +287,7 @@ async function hotTask($: M) {
     if (!taskIds.includes(taskItem.id)) continue
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
       ;(await taskFuncList[taskItem.id]?.($))
-        && $.logger.info(`完成：${taskItem.name}`)
+        && $.logger.success(`完成：${taskItem.name}`)
     }
   }
 }
@@ -319,7 +319,7 @@ async function monthTaskOnMail($: M) {
     )
     if (!month) return
     for (const taskItem of month) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.info(`完成：${taskItem.name}`)
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
     }
   }
 }
@@ -337,7 +337,7 @@ async function shake($: M) {
 }
 
 async function shakeTask($: M) {
-  $.logger.info(' ------【摇一摇】------')
+  $.logger.start('------【摇一摇】------')
   const { delay, num } = $.config.shake
   for (let index = 0; index < num; index++) {
     await shake($)
@@ -435,7 +435,7 @@ function getShareFindCount($: M) {
 }
 
 async function shareFindTask($: M) {
-  $.logger.info('------【邀请好友看电影】------')
+  $.logger.start('------【邀请好友看电影】------')
   $.logger.info('测试中。。。')
   let count = getShareFindCount($)
   if (--count < 0) {
@@ -510,7 +510,9 @@ async function getBlindboxCount($: M) {
 }
 
 async function blindboxTask($: M) {
-  $.logger.info(' ------【开盲盒】------')
+  $.logger.start('------【开盲盒】------')
+  $.logger.fail('bug 修复中，跳过')
+  return
   try {
     await getBlindboxCount($)
     const { result, code, msg } = await $.api.blindboxUser()
@@ -530,6 +532,31 @@ async function blindboxTask($: M) {
     }
   } catch (error) {
     $.logger.error('开盲盒任务异常', error)
+  }
+}
+
+function checkHc1T({ localStorage }: M) {
+  if (localStorage.hc1T) {
+    const { lastUpdate } = localStorage.hc1T
+    if (new Date().getMonth() <= new Date(lastUpdate).getMonth()) {
+      return true
+    }
+  }
+}
+
+async function hc1Task($: M) {
+  $.logger.start('------【合成芝麻】------')
+  if (checkHc1T($)) {
+    $.logger.info('本月已领取')
+    return
+  }
+  try {
+    await request($, $.api.beinviteHecheng1T, '合成芝麻')
+    await $.sleep(5000)
+    await request($, $.api.finishHecheng1T, '合成芝麻')
+    $.logger.success('完成合成芝麻')
+  } catch (error) {
+    $.logger.error('合成芝麻失败', error)
   }
 }
 
@@ -553,7 +580,8 @@ export async function run($: M) {
     dailyTask,
     hotTask,
     shareFindTask,
-    // blindboxTask,
+    hc1Task,
+    blindboxTask,
     receive,
   ]
 
