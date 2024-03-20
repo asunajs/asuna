@@ -7,7 +7,14 @@ import {
   getOldConfig,
   createNewAuth,
 } from '@asign/caiyun-core'
-import { type LoggerPushData, createLogger, sleep } from '@asunajs/utils'
+import {
+  type LoggerPushData,
+  createLogger,
+  sleep,
+  getLocalStorage,
+  setLocalStorage,
+  pushMessage,
+} from '@asunajs/utils'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
@@ -20,13 +27,12 @@ export type Config = {
 }
 export type Option = { pushData?: LoggerPushData[] }
 
-export async function main(config: any, option?: Option) {
+export async function main(
+  config: any,
+  localStorage: M['localStorage'] = {},
+  option?: Option,
+) {
   const logger = await createLogger({ pushData: option?.pushData })
-  config = {
-    ...config,
-    ...getAuthInfo(config.auth),
-  }
-
   if (config.phone.length !== 11 || !config.phone.startsWith('1')) {
     logger.info(`auth 格式解析错误，请查看是否填写正确的 auth`)
     return
@@ -79,6 +85,7 @@ export async function main(config: any, option?: Option) {
     DATA,
     sleep,
     store: {},
+    localStorage,
   }
 
   logger.info(`==============`)
@@ -89,7 +96,10 @@ export async function main(config: any, option?: Option) {
   await runCore($)
   const newAuth = await createNewAuth($)
   logger.info(`==============\n\n`)
-  return newAuth
+  return {
+    newAuth,
+    localStorage,
+  }
 }
 
 /**
@@ -113,6 +123,7 @@ export async function run(inputPath?: string) {
   if (!caiyun || !caiyun.length) return logger.error('未找到配置文件/变量')
 
   const pushData: LoggerPushData[] = []
+  const ls = getLocalStorage(path, 'caiyun')
 
   for (let index = 0; index < caiyun.length; index++) {
     const c = caiyun[index]
@@ -122,32 +133,32 @@ export async function run(inputPath?: string) {
       continue
     }
     try {
-      const newAuth = await main(c, { pushData })
+      const authInfo = getAuthInfo(c.auth)
+      const { newAuth, localStorage } = await main(
+        {
+          ...c,
+          ...authInfo,
+        },
+        ls[authInfo.phone],
+        { pushData },
+      )
       if (newAuth) {
         rewriteConfigSync(path, ['caiyun', index, 'auth'], newAuth)
+      }
+      if (localStorage) {
+        ls[authInfo.phone] = localStorage
       }
     } catch (error) {
       logger.error(error)
     }
   }
 
-  if (pushData.length && config.message) {
-    const message = config.message
-    if (message.onlyError && !pushData.some((el) => el.type === 'error')) {
-      return
-    }
-    const msg = pushData
-      .map((m) => `[${m.type} ${m.date.toLocaleTimeString()}]${m.msg}`)
-      .join('\n')
-    msg &&
-      (await sendNotify(
-        {
-          logger: await createLogger(),
-          http: { fetch: (op: any) => createRequest().request(op) },
-        },
-        message,
-        message.title || 'asign 运行推送',
-        msg,
-      ))
-  }
+  setLocalStorage(path, 'caiyun', ls)
+
+  await pushMessage({
+    pushData,
+    message: config.message,
+    sendNotify,
+    createRequest,
+  })
 }

@@ -1,4 +1,13 @@
-export function randomHex(length: number) {
+/**
+ *
+ * @param length 长度
+ * @param part 当长度为数组时，填充
+ * @returns
+ */
+export function randomHex(length: number | number[], pad = '-') {
+  if (Array.isArray(length)) {
+    return length.map((l) => randomHex(l, pad)).join(pad)
+  }
   return Array.from({
     length,
   })
@@ -76,4 +85,21 @@ export function getAuthInfo(basicToken: string) {
     auth: `Basic ${basicToken}`,
     platform,
   }
+}
+
+export function hashCode(str: string) {
+  if (typeof str !== 'string') {
+    return 0
+  }
+  let hash = 0
+  let char = null
+  if (str.length == 0) {
+    return hash
+  }
+  for (let i = 0; i < str.length; i++) {
+    char = str.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash = hash & hash
+  }
+  return hash
 }

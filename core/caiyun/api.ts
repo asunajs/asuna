@@ -17,7 +17,9 @@ import type {
   OpenBlindbox,
   BlindboxUser,
   BlindboxInfo,
+  CloudRecord,
 } from './types.js'
+import { hashCode } from '@asign/utils-pure'
 
 export * from './gardenApi.js'
 
@@ -45,10 +47,7 @@ export function createApi(http: Http) {
         },
       )
     },
-    authTokenRefresh: function authTokenRefresh(
-      token: string,
-      account: string | number,
-    ) {
+    authTokenRefresh(token: string, account: string | number) {
       return http.post<string>(
         `https://aas.caiyun.feixin.10086.cn/tellin/authTokenRefresh.do`,
         `<?xml version="1.0" encoding="utf-8"?><root><token>${token}</token><account>${account}</account><clienttype>656</clienttype></root>`,
@@ -387,8 +386,27 @@ export function createApi(http: Http) {
         {
           headers: {
             accept: 'application/json',
+            'x-requested-with': 'cn.cj.pe',
+            referer: 'https://caiyun.feixin.10086.cn/',
           },
         },
+      )
+    },
+    datacenter(base64: string) {
+      return http.post(
+        'https://datacenter.mail.10086.cn/datacenter/',
+        `data=${base64}&ext=${'crc=' + hashCode(base64)}`,
+        {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            platform: 'h5',
+          },
+        },
+      )
+    },
+    getCloudRecord(pn = 1, ps = 10, type = 1) {
+      return http.get<CloudRecord>(
+        `${caiyunUrl}/market/signin/public/cloudRecord?type=${type}&pageNumber=${pn}&pageSize=${ps}`,
       )
     },
   }

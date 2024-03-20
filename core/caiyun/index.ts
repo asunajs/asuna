@@ -222,6 +222,13 @@ async function createNoteDaily($: M) {
 }
 
 async function _clickTask($: M, id: number, currstep: number) {
+  const idCurrstepMap = {
+    434: 22,
+  }
+  if (idCurrstepMap[id]) {
+    await clickTask($, id)
+    return true
+  }
   return currstep === 0 ? await clickTask($, id) : true
 }
 
@@ -242,7 +249,7 @@ async function dailyTask($: M) {
 
   if (doingList.length) {
     const { day } = await request($, $.api.getTaskList, '获取任务列表')
-    if (!day) return
+    if (!day || !day.length) return
     for (const taskItem of day) {
       if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH')
         $.logger.info(`完成：${taskItem.name}`)
@@ -344,6 +351,132 @@ async function shakeTask($: M) {
   }
 }
 
+async function shareFind($: M) {
+  const phone = $.config.phone
+  try {
+    const data = {
+      traceId: Number(Math.random().toString().substring(10)),
+      tackTime: Date.now(),
+      distinctId: randomHex([14, 15, 8, 7, 15]),
+      eventName: 'discoverNewVersion.Page.Share.QQ',
+      event: '$manual',
+      flushTime: Date.now(),
+      model: '',
+      osVersion: '',
+      appVersion: '',
+      manufacture: '',
+      screenHeight: 895,
+      os: 'Android',
+      screenWidth: 393,
+      lib: 'js',
+      libVersion: '1.17.2',
+      networkType: '',
+      resumeFromBackground: '',
+      screenName: '',
+      title: '【精选】一站式资源宝库',
+      eventDuration: '',
+      elementPosition: '',
+      elementId: '',
+      elementContent: '',
+      elementType: '',
+      downloadChannel: '',
+      crashedReason: '',
+      phoneNumber: phone,
+      storageTime: '',
+      channel: '',
+      activityName: '',
+      platform: 'h5',
+      sdkVersion: '1.0.1',
+      elementSelector: '',
+      referrer: '',
+      scene: '',
+      latestScene: '',
+      source: 'content-open',
+      urlPath: '',
+      IP: '',
+      url: `https://h.139.com/content/discoverNewVersion?columnId=20&token=STuid00000${Date.now()}${randomHex(
+        20,
+      )}&targetSourceId=001005`,
+      elementName: '',
+      browser: 'Chrome WebView',
+      elementTargetUrl: '',
+      referrerHost: '',
+      browerVersion: '122.0.6261.106',
+      latitude: '',
+      pageDuration: '',
+      longtitude: '',
+      urlQuery: '',
+      shareDepth: '',
+      arriveTimeStamp: '',
+      spare: { mobile: phone, channel: '' },
+      public: '',
+      province: '',
+      city: '',
+      carrier: '',
+    }
+    await $.api.datacenter(Buffer.from(JSON.stringify(data)).toString('base64'))
+  } catch (error) {
+    $.logger.error('分享有奖异常', error)
+  }
+}
+
+function getCloudRecord($: M) {
+  return request($, $.api.getCloudRecord, '获取云朵记录')
+}
+
+/**
+ * 返回需要次数
+ */
+function getShareFindCount($: M) {
+  if (!$.localStorage.shareFind) {
+    return 20
+  }
+  const { lastUpdate, count } = $.localStorage.shareFind
+  const isCurrentMonth =
+    new Date().getMonth() === new Date(lastUpdate).getMonth()
+  return isCurrentMonth ? 20 - count : 20
+}
+
+async function shareFindTask($: M) {
+  $.logger.info('------【邀请好友看电影】------')
+  $.logger.info('测试中。。。')
+  let count = getShareFindCount($)
+  if (--count < 0) {
+    $.logger.info('本月已分享')
+    return
+  }
+
+  let _count = 21 - count
+  await shareFind($)
+  await $.sleep(1000)
+  await receive($)
+  await $.sleep(1000)
+  const { records } = await getCloudRecord($)
+  const recordFirst = records?.find((record) => record.mark === 'fxnrplus5')
+  if (recordFirst) {
+    while (--count > 0) {
+      _count++
+      $.logger.debug('邀请好友')
+      await shareFind($)
+      await $.sleep(2000)
+    }
+    await receive($)
+    const { records } = await getCloudRecord($)
+    if (records?.filter((record) => record.mark === 'fxnrplus5').length > 6) {
+      $.logger.info('完成')
+    } else {
+      $.logger.error('未知情况，无法完成（或已完成），今日跳过')
+    }
+  } else {
+    $.logger.error('未知情况，无法完成（或已完成），本次跳过')
+    _count += 10
+  }
+  $.localStorage.shareFind = {
+    lastUpdate: new Date().getTime(),
+    count: _count,
+  }
+}
+
 async function openBlindbox($: M) {
   try {
     const { code, msg, result } = await $.api.openBlindbox()
@@ -422,7 +555,8 @@ export async function run($: M) {
     monthTaskOnMail,
     dailyTask,
     hotTask,
-    blindboxTask,
+    shareFindTask,
+    // blindboxTask,
     receive,
   ]
 

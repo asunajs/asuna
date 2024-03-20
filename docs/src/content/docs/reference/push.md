@@ -100,7 +100,7 @@ export interface WorkWeixinBot {
 
 ```typescript
 export interface ServerChan {
-  toekn: string;
+  token: string;
   [x: string]: any;
 }
 ```

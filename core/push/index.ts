@@ -108,7 +108,7 @@ export async function serverChan(
     },
     data: {
       text: title,
-      desp: text,
+      desp: text.replaceAll('\n', '\n\n'),
       ...option,
     },
   })

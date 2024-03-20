@@ -4,7 +4,12 @@ import {
   refreshToken,
   run as runCore,
 } from '@asign/alipan-core'
-import { type LoggerPushData, createLogger, sleep } from '@asunajs/utils'
+import {
+  type LoggerPushData,
+  createLogger,
+  sleep,
+  pushMessage,
+} from '@asunajs/utils'
 import { randomHex } from '@asign/utils-pure'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
@@ -111,25 +116,10 @@ export async function run(inputPath?: string) {
     }
   }
 
-  if (pushData.length && config.message) {
-    if (
-      config.message.onlyError &&
-      !pushData.some((el) => el.type === 'error')
-    ) {
-      return
-    }
-    const msg = pushData
-      .map((m) => `[${m.type} ${m.date.toLocaleTimeString()}]${m.msg}`)
-      .join('\n')
-    msg &&
-      (await sendNotify(
-        {
-          logger: await createLogger(),
-          http: { fetch: (op: any) => createRequest().request(op) },
-        },
-        config.message,
-        'asign 运行推送',
-        msg,
-      ))
-  }
+  await pushMessage({
+    pushData,
+    message: config.message,
+    sendNotify,
+    createRequest,
+  })
 }

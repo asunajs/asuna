@@ -83,6 +83,7 @@ export async function main(index, config: Config, option?) {
     config: config as any,
     gardenApi: createGardenApi(http),
     store: {},
+    localStorage: {},
   }
 
   jwtToken = await getJwtToken($)

@@ -18,6 +18,14 @@ export interface M {
     files?: string[]
     [key: string]: any
   }
+  localStorage: {
+    shareFind?: {
+      /** 最后更新时间 */
+      lastUpdate: number
+      /** 完成次数 */
+      count: number
+    }
+  }
 }
 
 export interface BaseType<T = any> {
@@ -381,4 +389,27 @@ export type BlindboxUser = BaseType<{
   /** 中国移动？1 为是 */
   isChinaMobile: 1 | 2
   isNewUser: 1
+}>
+
+export type CloudRecord = BaseType<{
+  current: number
+  total: number
+  pages: number
+  canExchangeText: any[]
+  optimizeCountSql: boolean
+  size: number
+  records: {
+    summary: string
+    inserttime: string
+    marketname: string
+    hasBak: number
+    num: number
+    id: number
+    receiveStatus: number
+    type: string
+    updatetime: string
+    mark: string
+  }[]
+  searchCount: boolean
+  orders: any[]
 }>
