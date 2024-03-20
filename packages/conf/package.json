@@ -20,16 +20,19 @@
     "access": "public",
     "exports": {
       ".": {
-        "import": "./index.js",
+        "import": "./index.mjs",
         "require": "./index.cjs"
       }
     },
     "main": "index.cjs",
-    "module": "index.js",
+    "module": "index.mjs",
     "registry": "https://registry.npmjs.org/"
   },
+  "dependencies": {
+    "@asunajs/utils": "workspace:^"
+  },
   "devDependencies": {
-    "@asunajs/utils": "workspace:^",
+    "@asign/build": "workspace:^",
     "defu": "^6.1.4",
     "jiti": "^1.21.0",
     "magicast": "^0.3.3",

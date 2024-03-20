@@ -12,6 +12,7 @@ import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { type NormalizedOptions, createRequest } from '@catlair/node-got'
 import { CookieJar } from 'tough-cookie'
+import { getAuthInfo } from '@asign/utils-pure'
 
 export type Config = {
   token?: string
@@ -19,33 +20,17 @@ export type Config = {
 }
 export type Option = { pushData?: LoggerPushData[] }
 
-function getAuthInfo(basicToken: string) {
-  basicToken = basicToken.replace('Basic ', '')
-
-  const rawToken = Buffer.from(basicToken, 'base64').toString('utf-8')
-  const [platform, phone, authToken] = rawToken.split(':')
-
-  return {
-    phone,
-    authToken,
-    basicToken,
-    platform,
-  }
-}
-
 export async function main(config: any, option?: Option) {
   const logger = await createLogger({ pushData: option?.pushData })
-  const { phone, authToken, basicToken, platform } = getAuthInfo(config.auth)
+  config = {
+    ...config,
+    ...getAuthInfo(config.auth),
+  }
 
-  if (phone.length !== 11 || !phone.startsWith('1')) {
+  if (config.phone.length !== 11 || !config.phone.startsWith('1')) {
     logger.info(`auth 格式解析错误，请查看是否填写正确的 auth`)
     return
   }
-
-  config.phone = phone
-  config.auth = `Basic ${basicToken}`
-  config.token = authToken
-  config.platform = platform
 
   const cookieJar = new CookieJar()
   const baseUA =

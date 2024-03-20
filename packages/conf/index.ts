@@ -60,7 +60,8 @@ export function parseConfig<T = any>(path: string): T {
     case '.mts':
     case '.cjs':
     case '.cts':
-      return parseJavaScript<{ default: T }>(path)?.default
+      const config = parseJavaScript(path)
+      return config?.default || config
     case '.yaml':
     case '.yml':
       return parseYAML(readFileSync(path, 'utf8'))

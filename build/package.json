@@ -2,14 +2,13 @@
   "name": "@asign/build",
   "version": "0.0.1",
   "description": "",
-  "main": "./index.ts",
+  "main": "index.ts",
   "exports": {
     ".": {
-      "import": "./index.ts",
-      "types": "./index.d.ts"
+      "import": "./index.ts"
     },
     "./tsup": {
-      "import": "./tsup.ts",
+      "import": "./tsup.js",
       "types": "./tsup.d.ts"
     }
   },

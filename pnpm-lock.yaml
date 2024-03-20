@@ -98,6 +98,9 @@ importers:
       '@asign/caiyun-core':
         specifier: workspace:^
         version: link:../../core/caiyun
+      '@asign/utils-pure':
+        specifier: workspace:^
+        version: link:../../packages/utils-pure
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../../packages/utils
@@ -181,10 +184,14 @@ importers:
         version: 5.4.2
 
   packages/conf:
-    devDependencies:
+    dependencies:
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../utils
+    devDependencies:
+      '@asign/build':
+        specifier: workspace:^
+        version: link:../../build
       defu:
         specifier: ^6.1.4
         version: 6.1.4
