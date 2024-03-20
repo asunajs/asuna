@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/conf",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "配置读取",
   "exports": {
     ".": {

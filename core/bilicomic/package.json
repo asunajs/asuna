@@ -4,9 +4,16 @@
   "type": "module",
   "description": "",
   "main": "index.ts",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "scripts": {},
-  "keywords": ["sign", "airscript", "wps", "bilicomic"],
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "bilicomic"
+  ],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {

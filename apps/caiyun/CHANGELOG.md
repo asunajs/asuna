@@ -1,5 +1,16 @@
 # @asunajs/caiyun
 
+## 0.1.2
+
+### Patch Changes
+
+- [`13c982d`](https://github.com/asunajs/asign/commit/13c982d6931e04cbeb84516202f532d845eae684) Thanks [@catlair](https://github.com/catlair)! - feat(caiyun): 分享获取云朵
+
+  feat(caiyun): hc1T
+
+- Updated dependencies [[`13c982d`](https://github.com/asunajs/asign/commit/13c982d6931e04cbeb84516202f532d845eae684)]:
+  - @asunajs/conf@0.0.4
+
 ## 0.1.1
 
 ### Patch Changes
