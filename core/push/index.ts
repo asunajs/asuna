@@ -1,13 +1,4 @@
-import type {
-  ApiData,
-  ApiOptions,
-  Bark,
-  Method,
-  TgBot,
-  TwoIm,
-  WorkWeixin,
-  WorkWeixinBot,
-} from './types.js'
+import type { ApiData, ApiOptions, Bark, Method, TgBot, TwoIm, WorkWeixin, WorkWeixinBot } from './types.js'
 
 export * from './types.js'
 
@@ -49,8 +40,8 @@ export async function customPost(
   try {
     if (!apiTemplate || !apiTemplate.url) return
     const { data, timeout, headers } = apiTemplate
-    const method: Method = (apiTemplate.method.toUpperCase() ||
-      'POST') as Method
+    const method: Method = (apiTemplate.method.toUpperCase()
+      || 'POST') as Method
     const options: any = {
       method: method,
       timeout,
@@ -115,7 +106,6 @@ export async function serverChan(
 }
 
 /**
- *
  * @description https://developer.work.weixin.qq.com/document/path/90665#corpid
  */
 export async function workWeixin(
@@ -163,7 +153,6 @@ export async function workWeixin(
 }
 
 /**
- *
  * @description https://open.work.weixin.qq.com/help2/pc/14931
  */
 export async function workWeixinBot(

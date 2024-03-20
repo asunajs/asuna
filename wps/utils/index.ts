@@ -1,11 +1,4 @@
-import {
-  type ApiOptions,
-  type Email,
-  pushplus,
-  serverChan,
-  workWeixin,
-  workWeixinBot,
-} from '@asign/push-core'
+import { type ApiOptions, type Email, pushplus, serverChan, workWeixin, workWeixinBot } from '@asign/push-core'
 import { createLogger } from '@asign/utils-pure'
 
 function getCookieJSON(cookie: string) {
@@ -200,15 +193,15 @@ export function sendWpsNotify(pushData: any[], pushConfig: any) {
       const msg = pushData
         .map((m) => `[${m.type} ${m.date.toLocaleTimeString()}]${m.msg}`)
         .join('\n')
-      msg &&
-        sendNotify(
+      msg
+        && sendNotify(
           {
             logger: createLogger(),
             http: {
               fetch: (op: any) => {
-                op.data &&
-                  typeof op.data !== 'string' &&
-                  (op.body = JSON.stringify(op.data))
+                op.data
+                  && typeof op.data !== 'string'
+                  && (op.body = JSON.stringify(op.data))
                 return HTTP.fetch(op.url, op).json()
               },
             },

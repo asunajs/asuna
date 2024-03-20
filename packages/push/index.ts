@@ -12,7 +12,7 @@ export async function email(
   try {
     if (!email || !email.pass || !email.from || !email.host) return
 
-    //@ts-ignore
+    // @ts-ignore
     const { createTransport } = await import('nodemailer')
     const port: number = Number(email.port) || 465
     const transporter = createTransport({

@@ -1,25 +1,21 @@
 export interface Untyped {
   /**
    * cookie authorization 字段
-   *
    */
   token: string
 
   /**
    * 手机号
-   *
    */
   phone: string
 
   /**
    * auth_token
-   *
    */
   auth: string
 
   /**
    * 摇一摇配置
-   *
    */
   shake: {
     /**
@@ -46,7 +42,6 @@ export interface Untyped {
 
   /**
    * 果园配置
-   *
    */
   garden: {
     /**

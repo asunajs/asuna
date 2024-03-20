@@ -2,13 +2,13 @@ export * from './js.js'
 export * from './object.js'
 export * from './yaml.js'
 
+import { setIn } from '@asunajs/utils'
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, extname, join } from 'path'
+import { fileURLToPath } from 'url'
 import { parseJavaScript, setInJavaScript } from './js.js'
 import { parseObject, setInObject } from './object.js'
 import { parseYAML, setInYAML } from './yaml.js'
-import { fileURLToPath } from 'url'
-import { setIn } from '@asunajs/utils'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

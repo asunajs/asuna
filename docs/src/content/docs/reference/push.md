@@ -43,11 +43,11 @@ sidebar:
 
 ```typescript
 export interface Email {
-  pass: string;
-  from: string;
-  port?: number;
-  host: string;
-  to?: string;
+  pass: string
+  from: string
+  port?: number
+  host: string
+  to?: string
 }
 ```
 
@@ -57,13 +57,13 @@ export interface Email {
 
 ```typescript
 export interface TgBot {
-  apiHost?: string;
-  token: string;
-  chat_id: string | number;
-  disable_web_page_preview?: boolean;
-  proxy?: string;
-  agent?: any;
-  [x: string]: any;
+  apiHost?: string
+  token: string
+  chat_id: string | number
+  disable_web_page_preview?: boolean
+  proxy?: string
+  agent?: any
+  [x: string]: any
 }
 ```
 
@@ -73,12 +73,12 @@ export interface TgBot {
 
 ```typescript
 export interface WorkWeixin {
-  msgtype: 'text' | 'markdown' | 'textcard' | 'mpnews';
-  touser: string;
-  agentid: number;
-  corpsecret: string;
-  corpid: string;
-  [x: string]: any;
+  msgtype: 'text' | 'markdown' | 'textcard' | 'mpnews'
+  touser: string
+  agentid: number
+  corpsecret: string
+  corpid: string
+  [x: string]: any
 }
 ```
 
@@ -88,9 +88,9 @@ export interface WorkWeixin {
 
 ```typescript
 export interface WorkWeixinBot {
-  url: string;
-  msgtype: 'text' | 'markdown';
-  [x: string]: any;
+  url: string
+  msgtype: 'text' | 'markdown'
+  [x: string]: any
 }
 ```
 
@@ -100,8 +100,8 @@ export interface WorkWeixinBot {
 
 ```typescript
 export interface ServerChan {
-  token: string;
-  [x: string]: any;
+  token: string
+  [x: string]: any
 }
 ```
 
@@ -111,7 +111,7 @@ export interface ServerChan {
 
 ```typescript
 export interface PushPlus {
-  token: string;
-  [x: string]: any;
+  token: string
+  [x: string]: any
 }
 ```

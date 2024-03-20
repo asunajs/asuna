@@ -1,5 +1,4 @@
 /**
- *
  * @param length 长度
  * @param part 当长度为数组时，填充
  * @returns

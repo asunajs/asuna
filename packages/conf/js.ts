@@ -1,8 +1,8 @@
-import { readFileSync, writeFileSync } from 'fs'
-import { dirname, resolve } from 'path'
 import { setIn } from '@asunajs/utils'
+import { readFileSync, writeFileSync } from 'fs'
 import createJITI from 'jiti'
 import { generateCode, loadFile, parseModule, writeFile } from 'magicast'
+import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
 export function parseJavaScript<T = any>(path: string): T {

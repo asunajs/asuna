@@ -15,43 +15,41 @@ npm install @asunajs/alipan
 使用 cjs
 
 ```js
-const { run } = require('@asunajs/alipan');
-
-(async () => {
-  await run();
-})();
+const { run } = require('@asunajs/alipan')
+;(async () => {
+  await run()
+})()
 ```
 
 使用 esm
 
 ```js
-import { run } from '@asunajs/alipan';
+import { run } from '@asunajs/alipan'
 
-await run();
+await run()
 ```
 
 在阿里云函数中使用，其他环境请自行摸索
 
 ```js
-const { run } = require('@asunajs/alipan');
+const { run } = require('@asunajs/alipan')
 
-exports.handler = async function (event, context, callback) {
-  callback(null, await run());
-};
+exports.handler = async function(event, context, callback) {
+  callback(null, await run())
+}
 ```
 
 在青龙面板中使用
 
 ```js
-const { run } = require('@asunajs/alipan');
-const { resolve } = require('path');
-
-(async () => {
-  await run(resolve(process.cwd(), './asign.json')); // 按需修改路径
+const { run } = require('@asunajs/alipan')
+const { resolve } = require('path')
+;(async () => {
+  await run(resolve(process.cwd(), './asign.json')) // 按需修改路径
 
   // 或者默认路径
   // await run();
-})();
+})()
 ```
 
 ## 配置文件

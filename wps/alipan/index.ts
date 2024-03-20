@@ -1,4 +1,4 @@
-import { M, createApi, refreshToken, run } from '@asign/alipan-core'
+import { createApi, M, refreshToken, run } from '@asign/alipan-core'
 import { createLogger } from '@asign/utils-pure'
 import { createRequest, getPushConfig, sendWpsNotify } from '@asign/wps-utils'
 
@@ -20,13 +20,13 @@ async function main(index, ASIGN_ALIPAN_TOKEN, option?) {
   function getHeaders() {
     return {
       'content-type': 'application/json;charset=UTF-8',
-      referer: 'https://alipan.com/',
-      origin: 'https://alipan.com/',
+      'referer': 'https://alipan.com/',
+      'origin': 'https://alipan.com/',
       'x-canary': 'client=Android,app=adrive,version=v5.3.0',
       'user-agent':
         'AliApp(AYSD/5.3.0) com.alicloud.databox/34760760 Channel/36176727979800@rimet_android_5.3.0 language/zh-CN /Android Mobile/Mi 6X',
       'x-device-id': DATA.deviceId,
-      authorization: accessToken ? `Bearer ${accessToken}` : '',
+      'authorization': accessToken ? `Bearer ${accessToken}` : '',
       'x-signature': getXSignature(),
     }
   }
@@ -47,8 +47,7 @@ async function main(index, ASIGN_ALIPAN_TOKEN, option?) {
   $.logger.info(`你好${rtData.nick_name || rtData.user_name}`)
 
   ActiveSheet.Columns('A').Rows(index).Value = rtData.refresh_token
-  ActiveSheet.Columns('B').Rows(index).Value =
-    rtData.nick_name || rtData.user_name
+  ActiveSheet.Columns('B').Rows(index).Value = rtData.nick_name || rtData.user_name
 
   run($)
 

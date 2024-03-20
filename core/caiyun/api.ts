@@ -1,25 +1,25 @@
-import type { TaskList } from './TaskType.js'
 import type { Http } from '@asign/types'
+import { hashCode } from '@asign/utils-pure'
+import type { TaskList } from './TaskType.js'
 import type {
-  QuerySpecToken,
-  SignInInfo,
-  TyrzLogin,
+  BatchList,
+  BlindboxInfo,
+  BlindboxUser,
+  CloudRecord,
+  CreateBatchOprTask,
+  DiskResult,
   DrawInfoInWx,
   DrawInWx,
-  SignInfoInWx,
-  DiskResult,
-  BatchList,
-  PcUploadFile,
   NoteBooks,
-  CreateBatchOprTask,
-  Orchestration,
-  Shake,
   OpenBlindbox,
-  BlindboxUser,
-  BlindboxInfo,
-  CloudRecord,
+  Orchestration,
+  PcUploadFile,
+  QuerySpecToken,
+  Shake,
+  SignInfoInWx,
+  SignInInfo,
+  TyrzLogin,
 } from './types.js'
-import { hashCode } from '@asign/utils-pure'
 
 export * from './gardenApi.js'
 
@@ -39,8 +39,8 @@ export function createApi(http: Http) {
         },
         {
           headers: {
-            referer: 'https://yun.139.com/w/',
-            accept: 'application/json, text/plain, */*',
+            'referer': 'https://yun.139.com/w/',
+            'accept': 'application/json, text/plain, */*',
             'content-type': 'application/json;charset=UTF-8',
             'accept-language': 'zh-CN,zh;q=0.9',
           },
@@ -53,7 +53,7 @@ export function createApi(http: Http) {
         `<?xml version="1.0" encoding="utf-8"?><root><token>${token}</token><account>${account}</account><clienttype>656</clienttype></root>`,
         {
           headers: {
-            accept: '*/*',
+            'accept': '*/*',
             'content-type': 'application/json; charset=utf-8',
           },
           responseType: 'text',
@@ -385,9 +385,9 @@ export function createApi(http: Http) {
         {},
         {
           headers: {
-            accept: 'application/json',
+            'accept': 'application/json',
             'x-requested-with': 'cn.cj.pe',
-            referer: 'https://caiyun.feixin.10086.cn/',
+            'referer': 'https://caiyun.feixin.10086.cn/',
           },
         },
       )
@@ -399,7 +399,7 @@ export function createApi(http: Http) {
         {
           headers: {
             'content-type': 'application/x-www-form-urlencoded',
-            platform: 'h5',
+            'platform': 'h5',
           },
         },
       )

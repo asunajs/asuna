@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsup'
 import { appDefuConfig } from '@asign/build/tsup'
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
   ...appDefuConfig,

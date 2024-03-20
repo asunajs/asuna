@@ -15,40 +15,38 @@ npm install @asunajs/caiyun
 使用 cjs
 
 ```js
-const { run } = require('@asunajs/caiyun');
-
-(async () => {
-  await run();
-})();
+const { run } = require('@asunajs/caiyun')
+;(async () => {
+  await run()
+})()
 ```
 
 使用 esm
 
 ```js
-import { run } from '@asunajs/caiyun';
+import { run } from '@asunajs/caiyun'
 
-await run();
+await run()
 ```
 
 在阿里云函数中使用，其他环境请自行摸索
 
 ```js
-const { run } = require('@asunajs/caiyun');
+const { run } = require('@asunajs/caiyun')
 
-exports.handler = async function (event, context, callback) {
-  callback(null, await run());
-};
+exports.handler = async function(event, context, callback) {
+  callback(null, await run())
+}
 ```
 
 在青龙面板中使用
 
 ```js
-const { run } = require('@asunajs/caiyun');
-const { resolve } = require('path');
-
-(async () => {
-  await run(resolve(process.cwd(), './asign.json')); // 按需修改路径
-})();
+const { run } = require('@asunajs/caiyun')
+const { resolve } = require('path')
+;(async () => {
+  await run(resolve(process.cwd(), './asign.json')) // 按需修改路径
+})()
 ```
 
 ## 配置文件

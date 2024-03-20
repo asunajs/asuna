@@ -2,9 +2,9 @@ import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
 import type { M } from './types.js'
 
-export * from './types.js'
 export * from './api.js'
 export * from './config.d.js'
+export * from './types.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,
@@ -251,8 +251,7 @@ async function dailyTask($: M) {
     const { day } = await request($, $.api.getTaskList, '获取任务列表')
     if (!day || !day.length) return
     for (const taskItem of day) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH')
-        $.logger.info(`完成：${taskItem.name}`)
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.info(`完成：${taskItem.name}`)
     }
   }
 }
@@ -287,8 +286,8 @@ async function hotTask($: M) {
     if (taskItem.state === 'FINISH' || taskItem.enable !== 1) continue
     if (!taskIds.includes(taskItem.id)) continue
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
-      ;(await taskFuncList[taskItem.id]?.($)) &&
-        $.logger.info(`完成：${taskItem.name}`)
+      ;(await taskFuncList[taskItem.id]?.($))
+        && $.logger.info(`完成：${taskItem.name}`)
     }
   }
 }
@@ -304,8 +303,7 @@ async function monthTaskOnMail($: M) {
   const doingList: number[] = []
 
   for (const taskItem of month) {
-    if (![1008, 1009, 1010, 1013, 1014, 1016, 1017].includes(taskItem.id))
-      continue
+    if (![1008, 1009, 1010, 1013, 1014, 1016, 1017].includes(taskItem.id)) continue
     if (taskItem.state === 'FINISH') continue
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
       doingList.push(taskItem.id)
@@ -321,8 +319,7 @@ async function monthTaskOnMail($: M) {
     )
     if (!month) return
     for (const taskItem of month) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH')
-        $.logger.info(`完成：${taskItem.name}`)
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.info(`完成：${taskItem.name}`)
     }
   }
 }
@@ -336,8 +333,7 @@ async function shake($: M) {
   if (shakeRecommend) {
     return $.logger.debug(shakeRecommend.explain || shakeRecommend.img)
   }
-  if (shakePrizeconfig)
-    return $.logger.info(shakePrizeconfig.title + shakePrizeconfig.name)
+  if (shakePrizeconfig) return $.logger.info(shakePrizeconfig.title + shakePrizeconfig.name)
 }
 
 async function shakeTask($: M) {
@@ -394,9 +390,11 @@ async function shareFind($: M) {
       source: 'content-open',
       urlPath: '',
       IP: '',
-      url: `https://h.139.com/content/discoverNewVersion?columnId=20&token=STuid00000${Date.now()}${randomHex(
-        20,
-      )}&targetSourceId=001005`,
+      url: `https://h.139.com/content/discoverNewVersion?columnId=20&token=STuid00000${Date.now()}${
+        randomHex(
+          20,
+        )
+      }&targetSourceId=001005`,
       elementName: '',
       browser: 'Chrome WebView',
       elementTargetUrl: '',
@@ -432,8 +430,7 @@ function getShareFindCount($: M) {
     return 20
   }
   const { lastUpdate, count } = $.localStorage.shareFind
-  const isCurrentMonth =
-    new Date().getMonth() === new Date(lastUpdate).getMonth()
+  const isCurrentMonth = new Date().getMonth() === new Date(lastUpdate).getMonth()
   return isCurrentMonth ? 20 - count : 20
 }
 

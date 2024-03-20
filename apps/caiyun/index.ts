@@ -1,25 +1,18 @@
 import {
-  type M,
   createApi,
   createGardenApi,
-  getJwtToken,
-  run as runCore,
-  getOldConfig,
   createNewAuth,
+  getJwtToken,
+  getOldConfig,
+  type M,
+  run as runCore,
 } from '@asign/caiyun-core'
-import {
-  type LoggerPushData,
-  createLogger,
-  sleep,
-  getLocalStorage,
-  setLocalStorage,
-  pushMessage,
-} from '@asunajs/utils'
+import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
-import { type NormalizedOptions, createRequest } from '@catlair/node-got'
+import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
+import { createRequest, type NormalizedOptions } from '@catlair/node-got'
 import { CookieJar } from 'tough-cookie'
-import { getAuthInfo } from '@asign/utils-pure'
 
 export type Config = {
   token?: string
@@ -72,7 +65,7 @@ export async function main(
     headers: {
       'user-agent': DATA.baseUA,
       'x-requested-with': DATA.mcloudRequested,
-      charset: 'utf-8',
+      'charset': 'utf-8',
       'content-type': 'application/json;charset=UTF-8',
     },
   })

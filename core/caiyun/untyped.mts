@@ -1,11 +1,5 @@
 import { writeFileSync } from 'fs'
-import {
-  resolveSchema,
-  defineUntypedSchema,
-  generateTypes,
-  type Schema,
-  applyDefaults,
-} from 'untyped'
+import { applyDefaults, defineUntypedSchema, generateTypes, resolveSchema, type Schema } from 'untyped'
 
 const defaultPlanet = defineUntypedSchema({
   $schema: {

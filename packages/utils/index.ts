@@ -57,8 +57,7 @@ export function readJsonFile(path: string) {
  */
 export function getConfig(name: string) {
   const resolveCwd = (str: string) => path.resolve(process.cwd(), str)
-  const resolveDir = (str: string) =>
-    path.resolve(dirname(fileURLToPath(import.meta.url)), str)
+  const resolveDir = (str: string) => path.resolve(dirname(fileURLToPath(import.meta.url)), str)
   const configPath = Array.from(
     new Set<string>([
       resolveCwd(name + '5'),
@@ -128,8 +127,8 @@ export async function pushMessage({
       .filter((el) => el.level < 4)
       .map((m) => `[${m.type} ${m.date.toLocaleTimeString()}]${m.msg}`)
       .join('\n')
-    msg &&
-      (await sendNotify(
+    msg
+      && (await sendNotify(
         {
           logger: await createLogger(),
           http: { fetch: (op: any) => createRequest().request(op) },

@@ -1,8 +1,8 @@
 import { randomHex } from '@asign/utils-pure'
 import type { DeviceRoom, M } from './types.js'
 
-export * from './types.js'
 export * from './api.js'
+export * from './types.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,
@@ -131,8 +131,8 @@ async function deviceRoomListHandle(deviceRooms: DeviceRoom['items']) {
 
   for (const { canCollectEnergy, id, gmtCollectEnergy } of deviceRooms) {
     if (
-      !canCollectEnergy &&
-      new Date(gmtCollectEnergy).getDate() !== new Date().getDate()
+      !canCollectEnergy
+      && new Date(gmtCollectEnergy).getDate() !== new Date().getDate()
     ) {
       nofinishDevices.add(id)
     } else if (canCollectEnergy) {
@@ -207,7 +207,6 @@ async function deviceRoomTask($: M) {
   await deleteFiles($, needDeleteFiles, driveId)
 
   /**
-   *
    * @returns 是否继续运行
    */
   async function _deviceRoomTask() {
@@ -222,8 +221,7 @@ async function deviceRoomTask($: M) {
       return false
     }
 
-    const { nofinishDevices, rewardEnergys, okNum } =
-      await deviceRoomListHandle(items)
+    const { nofinishDevices, rewardEnergys, okNum } = await deviceRoomListHandle(items)
 
     if (okNum >= 5) {
       return false
@@ -306,8 +304,8 @@ async function signInTask($: M) {
   if (
     rewards.find(
       ({ type, status }) =>
-        type === 'dailyTask' &&
-        (status === 'verification' || status === 'finished'),
+        type === 'dailyTask'
+        && (status === 'verification' || status === 'finished'),
     )
   ) {
     return

@@ -1,12 +1,6 @@
-import type { InitTree, TaskList } from './GardenType.js'
 import type { Http } from '@asign/types'
-import type {
-  CartoonResult,
-  GivenTask,
-  SignIn,
-  SignInfo,
-  TaskResult,
-} from './GardenType.js'
+import type { InitTree, TaskList } from './GardenType.js'
+import type { CartoonResult, GivenTask, SignIn, SignInfo, TaskResult } from './GardenType.js'
 
 export type CartoonType = 'color' | 'cloud' | 'widget' | 'mail'
 
