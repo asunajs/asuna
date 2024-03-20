@@ -86,12 +86,16 @@ export function createRequest({
     return options.native ? resp : resp[options.responseType || 'json']?.()
   }
   const post = (url: string, data: any, options: any) => {
-    const resp = HTTP.post(url, JSON.stringify(data), {
-      headers: {
-        ...getHeaders(url),
-        ...(options && options.headers),
+    const resp = HTTP.post(
+      url,
+      typeof data === 'string' ? data : JSON.stringify(data),
+      {
+        headers: {
+          ...getHeaders(url),
+          ...(options && options.headers),
+        },
       },
-    })
+    )
     cookieJar && cookieJar.setCookie(resp.headers['set-cookie'])
     if (!options) return resp.json()
     return options.native ? resp : resp[options.responseType || 'json']?.()
