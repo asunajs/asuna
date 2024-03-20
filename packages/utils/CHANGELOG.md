@@ -1,5 +1,13 @@
 # @asunajs/utils
 
+## 0.0.2
+
+### Patch Changes
+
+- [`13c982d`](https://github.com/asunajs/asign/commit/13c982d6931e04cbeb84516202f532d845eae684) Thanks [@catlair](https://github.com/catlair)! - feat: add localStorage
+
+  chore: pushMessage
+
 ## 0.0.1
 
 ### Patch Changes

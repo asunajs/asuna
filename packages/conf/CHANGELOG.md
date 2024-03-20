@@ -1,5 +1,14 @@
 # @asunajs/conf
 
+## 0.0.4
+
+### Patch Changes
+
+- [`13c982d`](https://github.com/asunajs/asign/commit/13c982d6931e04cbeb84516202f532d845eae684) Thanks [@catlair](https://github.com/catlair)! - fix(conf): esm not require
+
+- Updated dependencies [[`13c982d`](https://github.com/asunajs/asign/commit/13c982d6931e04cbeb84516202f532d845eae684)]:
+  - @asunajs/utils@0.0.2
+
 ## 0.0.3
 
 ### Patch Changes

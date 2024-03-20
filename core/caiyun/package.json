@@ -4,11 +4,19 @@
   "description": "",
   "main": "index.ts",
   "type": "module",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "schema": "tsx untyped.mts"
   },
-  "keywords": ["sign", "airscript", "wps", "caiyun", "10086"],
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "caiyun",
+    "10086"
+  ],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
