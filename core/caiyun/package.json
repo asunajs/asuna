@@ -8,7 +8,7 @@
     "index.js"
   ],
   "scripts": {
-    "schema": "tsx untyped.mts"
+    "schema": "tsx typed.ts"
   },
   "keywords": [
     "sign",
@@ -20,9 +20,9 @@
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
-    "@asunajs/utils": "workspace:^",
     "@asign/utils-pure": "workspace:^",
-    "untyped": "^1.4.2"
+    "@asunajs/utils": "workspace:^"
   }
 }

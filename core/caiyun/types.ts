@@ -1,12 +1,15 @@
 import type { LoggerType } from '@asunajs/utils'
 import type { ApiType, GardenApiType } from './api.js'
-import { Untyped as Config } from './config.js'
+import { Caiyun } from './options.d.js'
 
 export interface M {
   api: ApiType
   gardenApi?: GardenApiType
   logger: LoggerType
-  config: Config
+  config: Caiyun & {
+    phone: string
+    token: string
+  }
   DATA: {
     baseUA: string
     mailUaEnd: string

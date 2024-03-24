@@ -7,7 +7,9 @@
   "files": [
     "index.js"
   ],
-  "scripts": {},
+  "scripts": {
+    "schema": "tsx typed.ts"
+  },
   "keywords": [
     "sign",
     "airscript",
@@ -17,8 +19,9 @@
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
-    "@asunajs/utils": "workspace:^",
-    "@asign/utils-pure": "workspace:^"
+    "@asign/utils-pure": "workspace:^",
+    "@asunajs/utils": "workspace:^"
   }
 }

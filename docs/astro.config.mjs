@@ -1,3 +1,4 @@
+import { includeMarkdown } from '@asign/remark-plugins'
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 
@@ -23,6 +24,18 @@ export default defineConfig({
           autogenerate: { directory: 'reference' },
         },
       ],
+      editLink: {
+        baseUrl: 'https://github.com/asunajs/asign/edit/dev/docs',
+      },
+      locales: {
+        root: {
+          label: '简体中文',
+          lang: 'zh-CN',
+        },
+      },
     }),
   ],
+  markdown: {
+    remarkPlugins: [includeMarkdown],
+  },
 })

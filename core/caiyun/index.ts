@@ -3,7 +3,6 @@ import { gardenTask } from './garden.js'
 import type { M } from './types.js'
 
 export * from './api.js'
-export * from './config.d.js'
 export * from './types.js'
 
 async function request<T extends (...args: any[]) => any>(
@@ -438,21 +437,22 @@ async function shareFindTask($: M) {
   $.logger.start('------【邀请好友看电影】------')
   $.logger.info('测试中。。。')
   let count = getShareFindCount($)
-  if (--count < 0) {
+  if (count <= 0) {
     $.logger.info('本月已分享')
     return
   }
 
-  let _count = 21 - count
+  let _count = 20 - (--count)
   await shareFind($)
   await $.sleep(1000)
   await receive($)
   await $.sleep(1000)
   const { records } = await getCloudRecord($)
   const recordFirst = records?.find((record) => record.mark === 'fxnrplus5')
-  if (recordFirst) {
-    while (--count > 0) {
+  if (recordFirst && new Date().getTime() - new Date(recordFirst.updatetime).getTime() < 20_000) {
+    while (count > 0) {
       _count++
+      count--
       $.logger.debug('邀请好友')
       await shareFind($)
       await $.sleep(2000)
@@ -482,7 +482,7 @@ async function openBlindbox($: M) {
         return $.logger.info('获得', result.prizeName)
       case 200105:
       case 200106:
-        return $.logger.info(msg)
+        return $.logger.info(code, msg)
       default:
         return $.logger.warn('开盲盒失败', code, msg)
     }
@@ -512,7 +512,7 @@ async function getBlindboxCount($: M) {
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
   $.logger.fail('bug 修复中，跳过')
-  return
+  // return
   try {
     await getBlindboxCount($)
     const { result, code, msg } = await $.api.blindboxUser()

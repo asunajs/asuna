@@ -1,0 +1,46 @@
+{
+  "name": "@asign/typed",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "main": "index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "files": [
+    "index.js"
+  ],
+  "scripts": {},
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "publishConfig": {
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.ts"
+      }
+    },
+    "main": "index.ts",
+    "module": "index.ts"
+  },
+  "devDependencies": {
+    "@anatine/zod-mock": "^3.13.4",
+    "@dprint/formatter": "^0.2.1",
+    "@dprint/json": "^0.19.2",
+    "@dprint/markdown": "^0.16.4",
+    "@dprint/typescript": "^0.89.3",
+    "@faker-js/faker": "^8.4.1",
+    "json-schema-defaults": "^0.4.0",
+    "json-schema-to-typescript": "^13.1.2",
+    "scule": "^1.3.0",
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.22.4"
+  }
+}
