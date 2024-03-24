@@ -18,7 +18,6 @@
   },
   "devDependencies": {
     "@asign/remark-plugins": "workspace:^",
-    "@hashicorp/platform-remark-plugins": "^0.2.1",
     "marked": "^12.0.1"
   }
 }

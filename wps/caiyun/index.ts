@@ -80,7 +80,7 @@ export async function main(index, config: Config, option?) {
 
   await run($)
 
-  // return await createNewAuth($)
+  return await createNewAuth($)
 }
 
 const columnA = ActiveSheet.Columns('A')

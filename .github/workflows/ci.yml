@@ -60,10 +60,10 @@ jobs:
               cp "$d/dist/wps.js" "dist/wps-$dir.js"
             fi
           done
-          for d in packages/*; do
+          for d in apps/*; do
             dir=$(basename $d)
             if test -d "$d/dist"; then
-              cp "$d/dist/index.js" "dist/local-$dir.js"
+              cp "$d/dist/index.cjs" "dist/local-$dir.js"
               echo ";(async () => { await module.exports.run(); })();" >> "dist/local-$dir.js"
             fi
           done
