@@ -74,3 +74,7 @@ export type TaskList = Garden<
     waterNum: number
   }[]
 >
+
+export type Cartoons = Garden<Array<CartoonType>>
+
+export type CartoonType = 'color' | 'cloud' | 'widget' | 'mail'

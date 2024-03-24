@@ -108,6 +108,10 @@ caiyun 的 auth、alipan 的 token 等会自动更新的字段不要使用非字
 
 前面的 JSON5 好像就是一个笑话，因为本来就支持 JavaScript/TypeScript。（推荐 mjs 或 mts）
 
+**推荐使用 esm 的语法，你无需担心主程序使用 cjs 而导致兼容问题，配置采用 [jiti](https://unjs.io/packages/jiti) 实现 ts/js 和 esm/cjs 之间的兼容。**
+
+未来会为 TypeScript 增加类型提示，如果你使用 VScode、IntelliJ IDEA 等支持 ts 的编辑器将会方便很多。
+
 <Tabs>
 
 <TabItem label="asign.config.mjs">
@@ -172,8 +176,6 @@ module.exports = {
   </TabItem>
 
 </Tabs>
-
-PS：采用 [jiti](https://unjs.io/packages/jiti) 实现 ts/esm/cjs 的兼容
 
 ### YAML
 

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "test": "turbo run test",
     "schema": "turbo run schema --cache-dir=.turbo",
     "ci:publish": "pnpm run build && pnpm publish --no-git-checks -F \"@asunajs/*\"",
     "ci:version": "changeset version && pnpm install",

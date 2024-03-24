@@ -36,20 +36,27 @@ cookie authorization 字段
 
 是否开启该功能
 
+#### `digest`
+
+- **类型**: `字符串`
+
+上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务
+
 ### 示例
 
 ```json
 {
   "caiyun": [
     {
-      "auth": "demergo",
+      "auth": "adopto",
       "shake": {
         "enable": false,
-        "num": 3761031685865472,
-        "delay": 2413749625421824
+        "num": 15,
+        "delay": 6791457398587392
       },
       "garden": {
-        "enable": false
+        "enable": true,
+        "digest": "colligoZpaiXTxWFOKSljmsHWDHVceyp"
       }
     }
   ]

@@ -13,7 +13,6 @@ import type {
   NoteBooks,
   OpenBlindbox,
   Orchestration,
-  PcUploadFile,
   QuerySpecToken,
   Shake,
   SignInfoInWx,
@@ -223,36 +222,19 @@ export function createApi(http: Http) {
         },
       )
     },
-    pcUploadFileRequest(
-      account: string | number,
-      parentCatalogID: string,
-      contentSize: number,
-      contentName: string,
-      digest: string,
+    uploadFileRequest(
+      options: UploadXml,
     ) {
-      return http.post<PcUploadFile>(
-        `${yun139Url}/orchestration/personalCloud/uploadAndDownload/v1.0/pcUploadFileRequest`,
+      return http.post<string>(
+        `https://ose.caiyun.feixin.10086.cn/richlifeApp/devapp/IUploadAndDownload`,
+        getUploadXml(options),
         {
-          commonAccountInfo: { account: String(account) },
-          fileCount: 1,
-          totalSize: contentSize,
-          uploadContentList: [
-            {
-              contentName: contentName,
-              contentSize: contentSize,
-              comlexFlag: 0,
-              digest: digest,
-            },
-          ],
-          newCatalogName: '',
-          parentCatalogID: parentCatalogID,
-          operation: 0,
-          path: '',
-          manualRename: 2,
-          autoCreatePath: [],
-          tagID: '',
-          tagType: '',
-          seqNo: '',
+          headers: {
+            // 'hcy-cool-flag': '1',
+            'x-yun-app-channel': '10000023',
+            'x-huawei-channelSrc': '10000023',
+            'Content-Type': 'application/xml; charset=UTF-8',
+          },
         },
       )
     },
@@ -416,3 +398,52 @@ export function createApi(http: Http) {
 }
 
 export type ApiType = ReturnType<typeof createApi>
+
+export interface UploadXml {
+  phone: string
+  manualRename?: number
+  parentCatalogID: string
+  createTime: string
+  digest: string
+  contentName: string
+  contentSize: string | number
+}
+function getUploadXml({
+  phone,
+  manualRename = 2,
+  parentCatalogID,
+  createTime,
+  digest,
+  contentName,
+  contentSize,
+}: UploadXml) {
+  return `<pcUploadFileRequest>
+  <ownerMSISDN>${phone}</ownerMSISDN>
+  <fileCount>1</fileCount>
+  <totalSize>${contentSize}</totalSize>
+  <uploadContentList length="1">
+     <uploadContentInfo>
+        <comlexFlag>0</comlexFlag>
+        <contentDesc><![CDATA[]]></contentDesc>
+        <contentName><![CDATA[${contentName}]]></contentName>
+        <contentSize>${contentSize}</contentSize>
+        <contentTAGList></contentTAGList>
+        <digest>${digest}</digest>
+        <exif>
+           <createTime>${createTime}</createTime>
+        </exif>
+        <fileEtag>0</fileEtag>
+        <fileVersion>0</fileVersion>
+        <updateContentID></updateContentID>
+     </uploadContentInfo>
+  </uploadContentList>
+  <newCatalogName></newCatalogName>
+  <parentCatalogID>${parentCatalogID}</parentCatalogID>
+  <operation>0</operation>
+  <path></path>
+  <manualRename>${manualRename}</manualRename>
+  <autoCreatePath length="0"/>
+  <tagID></tagID>
+  <tagType></tagType>
+</pcUploadFileRequest>`
+}

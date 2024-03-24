@@ -38,7 +38,23 @@ export const cliDefuConfig = defineConfig({
       js: '.js',
     }
   },
-  format: 'iife',
+  format: 'cjs',
   dts: false,
   external: ['./index.js'],
+})
+
+export const qlDefuConfig = defineConfig({
+  ...appDefuConfig,
+  entry: ['cli.ts'],
+  minify: true,
+  outDir: 'out',
+  splitting: false,
+  dts: false,
+  clean: true,
+  format: ['cjs', 'esm'],
+  outExtension({ format }) {
+    return {
+      js: format === 'esm' ? '.ql.mjs' : '.ql.js',
+    }
+  },
 })

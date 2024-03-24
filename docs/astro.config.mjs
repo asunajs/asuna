@@ -23,6 +23,10 @@ export default defineConfig({
           label: '参考',
           autogenerate: { directory: 'reference' },
         },
+        {
+          label: '故障排除',
+          link: '/errors/',
+        },
       ],
       editLink: {
         baseUrl: 'https://github.com/asunajs/asign/edit/dev/docs',

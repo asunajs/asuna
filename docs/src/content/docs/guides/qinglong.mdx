@@ -8,6 +8,8 @@ sidebar:
 :::danger[危险]
 **免责声明：**
 
+青龙面板为本项目低等公民，所有青龙面板相关的问题，都将被放慢处理。
+
 由于青龙本身没有官方文档，且青龙面板各个版本可能存在较大差别，所以本教程仅供参考，本人不对文档的时效性负责。
 
 在代码没有成功运行之前的任何错误（包括但不限于：依赖安装失败或者连接超时；定时未启动；程序更新失败或版本未变更为最新；确认已经安装依赖但程序提示未找到 xxx；使用 cli 参数未成功传递到程序或程序解析参数错误）。本人概不负责，不提供任何帮助，请不要在 Github Issue 中提问。
@@ -21,11 +23,20 @@ sidebar:
 
 ## 拉取代码运行
 
-:::tip[提示]
-该功能处于 todolist 阶段，目前仅支持通过 npm 安装。
+使用参考 [使用 npm 运行](#使用-npm-运行)，该方法除了不用安装 Node 依赖外，其它步骤都相同。
 
-值得注意的是，由于部分依赖较大，打包为单文件代码时可能到达 10M 的大小。
-:::
+不安装依赖那么代码哪里来呢？（想起某人问我，你代码就一行，几十个字符，怎么可能运行起来。npm：？？？）
+
+- npm code：https://www.npmjs.com/package/@asunajs/dist?activeTab=code
+- 指定版本：https://www.npmjs.com/package/@asunajs/dist/v/0.0.1?activeTab=code
+- npm cpode - 淘宝镜像：https://npmmirror.com/package/@asunajs/dist/files?version
+- 指定版本：https://npmmirror.com/package/@asunajs/dist/files/index.d.ts?version=0.0.1
+
+值得注意的是，淘宝镜像可以之间通过名称访问文件，这方便使用青龙直接拉取代码。例如访问 `caiyun.cjs.js` 文件
+
+https://registry.npmmirror.com/@asunajs/dist/0.0.1/files/caiyun.cjs.js
+
+将 `0.0.1` 替换为具体版本号即可，也可以替换为 `latest` 获取最新版本。
 
 ## 使用 npm 运行
 

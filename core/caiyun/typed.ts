@@ -10,6 +10,9 @@ export const config = z.object({
   }).optional().describe('摇一摇配置'),
   garden: z.object({
     enable: z.boolean().default(false).optional().describe('是否开启该功能'),
+    digest: z.string().length(32).optional().describe(
+      '上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务',
+    ),
   }).optional().describe('果园配置'),
 }).describe('中国移动云盘配置')
 

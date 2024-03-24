@@ -1,5 +1,6 @@
 import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
+import { getParentCatalogID, uploadFileRequest } from './service.js'
 import type { M } from './types.js'
 
 export * from './api.js'
@@ -90,9 +91,9 @@ async function signInWx($: M) {
   const info = await signInWxApi($)
   if (!info) return
   if (info.todaySignIn === false) {
-    $.logger.error(`微信签到失败`)
+    $.logger.fail(`微信签到失败`)
     if (info.isFollow === false) {
-      $.logger.info(`当前账号没有绑定微信公众号【中国移动云盘】`)
+      $.logger.fail(`当前账号没有绑定微信公众号【中国移动云盘】`)
       return
     }
   }
@@ -144,26 +145,6 @@ async function clickTask($: M, task: number) {
   return false
 }
 
-async function pcUploadFileRequest($: M, path: string) {
-  try {
-    const { success, message, data } = await $.api.pcUploadFileRequest(
-      $.config.phone,
-      path,
-      0,
-      randomHex(4) + '.png',
-      'd41d8cd98f00b204e9800998ecf8427e',
-    )
-    if (success && data && data.uploadResult) {
-      return data.uploadResult.newContentIDList.map(
-        ({ contentID }) => contentID,
-      )
-    }
-    $.logger.error(`上传文件失败`, message)
-  } catch (error) {
-    $.logger.error(`上传文件异常`, error)
-  }
-}
-
 async function deleteFiles($: M, ids: string[]) {
   try {
     const {
@@ -178,10 +159,6 @@ async function deleteFiles($: M, ids: string[]) {
   }
 }
 
-function getParentCatalogID() {
-  return '00019700101000000001'
-}
-
 async function getNoteAuthToken($: M) {
   try {
     return $.api.getNoteAuthToken($.config.auth, $.config.phone)
@@ -191,13 +168,10 @@ async function getNoteAuthToken($: M) {
 }
 
 async function uploadFileDaily($: M) {
-  /** 106 上传任务 */
-  if (!(await clickTask($, 106))) {
-    $.logger.info(`接收任务失败，跳过上传任务`)
-    return
-  }
-  const contentIDs = await pcUploadFileRequest($, getParentCatalogID())
-  contentIDs && setStoreArray($.store, 'files', contentIDs)
+  await uploadFileRequest($, getParentCatalogID(), {
+    digest: 'D41D8CD98F00B204E9800998ECF8427E',
+    contentSize: 0,
+  })
 }
 
 async function createNoteDaily($: M) {
@@ -320,6 +294,129 @@ async function monthTaskOnMail($: M) {
     for (const taskItem of month) {
       if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
     }
+  }
+}
+
+async function loginPc($: M) {
+  return await refreshToken($)
+}
+
+async function monthTask($: M) {
+  const { month } = await request(
+    $,
+    $.api.getTaskList,
+    '获取任务列表',
+  )
+  if (!month) return
+  const doingList: number[] = []
+  const taskFuncList = { 113: loginPc }
+
+  for (const taskItem of month) {
+    if (![113].includes(taskItem.id)) continue
+    if (taskItem.state === 'FINISH') continue
+    if (await _clickTask($, taskItem.id, taskItem.currstep)) {
+      await taskFuncList[taskItem.id]?.($)
+      doingList.push(taskItem.id)
+    }
+  }
+
+  if (doingList.length) {
+    const { month } = await request(
+      $,
+      $.api.getTaskList,
+      '获取任务列表',
+    )
+    if (!month) return
+    for (const taskItem of month) {
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
+    }
+  }
+}
+
+async function getAppTaskList($: M, marketname: 'sign_in_3' | 'newsign_139mail' = 'sign_in_3') {
+  const { month, day, time, new: new_ } = await request(
+    $,
+    $.api.getTaskList,
+    '获取任务列表',
+    marketname,
+  )
+
+  return [...month, ...day, ...time, ...new_]
+}
+
+async function appTask($: M) {
+  // 邮箱支持的任务列表
+  const emailTaskList = {
+    1008: {
+      name: '去“发现广场”浏览精彩内容',
+      id: 1008,
+      runner: false,
+      group: 'month',
+    },
+    1009: {
+      name: '前往“云盘”查看个人动态',
+      id: 1009,
+      runner: false,
+      group: 'month',
+    },
+    1010: {
+      name: '浏览限免影视大片',
+      id: 1010,
+      runner: false,
+      group: 'month',
+    },
+    1013: {
+      name: '查看“我的附件”',
+      id: 1013,
+      runner: false,
+      group: 'month',
+    },
+    1014: {
+      name: '体验“PDF转换”功能',
+      id: 1014,
+      runner: false,
+      group: 'month',
+    },
+    1016: {
+      name: '体验“云笔记”功能',
+      id: 1016,
+      runner: false,
+      group: 'month',
+    },
+    1017: {
+      name: '登录移动云盘APP云朵中心',
+      id: 1017,
+      runner: false,
+      group: 'month',
+    },
+  }
+
+  // 移动云盘支持的任务列表
+  const cloudTaskList = {
+    113: {
+      name: '使用PC客户端',
+      id: 113,
+      runner: false,
+      groupid: 'month',
+    },
+    106: {
+      name: '手动上传一个文件',
+      id: 106,
+      runner: uploadFileDaily,
+      group: 'day',
+    },
+    107: {
+      name: '创建一篇云笔记',
+      id: 107,
+      runner: createNoteDaily,
+      group: 'day',
+    },
+    434: {
+      name: '分享文件有好礼',
+      id: 434,
+      runner: undefined,
+      group: 'day',
+    },
   }
 }
 
@@ -512,7 +609,7 @@ async function getBlindboxCount($: M) {
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
   $.logger.fail('bug 修复中，跳过')
-  // return
+  return
   try {
     await getBlindboxCount($)
     const { result, code, msg } = await $.api.blindboxUser()
@@ -555,6 +652,7 @@ async function hc1Task($: M) {
     await $.sleep(5000)
     await request($, $.api.finishHecheng1T, '合成芝麻')
     $.logger.success('完成合成芝麻')
+    $.localStorage.hc1T = { lastUpdate: new Date().getTime() }
   } catch (error) {
     $.logger.error('合成芝麻失败', error)
   }
@@ -578,10 +676,11 @@ export async function run($: M) {
     wxDraw,
     monthTaskOnMail,
     dailyTask,
+    monthTask,
     hotTask,
     shareFindTask,
     hc1Task,
-    blindboxTask,
+    // blindboxTask,
     receive,
   ]
 

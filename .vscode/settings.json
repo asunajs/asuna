@@ -19,5 +19,6 @@
   },
   "[toml]": {
     "editor.defaultFormatter": "dprint.dprint"
-  }
+  },
+  "oxc_language_server.configPath": "../eslintrc.json"
 }

@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import crypto, { createCipheriv, createDecipheriv } from 'crypto'
 import fs, { existsSync, readFileSync, writeFileSync } from 'fs'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -37,9 +37,17 @@ export async function createLogger(options?: { pushData: LoggerPushData[] }) {
   })
 }
 
-export function sha256(input: string) {
-  const hash = crypto.createHash('sha256').update(input)
+export function _hash(algorithm: string, input: string) {
+  const hash = crypto.createHash(algorithm).update(input)
   return hash.digest('hex')
+}
+
+export function sha256(input: string) {
+  return _hash('sha256', input)
+}
+
+export function md5(input: string) {
+  return _hash('md5', input)
 }
 
 /**
@@ -67,10 +75,6 @@ export function getConfig(name: string) {
     ]),
   ).find((path) => fs.existsSync(path))
   return configPath ? readJsonFile(configPath) : undefined
-}
-
-export function isObject(value: any) {
-  return value && typeof value === 'object' && !Array.isArray(value)
 }
 
 export type LoggerType = Awaited<ReturnType<typeof createLogger>>
@@ -138,4 +142,46 @@ export async function pushMessage({
         msg,
       ))
   }
+}
+
+function getAlgorithm(keyHex: string) {
+  switch (Buffer.from(keyHex, 'hex').length) {
+    case 16:
+      return 'aes-128-cbc'
+    case 32:
+      return 'aes-256-cbc'
+    default:
+      throw new Error('Invalid key length !!!')
+  }
+}
+
+export function _aesDecrypt(text: string, key: string, iv: string) {
+  const decipher = createDecipheriv(getAlgorithm(key), Buffer.from(key, 'hex'), Buffer.from(iv, 'hex'))
+  return decipher.update(text, 'hex', 'utf-8') + decipher.final('utf-8')
+}
+
+export function _aesEncrypt(text: string, key: string, iv: string) {
+  const cipher = createCipheriv(getAlgorithm(key), Buffer.from(key, 'hex'), Buffer.from(iv, 'hex'))
+  return cipher.update(text, 'utf-8', 'hex') + cipher.final('hex')
+}
+
+/**
+ * 将 caiyun 的响应体解密
+ *
+ * @param text base64 密文
+ */
+export function decryptCaiyun(text: string) {
+  const hexText = Buffer.from(text, 'base64').toString('hex')
+  return _aesDecrypt(hexText.slice(32), '6a43434865714e53624932787262354f', hexText.slice(0, 32))
+}
+
+/**
+ * 将 caiyun 的响应体加密
+ * @param text utf-8 原文
+ *
+ * @returns base64
+ */
+export function encryptCaiyun(text: string) {
+  const iv = crypto.randomBytes(16).toString('hex')
+  return Buffer.from(iv + _aesEncrypt(text, '6a43434865714e53624932787262354f', iv), 'hex').toString('base64')
 }

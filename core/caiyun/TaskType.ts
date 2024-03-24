@@ -1,7 +1,7 @@
 interface ItemBaseType {
   id: number
-  marketname: string
-  groupid: string
+  marketname: 'sign_in_3' | 'newsign_139mail'
+  groupid: 'day' | 'month' | 'new' | string
   enable: number
   name: string
   description: string

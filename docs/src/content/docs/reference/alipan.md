@@ -5,6 +5,10 @@ sidebar:
   order: 2
 ---
 
+## Node.js 依赖名
+
+[`@asunajs/alipan`](https://www.npmjs.com/package/@asunajs/alipan)
+
 ## 使用方法
 
 :::tip[提示]

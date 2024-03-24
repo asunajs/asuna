@@ -9,5 +9,6 @@ declare const tsupDefuConfig:
 
 declare const appDefuConfig: typeof tsupDefuConfig
 declare const cliDefuConfig: tsup.Options
+declare const qlDefuConfig: tsup.Options
 
-export { appDefuConfig, cliDefuConfig, tsupDefuConfig }
+export { appDefuConfig, cliDefuConfig, qlDefuConfig, tsupDefuConfig }

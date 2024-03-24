@@ -31,5 +31,9 @@ export interface Caiyun {
      * 是否开启该功能
      */
     enable?: boolean
+    /**
+     * 上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务
+     */
+    digest?: string
   }
 }

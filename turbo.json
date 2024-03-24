@@ -9,6 +9,7 @@
       "outputs": ["options*"],
       "outputMode": "new-only",
       "inputs": ["core/**/typed.ts"]
-    }
+    },
+    "test": {}
   }
 }

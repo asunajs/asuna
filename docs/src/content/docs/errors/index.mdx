@@ -1,0 +1,71 @@
+---
+title: 错误排插
+description: 错误排插
+---
+
+## Node.js 常见错误
+
+### 无法找到软件包 ‘X’
+
+如果你在启动时看到 `"Cannot find package 'vue'"` 或其他类似警告，这意味着你需要手动安装该包。不是所有的包管理器都会自动为你安装对等依赖。也有可能因为某些原因错误的排除了依赖项或故意为之，但无需担心，只有你拥有一个正常的 Node.js 环境，npm 会帮你的。
+
+例如，使用邮箱推送时 `nodemailer` 并不会主动安装在你的电脑，你需要手动安装
+
+```bash
+npm install nodemailer
+```
+
+如果你使用的青龙，那就应该在 Node 依赖管理中添加该依赖。
+
+### 变量重复定义
+
+例如 `@asunajs/conf@0.0.4` 出现过的 `SyntaxError: Identifier 'require' has already been declared`，当你看到类似的错误时，请第一时间查看文档/Isusse 等，确认是否已经有解决方案，如果没有，请反馈给我。重复定义变量往往是程序本身出现了问题，如果你对 Node.js 不了解，是解决不了的。
+
+## WPS 运行错误
+
+### JSON 循环引用
+
+`TypeError:Converting circular structure to JSON --> starting at object with constructor 'Object' --- property 'global' closes the circle`
+
+问题不大，你可以忽略它，才怪。
+
+问题确实不大，主要出现在 console.log 打印了一个循环引用的对象时，此时删除这条打印即可
+
+## 运行时错误
+
+### 不能在 undefined 上读取属性
+
+例如：
+
+`Uncaught TypeError: Cannot read properties of undefined (reading 'demo')
+    at <anonymous>:1:3`
+
+通常情况下，这个错误发生在请求时，接收到的返回值并不在预期范围，导致没有处理或错误的处理数据。
+
+很有可能这个错误仅仅只有你遇到，因为它大概率在某种特定条件下触发，所有反馈时请带上你的环境信息，例如：Node.js 版本、操作系统、依赖版本、运行时错误信息、运行时错误堆栈信息、运行时错误代码等。
+
+## 程序已知错误
+
+### caiyun 果园用户登录信息丢失
+
+```
+ ERROR  初始化果园失败 用户登录信息丢失                                                                                                                           6:37:47 PM
+
+ℹ undefined拥有undefined级果树，当前水滴undefined                                                                                                                6:37:47 PM
+
+ ERROR  获取果园签到信息失败 用户登录信息丢失
+```
+
+这个一般是你没有打开过果园，由于没账号测试，所以这个错误不会处理，遇到请手动激活果园
+
+### caiyun 获取邮箱每月任务 500 Internal Server Error
+
+```bash
+ERROR  获取邮箱每月任务 500 Internal Server Error
+```
+
+这个一般是你没有绑定邮箱，由于没账号测试，所以这个错误不会处理，遇到请手动绑定邮箱
+
+### 获取邮箱每月任务 500 Internal Server Error
+
+这个一般邮箱 APP 发送更新，登录邮箱手机 APP 后重试？

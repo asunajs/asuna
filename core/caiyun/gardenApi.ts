@@ -1,8 +1,6 @@
 import type { Http } from '@asign/types'
-import type { InitTree, TaskList } from './GardenType.js'
+import type { Cartoons, CartoonType, InitTree, TaskList } from './GardenType.js'
 import type { CartoonResult, GivenTask, SignIn, SignInfo, TaskResult } from './GardenType.js'
-
-export type CartoonType = 'color' | 'cloud' | 'widget' | 'mail'
 
 export interface ClientTypeHeaders {
   'user-agent'?: string
@@ -67,6 +65,11 @@ export function createGardenApi(http: Http) {
           headers,
         },
       )
+    },
+    getCartoons(headers: ClientTypeHeaders = {}) {
+      return http.get<Cartoons>(`${gardenUrl}/user/gotCartoons.do`, {
+        headers,
+      })
     },
   }
 }

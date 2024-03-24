@@ -1,15 +1,43 @@
 import { asyncForEach } from '@asign/utils-pure'
-import type { CartoonType, ClientTypeHeaders } from './api.js'
-import { TaskList } from './GardenType.js'
+import type { ClientTypeHeaders } from './api.js'
+import type { CartoonType, TaskList } from './GardenType.js'
 import { getSsoTokenApi } from './index.js'
+import { getParentCatalogID, uploadFileRequest } from './service.js'
 import type { M } from './types.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,
   api: T,
+  options: {
+    name: string
+    defu: Awaited<ReturnType<T>>['result']
+  },
+  ...args: Parameters<T>
+): Promise<Awaited<ReturnType<T>>['result']>
+async function request<T extends (...args: any[]) => any>(
+  $: M,
+  api: T,
   name: string,
   ...args: Parameters<T>
+): Promise<Awaited<ReturnType<T>>['result']>
+async function request<T extends (...args: any[]) => any>(
+  $: M,
+  api: T,
+  options: string | {
+    name: string
+    defu: Awaited<ReturnType<T>>['result']
+  },
+  ...args: Parameters<T>
 ): Promise<Awaited<ReturnType<T>>['result']> {
+  let name: string
+  let defu: Awaited<ReturnType<T>>['result']
+  if (typeof options === 'string') {
+    name = options
+    defu = {}
+  } else {
+    name = options.name
+    defu = options.defu
+  }
   try {
     const { success, msg, result } = await api(...args)
     if (!success) {
@@ -20,7 +48,7 @@ async function request<T extends (...args: any[]) => any>(
   } catch (error) {
     $.logger.error(`${name}异常`, error)
   }
-  return {}
+  return defu
 }
 
 async function loginGarden($: M, token: string, phone: string) {
@@ -63,13 +91,11 @@ async function signInGarden($: M) {
   }
 }
 
-async function clickCartoon($: M, cartoonTypes: CartoonType[]) {
-  if (cartoonTypes.length === 0) {
-    cartoonTypes.push('cloud', 'color', 'widget', 'mail')
-  }
+async function clickCartoon($: M) {
+  const cartoonTypes = await request($, $.gardenApi.getCartoons, { name: '获取场景列表', defu: [] })
 
   await asyncForEach(
-    cartoonTypes,
+    (['cloud', 'color', 'widget', 'mail'] as const).filter(cart => !cartoonTypes.includes(cart)),
     async (cartoonType) => {
       const { msg, code } = await request(
         $,
@@ -88,23 +114,21 @@ async function clickCartoon($: M, cartoonTypes: CartoonType[]) {
 }
 
 async function getTaskList($: M, headers?: ClientTypeHeaders) {
-  const list = await request(
+  return await request(
     $,
     $.gardenApi.getTaskList,
-    '获取任务列表',
+    { name: '获取任务列表', defu: [] },
     headers,
   )
-  return Array.isArray(list) ? list : []
 }
 
 async function getTaskStateList($: M, headers?: ClientTypeHeaders) {
-  const list = await request(
+  return await request(
     $,
     $.gardenApi.getTaskStateList,
-    '获取任务完成情况表',
+    { name: '获取任务完成情况表', defu: [] },
     headers,
   )
-  return Array.isArray(list) ? list : []
 }
 
 async function doTask(
@@ -112,7 +136,36 @@ async function doTask(
   tasks: TaskList['result'],
   headers?: ClientTypeHeaders,
 ) {
-  const taskList = [] as { taskId: number; taskName: string }[]
+  const fileInfo = {
+    contentSize: '133967',
+    digest: $.config.garden.digest,
+  }
+  const taskMap = {
+    '2002': async () => {
+      if (
+        await uploadFileRequest($, getParentCatalogID(), {
+          ext: '.png',
+          ...fileInfo,
+        })
+      ) {
+        $.logger.debug(`上传图片成功`)
+        await $.sleep(2000)
+        return true
+      }
+    },
+    '2003': async () => {
+      if (
+        await uploadFileRequest($, getParentCatalogID(), {
+          ext: '.mp4',
+          ...fileInfo,
+        })
+      ) {
+        $.logger.debug(`上传视频成功`)
+        await $.sleep(2000)
+        return true
+      }
+    },
+  }
 
   await asyncForEach(
     tasks,
@@ -124,41 +177,39 @@ async function doTask(
         taskId,
         headers,
       )
-      if (code !== 1) $.logger.error(`领取${taskName}失败`, summary)
-      else taskList.push({ taskId, taskName })
+      switch (code) {
+        case -1:
+        case 1:
+          $.logger.debug(`${taskName}任务已领取`)
+          taskMap[taskId] && await taskMap[taskId]()
+          return
+        default:
+          $.logger.error(`领取${taskName}失败`, code, summary)
+          return
+      }
     },
     async () => await $.sleep(6000),
   )
-
-  return taskList
 }
 
 async function doTaskByHeaders($: M, headers: ClientTypeHeaders) {
   try {
     const taskList = await getTaskList($, headers)
+    const stateList = (await getTaskStateList($, headers)).reduce(
+      (arr, { taskId, taskState }) => taskState === 0 ? [...arr, taskId] : arr,
+      [] as number[],
+    )
     await $.sleep(1000)
-    const stateList = await getTaskStateList($, headers)
-    if (stateList.length === 0) {
-      return await _run(taskList, [])
-    }
-    const _givenList = stateList
-      .filter((sl) => sl.taskState === 1)
-      .map((el) => taskList.find((tl) => tl.taskId === el.taskId))
-    const _taskList = stateList
-      .filter((sl) => sl.taskState === 0)
-      .map((el) => taskList.find((tl) => tl.taskId === el.taskId))
-
-    return await _run(_taskList, _givenList)
+    return await _run(taskList.filter((task) => stateList.indexOf(task.taskId) !== -1))
 
     async function _run(
       _taskList: TaskList['result'],
-      _givenList: GivenWaterList[],
     ) {
       await $.sleep(5000)
-      const givenList = await doTask($, _taskList, headers)
+      await doTask($, _taskList, headers)
       await $.sleep(4000)
-      givenList.push(..._givenList)
-      await givenWater($, givenList, headers)
+      const stateList = await getTaskStateList($, headers)
+      await givenWater($, stateList.filter(({ taskState }) => taskState === 1), headers)
     }
   } catch (error) {
     $.logger.error('任务异常', error)
@@ -202,7 +253,7 @@ export async function gardenTask($: M) {
 
     await $.sleep(2000)
     $.logger.info('领取场景水滴')
-    await clickCartoon($, [])
+    await clickCartoon($)
 
     $.logger.info('完成邮箱任务')
     await doTaskByHeaders($, {

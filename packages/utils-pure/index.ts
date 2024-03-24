@@ -3,7 +3,7 @@
  * @param part 当长度为数组时，填充
  * @returns
  */
-export function randomHex(length: number | number[], pad = '-') {
+export function randomHex(length: number | number[], pad = '-'): string {
   if (Array.isArray(length)) {
     return length.map((l) => randomHex(l, pad)).join(pad)
   }
@@ -12,6 +12,10 @@ export function randomHex(length: number | number[], pad = '-') {
   })
     .map(() => Math.floor(Math.random() * 16).toString(16))
     .join('')
+}
+
+export function randomNumber(low: number, high = low) {
+  return Math.floor(Math.random() * (high - low) + low)
 }
 
 export function getXmlElement(xml: string, tag: string) {
@@ -101,4 +105,15 @@ export function hashCode(str: string) {
     hash = hash & hash
   }
   return hash
+}
+
+export function isWps() {
+  return globalThis.setTimeout === undefined && globalThis.HTTP
+}
+
+export function createTime() {
+  return new Date().toLocaleString('zh-CN').split(/[/:\s]/).reduce(
+    (str, cur) => `${str}${cur.length === 1 ? 0 + cur : cur}`,
+    '',
+  )
 }

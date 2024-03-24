@@ -1,0 +1,64 @@
+---
+title: ESM/CJS
+description: ESM/CJS
+sidebar:
+  order: 20
+---
+
+:::tip[提示]
+本篇幅为高级内容，非必要无需阅读
+:::
+
+## CommonJs
+
+cjs 是 Node.js 的模块化方式，使用 `require` 来导入模块。这是在古老的 js 还没有模块化时的产物。
+
+目前 Node.js 默认就是 cjs。
+
+你可以在 `package.json` 中添加 `"type": "commonjs"` 来显式启用 cjs（当然目前默认值就是这个）。
+
+也可以将 `.js` 文件名改为 `.cjs` 来启用 cjs。
+
+**一个 cjs 的例子**
+
+```js
+const { run } = require('@asunajs/caiyun');
+
+(async () => {
+  await run();
+})();
+```
+
+## EcmaScript Module
+
+esm 是 EcmaScript 的模块化方式（js 官方的标准），使用 `import` 来导入模块。这是 js 的模块化方式，也是未来的主流。
+
+你可以在 `package.json` 中添加 `"type": "module"` 来启用 esm。
+
+也可以将 `.js` 文件名改为 `.mjs` 来启用 esm。
+
+目前本项目使用 esm 进行开发，通过打包工具实现 esm/cjs 兼容。所以很多例子我也会使用 esm 的写法，这可能存在一些兼容性问题，如果出现问题请自行在 cjs/esm 间切换。
+
+**一个 esm 的例子**
+
+```js
+import { run } from '@asunajs/alipan';
+
+await run();
+```
+
+### 青龙中使用
+
+作者说支持 esm，支持了，又没完全支持，它只支持运行 mjs 的文件，但并不能导入模块，因为模块是全局安装的，如果你真需要。
+
+**使用绝对路径导入**
+
+```js
+import { run } from '/root/.local/share/pnpm/global/5/node_modules/@asunajs/xxxxx/index.mjs';
+
+await run();
+```
+
+**安装到项目**
+
+到 `/ql/data/scripts` 目录下，执行 `pnpm i @asunajs/xxxxx`

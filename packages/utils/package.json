@@ -10,7 +10,8 @@
   },
   "scripts": {
     "prepublish": "copyfiles package.json README.md dist/",
-    "build": "tsup --dts-resolve"
+    "build": "tsup --dts-resolve",
+    "test": "tsx --test test/**.test.ts"
   },
   "keywords": [
     "asign"

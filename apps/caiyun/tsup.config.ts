@@ -1,4 +1,4 @@
-import { appDefuConfig, cliDefuConfig } from '@asign/build/tsup'
+import { appDefuConfig, cliDefuConfig, qlDefuConfig } from '@asign/build/tsup'
 import { defineConfig } from 'tsup'
 import { dependencies } from './package.json'
 
@@ -9,7 +9,11 @@ export default defineConfig([
     external: Object.keys(dependencies),
   },
   {
-    entry: ['index.ts'],
+    entry: ['cli.ts'],
     ...cliDefuConfig,
+  },
+  {
+    ...qlDefuConfig,
+    noExternal: Object.keys(dependencies),
   },
 ])
