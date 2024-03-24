@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import fs from 'fs'
+import fs, { existsSync, readFileSync, writeFileSync } from 'fs'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -57,8 +57,7 @@ export function readJsonFile(path: string) {
  */
 export function getConfig(name: string) {
   const resolveCwd = (str: string) => path.resolve(process.cwd(), str)
-  const resolveDir = (str: string) =>
-    path.resolve(dirname(fileURLToPath(import.meta.url)), str)
+  const resolveDir = (str: string) => path.resolve(dirname(fileURLToPath(import.meta.url)), str)
   const configPath = Array.from(
     new Set<string>([
       resolveCwd(name + '5'),
@@ -75,3 +74,68 @@ export function isObject(value: any) {
 }
 
 export type LoggerType = Awaited<ReturnType<typeof createLogger>>
+
+function _getLocalStorage(path: string) {
+  return existsSync(path) ? JSON.parse(readFileSync(path, 'utf-8')) : {}
+}
+
+export function getLocalStorage(configPath: string, item: string) {
+  // 获取 configPath 的 dir ，接上 "asign.ls.json"
+  try {
+    return (
+      _getLocalStorage(path.resolve(dirname(configPath), 'asign.ls.json'))[
+        item
+      ] || {}
+    )
+  } catch {}
+  return {}
+}
+
+export function setLocalStorage(
+  configPath: string,
+  item: string,
+  value: Record<string, any>,
+) {
+  try {
+    const lsPath = path.resolve(dirname(configPath), 'asign.ls.json')
+    const ls = _getLocalStorage(lsPath)
+
+    ls[item] = value
+
+    writeFileSync(lsPath, JSON.stringify(ls))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function pushMessage({
+  pushData,
+  message,
+  sendNotify,
+  createRequest,
+}: {
+  pushData: LoggerPushData[]
+  message: Record<string, any>
+  sendNotify: any
+  createRequest: any
+}) {
+  if (pushData.length && message) {
+    if (message.onlyError && !pushData.some((el) => el.type === 'error')) {
+      return
+    }
+    const msg = pushData
+      .filter((el) => el.level < 4)
+      .map((m) => `[${m.type} ${m.date.toLocaleTimeString()}]${m.msg}`)
+      .join('\n')
+    msg
+      && (await sendNotify(
+        {
+          logger: await createLogger(),
+          http: { fetch: (op: any) => createRequest().request(op) },
+        },
+        message,
+        message.title || 'asign 运行推送',
+        msg,
+      ))
+  }
+}

@@ -2,9 +2,8 @@ import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
 import type { M } from './types.js'
 
-export * from './types.js'
 export * from './api.js'
-export * from './config.d.js'
+export * from './types.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,
@@ -15,7 +14,7 @@ async function request<T extends (...args: any[]) => any>(
   try {
     const { code, message, msg, result } = await api(...args)
     if (code !== 0) {
-      $.logger.error(`${name}失败`, code, message || msg)
+      $.logger.fatal(`${name}失败`, code, message || msg)
     } else {
       return result
     }
@@ -29,7 +28,7 @@ export async function getSsoTokenApi($: M, phone: number | string) {
   try {
     const specToken = await $.api.querySpecToken(phone)
     if (!specToken.success) {
-      $.logger.error('获取 ssoToken 失败', specToken.message)
+      $.logger.fatal('获取 ssoToken 失败', specToken.message)
       return
     }
     return specToken.data.token
@@ -222,11 +221,18 @@ async function createNoteDaily($: M) {
 }
 
 async function _clickTask($: M, id: number, currstep: number) {
+  const idCurrstepMap = {
+    434: 22,
+  }
+  if (idCurrstepMap[id]) {
+    await clickTask($, id)
+    return true
+  }
   return currstep === 0 ? await clickTask($, id) : true
 }
 
 async function dailyTask($: M) {
-  $.logger.info(`------【每日】------`)
+  $.logger.start('------【每日】------')
   const { day } = await request($, $.api.getTaskList, '获取任务列表')
   if (!day || !day.length) return $.logger.info(`无任务列表，结束`)
   const taskFuncList = { 106: uploadFileDaily, 107: createNoteDaily }
@@ -242,10 +248,9 @@ async function dailyTask($: M) {
 
   if (doingList.length) {
     const { day } = await request($, $.api.getTaskList, '获取任务列表')
-    if (!day) return
+    if (!day || !day.length) return
     for (const taskItem of day) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH')
-        $.logger.info(`完成：${taskItem.name}`)
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
     }
   }
 }
@@ -254,7 +259,7 @@ async function shareTime($: M) {
   try {
     const files = $.store.files
     if (!files || !files[0]) {
-      $.logger.info(`未获取到文件列表，跳过分享任务`)
+      $.logger.fail(`未获取到文件列表，跳过分享任务`)
       return
     }
     const { code, message } = await $.api.getOutLink(
@@ -263,14 +268,14 @@ async function shareTime($: M) {
       '',
     )
     if (code === '0') return true
-    $.logger.error(`分享链接失败`, code, message)
+    $.logger.fail(`分享链接失败`, code, message)
   } catch (error) {
     $.logger.error(`分享链接异常`, error)
   }
 }
 
 async function hotTask($: M) {
-  $.logger.info(`------【热门任务】------`)
+  $.logger.start('------【热门任务】------')
   const { time } = await request($, $.api.getTaskList, '获取任务列表')
   if (!time) return
   const taskIds = [434]
@@ -280,8 +285,8 @@ async function hotTask($: M) {
     if (taskItem.state === 'FINISH' || taskItem.enable !== 1) continue
     if (!taskIds.includes(taskItem.id)) continue
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
-      ;(await taskFuncList[taskItem.id]?.($)) &&
-        $.logger.info(`完成：${taskItem.name}`)
+      ;(await taskFuncList[taskItem.id]?.($))
+        && $.logger.success(`完成：${taskItem.name}`)
     }
   }
 }
@@ -297,8 +302,7 @@ async function monthTaskOnMail($: M) {
   const doingList: number[] = []
 
   for (const taskItem of month) {
-    if (![1008, 1009, 1010, 1013, 1014, 1016, 1017].includes(taskItem.id))
-      continue
+    if (![1008, 1009, 1010, 1013, 1014, 1016, 1017].includes(taskItem.id)) continue
     if (taskItem.state === 'FINISH') continue
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
       doingList.push(taskItem.id)
@@ -314,8 +318,7 @@ async function monthTaskOnMail($: M) {
     )
     if (!month) return
     for (const taskItem of month) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH')
-        $.logger.info(`完成：${taskItem.name}`)
+      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
     }
   }
 }
@@ -329,18 +332,145 @@ async function shake($: M) {
   if (shakeRecommend) {
     return $.logger.debug(shakeRecommend.explain || shakeRecommend.img)
   }
-  if (shakePrizeconfig)
-    return $.logger.info(shakePrizeconfig.title + shakePrizeconfig.name)
+  if (shakePrizeconfig) return $.logger.info(shakePrizeconfig.title + shakePrizeconfig.name)
 }
 
 async function shakeTask($: M) {
-  $.logger.info(' ------【摇一摇】------')
+  $.logger.start('------【摇一摇】------')
   const { delay, num } = $.config.shake
   for (let index = 0; index < num; index++) {
     await shake($)
     if (index < num - 1) {
       await $.sleep(delay * 1000)
     }
+  }
+}
+
+async function shareFind($: M) {
+  const phone = $.config.phone
+  try {
+    const data = {
+      traceId: Number(Math.random().toString().substring(10)),
+      tackTime: Date.now(),
+      distinctId: randomHex([14, 15, 8, 7, 15]),
+      eventName: 'discoverNewVersion.Page.Share.QQ',
+      event: '$manual',
+      flushTime: Date.now(),
+      model: '',
+      osVersion: '',
+      appVersion: '',
+      manufacture: '',
+      screenHeight: 895,
+      os: 'Android',
+      screenWidth: 393,
+      lib: 'js',
+      libVersion: '1.17.2',
+      networkType: '',
+      resumeFromBackground: '',
+      screenName: '',
+      title: '【精选】一站式资源宝库',
+      eventDuration: '',
+      elementPosition: '',
+      elementId: '',
+      elementContent: '',
+      elementType: '',
+      downloadChannel: '',
+      crashedReason: '',
+      phoneNumber: phone,
+      storageTime: '',
+      channel: '',
+      activityName: '',
+      platform: 'h5',
+      sdkVersion: '1.0.1',
+      elementSelector: '',
+      referrer: '',
+      scene: '',
+      latestScene: '',
+      source: 'content-open',
+      urlPath: '',
+      IP: '',
+      url: `https://h.139.com/content/discoverNewVersion?columnId=20&token=STuid00000${Date.now()}${
+        randomHex(
+          20,
+        )
+      }&targetSourceId=001005`,
+      elementName: '',
+      browser: 'Chrome WebView',
+      elementTargetUrl: '',
+      referrerHost: '',
+      browerVersion: '122.0.6261.106',
+      latitude: '',
+      pageDuration: '',
+      longtitude: '',
+      urlQuery: '',
+      shareDepth: '',
+      arriveTimeStamp: '',
+      spare: { mobile: phone, channel: '' },
+      public: '',
+      province: '',
+      city: '',
+      carrier: '',
+    }
+    await $.api.datacenter(Buffer.from(JSON.stringify(data)).toString('base64'))
+  } catch (error) {
+    $.logger.error('分享有奖异常', error)
+  }
+}
+
+function getCloudRecord($: M) {
+  return request($, $.api.getCloudRecord, '获取云朵记录')
+}
+
+/**
+ * 返回需要次数
+ */
+function getShareFindCount($: M) {
+  if (!$.localStorage.shareFind) {
+    return 20
+  }
+  const { lastUpdate, count } = $.localStorage.shareFind
+  const isCurrentMonth = new Date().getMonth() === new Date(lastUpdate).getMonth()
+  return isCurrentMonth ? 20 - count : 20
+}
+
+async function shareFindTask($: M) {
+  $.logger.start('------【邀请好友看电影】------')
+  $.logger.info('测试中。。。')
+  let count = getShareFindCount($)
+  if (count <= 0) {
+    $.logger.info('本月已分享')
+    return
+  }
+
+  let _count = 20 - (--count)
+  await shareFind($)
+  await $.sleep(1000)
+  await receive($)
+  await $.sleep(1000)
+  const { records } = await getCloudRecord($)
+  const recordFirst = records?.find((record) => record.mark === 'fxnrplus5')
+  if (recordFirst && new Date().getTime() - new Date(recordFirst.updatetime).getTime() < 20_000) {
+    while (count > 0) {
+      _count++
+      count--
+      $.logger.debug('邀请好友')
+      await shareFind($)
+      await $.sleep(2000)
+    }
+    await receive($)
+    const { records } = await getCloudRecord($)
+    if (records?.filter((record) => record.mark === 'fxnrplus5').length > 6) {
+      $.logger.info('完成')
+    } else {
+      $.logger.error('未知情况，无法完成（或已完成），今日跳过')
+    }
+  } else {
+    $.logger.error('未知情况，无法完成（或已完成），本次跳过')
+    _count += 10
+  }
+  $.localStorage.shareFind = {
+    lastUpdate: new Date().getTime(),
+    count: _count,
   }
 }
 
@@ -352,7 +482,7 @@ async function openBlindbox($: M) {
         return $.logger.info('获得', result.prizeName)
       case 200105:
       case 200106:
-        return $.logger.info(msg)
+        return $.logger.info(code, msg)
       default:
         return $.logger.warn('开盲盒失败', code, msg)
     }
@@ -380,7 +510,9 @@ async function getBlindboxCount($: M) {
 }
 
 async function blindboxTask($: M) {
-  $.logger.info(' ------【开盲盒】------')
+  $.logger.start('------【开盲盒】------')
+  $.logger.fail('bug 修复中，跳过')
+  // return
   try {
     await getBlindboxCount($)
     const { result, code, msg } = await $.api.blindboxUser()
@@ -403,6 +535,31 @@ async function blindboxTask($: M) {
   }
 }
 
+function checkHc1T({ localStorage }: M) {
+  if (localStorage.hc1T) {
+    const { lastUpdate } = localStorage.hc1T
+    if (new Date().getMonth() <= new Date(lastUpdate).getMonth()) {
+      return true
+    }
+  }
+}
+
+async function hc1Task($: M) {
+  $.logger.start('------【合成芝麻】------')
+  if (checkHc1T($)) {
+    $.logger.info('本月已领取')
+    return
+  }
+  try {
+    await request($, $.api.beinviteHecheng1T, '合成芝麻')
+    await $.sleep(5000)
+    await request($, $.api.finishHecheng1T, '合成芝麻')
+    $.logger.success('完成合成芝麻')
+  } catch (error) {
+    $.logger.error('合成芝麻失败', error)
+  }
+}
+
 async function afterTask($: M) {
   // 删除文件
   try {
@@ -422,6 +579,8 @@ export async function run($: M) {
     monthTaskOnMail,
     dailyTask,
     hotTask,
+    shareFindTask,
+    hc1Task,
     blindboxTask,
     receive,
   ]

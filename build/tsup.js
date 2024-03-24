@@ -14,3 +14,13 @@ export const tsupDefuConfig = defineConfig({
     }
   },
 })
+
+export const appDefuConfig = defineConfig({
+  ...tsupDefuConfig,
+  format: ['cjs', 'esm'],
+  esbuildOptions: (options) => {
+    options.banner = {
+      js: `import{createRequire}from'module';const require=createRequire(import.meta.url);`,
+    }
+  },
+})

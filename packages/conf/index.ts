@@ -2,13 +2,13 @@ export * from './js.js'
 export * from './object.js'
 export * from './yaml.js'
 
+import { setIn } from '@asunajs/utils'
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, extname, join } from 'path'
+import { fileURLToPath } from 'url'
 import { parseJavaScript, setInJavaScript } from './js.js'
 import { parseObject, setInObject } from './object.js'
 import { parseYAML, setInYAML } from './yaml.js'
-import { fileURLToPath } from 'url'
-import { setIn } from '@asunajs/utils'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -60,7 +60,8 @@ export function parseConfig<T = any>(path: string): T {
     case '.mts':
     case '.cjs':
     case '.cts':
-      return parseJavaScript<{ default: T }>(path)?.default
+      const config = parseJavaScript(path)
+      return config?.default || config
     case '.yaml':
     case '.yml':
       return parseYAML(readFileSync(path, 'utf8'))

@@ -4,14 +4,24 @@
   "description": "",
   "type": "module",
   "main": "index.ts",
-  "files": ["index.js"],
-  "scripts": {},
-  "keywords": ["sign", "airscript", "wps", "alipan"],
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "schema": "tsx typed.ts"
+  },
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "alipan"
+  ],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
-    "@asunajs/utils": "workspace:^",
-    "@asign/utils-pure": "workspace:^"
+    "@asign/utils-pure": "workspace:^",
+    "@asunajs/utils": "workspace:^"
   }
 }

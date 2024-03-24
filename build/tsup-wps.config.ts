@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { dirname, resolve } from 'path'
 import { defineConfig } from 'tsup'
-import { transform } from './index.js'
 import { fileURLToPath } from 'url'
+import { transform } from './index.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

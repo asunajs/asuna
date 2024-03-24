@@ -1,0 +1,25 @@
+name: 文档改进
+description: 如果您发现了一个文档错误，或者想要改进文档，请在此提交您的错误报告。
+title: '[文档]: '
+labels: ['文档']
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间填写这个报告!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 详细的描述您的问题。
+      placeholder: 告诉问题出在哪里，以及您确定它是问题的理由
+    validations:
+      required: true
+  - type: textarea
+    id: help-me
+    attributes:
+      label: 有效的帮助
+      description: 对此您能提供什么有效的帮助？
+      placeholder: 告诉我们您能提供的帮助!

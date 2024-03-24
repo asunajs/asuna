@@ -3,14 +3,14 @@ const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 
 /**
- *获取青龙token
+ * 获取青龙token
  */
 function getQLToken() {
   return new Promise((resolve) => {
     axios
       .get(
-        QL_URL +
-          `/open/auth/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
+        QL_URL
+          + `/open/auth/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
       )
       .then((res) => {
         if (res.data.code === 200) {
@@ -21,14 +21,14 @@ function getQLToken() {
 }
 
 /**
- *构造请求头
+ * 构造请求头
  * @returns headers
  */
 async function generateRequestHeader() {
   return new Promise(async (resolve) => {
     const token = await getQLToken()
     resolve({
-      Authorization: 'Bearer ' + token,
+      'Authorization': 'Bearer ' + token,
       'User-Agent':
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4577.63 Safari/537.36',
       'Content-Type': 'application/json;charset=UTF-8',
@@ -39,7 +39,7 @@ async function generateRequestHeader() {
 }
 
 /**
- *初始化请求实例
+ * 初始化请求实例
  * @returns axios instance
  */
 async function init() {
@@ -56,8 +56,7 @@ async function init() {
 }
 
 /**
- *
- *获取青龙环境变量
+ * 获取青龙环境变量
  * @param {*} instance
  * @returns [] envlist
  */
@@ -77,7 +76,7 @@ function getQLEnvs(instance, searchValue = 'JD_COOKIE') {
 }
 
 /**
- *创建ck环境变量
+ * 创建ck环境变量
  * @param {*} instance
  * @param {*} [ck=[]]
  * @returns
@@ -131,7 +130,7 @@ function deleteCkEnv(instance, ckIds = []) {
 }
 
 /**
- *切换ck状态
+ * 切换ck状态
  * @param {*} instance
  * @param {*} path
  * @param {*} id

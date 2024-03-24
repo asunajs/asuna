@@ -1,17 +1,17 @@
+import type { Http } from '@asign/types'
 import type {
+  AlbumsInfo,
+  BaseResult,
+  CreateFile,
+  DeviceApplet,
+  DeviceRoom,
+  DeviceRoomRewardEnergy,
+  DeviceRoomRewardInfoToday,
   SignInInfo,
   SignInList,
   SignInReward,
   TokenRefresh,
-  DeviceRoom,
-  AlbumsInfo,
-  CreateFile,
-  DeviceApplet,
-  DeviceRoomRewardInfoToday,
-  BaseResult,
-  DeviceRoomRewardEnergy,
 } from './types.js'
-import type { Http } from '@asign/types'
 
 export function createApi(http: Http) {
   const memberUrl: string = 'https://member.aliyundrive.com'

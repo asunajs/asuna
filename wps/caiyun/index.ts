@@ -1,19 +1,7 @@
-import {
-  M,
-  createApi,
-  createGardenApi,
-  getJwtToken,
-  createNewAuth,
-  run,
-} from '@asign/caiyun-core'
+import { createApi, createGardenApi, createNewAuth, getJwtToken, M, run } from '@asign/caiyun-core'
 import type { Untyped } from '@asign/caiyun-core'
 import { createLogger, getAuthInfo, getHostname } from '@asign/utils-pure'
-import {
-  createCookieJar,
-  createRequest,
-  getPushConfig,
-  sendWpsNotify,
-} from '@asign/wps-utils'
+import { createCookieJar, createRequest, getPushConfig, sendWpsNotify } from '@asign/wps-utils'
 
 type Config = Partial<Untyped> & {
   auth: string
@@ -53,19 +41,20 @@ export async function main(index, config: Config, option?) {
   const headers = {
     'user-agent': DATA.baseUA,
     'x-requested-with': DATA.mcloudRequested,
-    charset: 'utf-8',
+    'charset': 'utf-8',
     'content-type': 'application/json;charset=UTF-8',
-    accept: 'application/json',
+    'accept': 'application/json',
   }
 
   function getHeaders(url) {
     if (getHostname(url) === 'caiyun.feixin.10086.cn') {
-      if (jwtToken)
+      if (jwtToken) {
         return {
           ...headers,
           cookie: cookieJar.getCookieString(),
           jwttoken: jwtToken,
         }
+      }
     }
     return {
       ...headers,
@@ -83,6 +72,7 @@ export async function main(index, config: Config, option?) {
     config: config as any,
     gardenApi: createGardenApi(http),
     store: {},
+    localStorage: {},
   }
 
   jwtToken = await getJwtToken($)

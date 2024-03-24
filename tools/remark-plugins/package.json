@@ -1,0 +1,36 @@
+{
+  "name": "@asign/remark-plugins",
+  "version": "0.0.0",
+  "description": "utils",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "scripts": {},
+  "keywords": [
+    "asign"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "publishConfig": {
+    "directory": "dist",
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.js",
+        "require": "./index.cjs"
+      }
+    },
+    "main": "index.cjs",
+    "module": "index.js",
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "to-vfile": "^8.0.0",
+    "remark": "^15.0.1",
+    "remark-mdx": "^3.0.1"
+  }
+}

@@ -1,0 +1,56 @@
+---
+title: '推送配置'
+description: '推送配置'
+sidebar:
+  order: 0
+---
+
+推送配置在配置文件中，形式如下，其他字段忽略，与你实际功能有关，功能指南中会说明，这里只需要关注 `message` 这一个字段即可，例如这个例子就是配置了邮箱（email）推送，且仅在有错误日志时才推送。
+
+```json
+{
+  "caiyun": [],
+  "alipan": [],
+  "message": {
+    "email": {
+      "pass": "xxxxxxxxxxxx",
+      "from": "xxxxxx@163.com",
+      "host": "smtp.163.com",
+      "to": "xxx@mht.com"
+    },
+    "workWeixin": {
+      "corpid": "ww4xxxxxxxxxxxxc12",
+      "corpsecret": "NBMUW4fxxxxxxxxxxxxxxxxxxxxxu2roo",
+      "touser": "cxxxxxxxxxt",
+      "agentid": 1008611266666,
+      "msgtype": "markdown"
+    },
+    "pushplus": {
+      "token": ""
+    },
+    "onlyError": true
+  }
+}
+```
+
+> 部分配置可能需要代理，参考 Telegram 配置 中的 proxy 配置
+
+:::tip[提示]
+以下部分内容为自动生成，可能存在部分不准确，仅供参考
+
+示例部分的代码为随机生成，所以部分值会很奇怪，例如 port 最多为 65535，但却出现了 1853417469247488
+
+除 `email` 外，大部分配置都支持列出的字段以外的字段，因为非必要所以没有列出，如需要，请自行查看你使用的推送的官方文档
+:::
+
+## 基本配置
+
+### onlyError
+
+推送配置是否仅在有错误日志时推送，默认为 `false`，即无论有无错误日志都会推送
+
+### title
+
+推送的标题
+
+@include: ../core/push/options.md

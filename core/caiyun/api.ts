@@ -1,22 +1,24 @@
-import type { TaskList } from './TaskType.js'
 import type { Http } from '@asign/types'
+import { hashCode } from '@asign/utils-pure'
+import type { TaskList } from './TaskType.js'
 import type {
-  QuerySpecToken,
-  SignInInfo,
-  TyrzLogin,
+  BatchList,
+  BlindboxInfo,
+  BlindboxUser,
+  CloudRecord,
+  CreateBatchOprTask,
+  DiskResult,
   DrawInfoInWx,
   DrawInWx,
-  SignInfoInWx,
-  DiskResult,
-  BatchList,
-  PcUploadFile,
   NoteBooks,
-  CreateBatchOprTask,
-  Orchestration,
-  Shake,
   OpenBlindbox,
-  BlindboxUser,
-  BlindboxInfo,
+  Orchestration,
+  PcUploadFile,
+  QuerySpecToken,
+  Shake,
+  SignInfoInWx,
+  SignInInfo,
+  TyrzLogin,
 } from './types.js'
 
 export * from './gardenApi.js'
@@ -37,24 +39,21 @@ export function createApi(http: Http) {
         },
         {
           headers: {
-            referer: 'https://yun.139.com/w/',
-            accept: 'application/json, text/plain, */*',
+            'referer': 'https://yun.139.com/w/',
+            'accept': 'application/json, text/plain, */*',
             'content-type': 'application/json;charset=UTF-8',
             'accept-language': 'zh-CN,zh;q=0.9',
           },
         },
       )
     },
-    authTokenRefresh: function authTokenRefresh(
-      token: string,
-      account: string | number,
-    ) {
+    authTokenRefresh(token: string, account: string | number) {
       return http.post<string>(
         `https://aas.caiyun.feixin.10086.cn/tellin/authTokenRefresh.do`,
         `<?xml version="1.0" encoding="utf-8"?><root><token>${token}</token><account>${account}</account><clienttype>656</clienttype></root>`,
         {
           headers: {
-            accept: '*/*',
+            'accept': '*/*',
             'content-type': 'application/json; charset=utf-8',
           },
           responseType: 'text',
@@ -386,9 +385,31 @@ export function createApi(http: Http) {
         {},
         {
           headers: {
-            accept: 'application/json',
+            'accept': 'application/json',
+            'x-requested-with': 'cn.cj.pe',
+            'referer': 'https://caiyun.feixin.10086.cn/',
+            'origin': 'https://caiyun.feixin.10086.cn',
+            'user-agent':
+              'Mozilla/5.0 (Linux; Android 10; Redmi K20 Pro Build/QKQ1.190828.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.106 Mobile Safari/537.36(139PE_WebView_Android_10.2.2_mcloud139)',
           },
         },
+      )
+    },
+    datacenter(base64: string) {
+      return http.post(
+        'https://datacenter.mail.10086.cn/datacenter/',
+        `data=${base64}&ext=${'crc=' + hashCode(base64)}`,
+        {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'platform': 'h5',
+          },
+        },
+      )
+    },
+    getCloudRecord(pn = 1, ps = 10, type = 1) {
+      return http.get<CloudRecord>(
+        `${caiyunUrl}/market/signin/public/cloudRecord?type=${type}&pageNumber=${pn}&pageSize=${ps}`,
       )
     },
   }

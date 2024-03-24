@@ -5,11 +5,11 @@ export interface M {
   api: ApiType
   logger: LoggerType
   DATA: {
-    refreshToken?: string
-    deviceId?: string
-    userId?: string
+    'refreshToken'?: string
+    'deviceId'?: string
+    'userId'?: string
     'x-signature'?: string
-    afterTask: (() => any)[]
+    'afterTask': (() => any)[]
   }
   sleep: (time: number) => Promise<number>
 }

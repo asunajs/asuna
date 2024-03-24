@@ -6,8 +6,9 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "moduleResolution": "NodeNext",
+    "allowJs": true,
     "esModuleInterop": true,
-    "outDir": "./",
+    "rootDir": "./",
     "resolveJsonModule": true
   },
   "exclude": ["node_modules", "dist"]

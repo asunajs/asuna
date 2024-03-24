@@ -1,12 +1,8 @@
+import { appDefuConfig } from '@asign/build/tsup'
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
+  ...appDefuConfig,
   entry: ['index.ts'],
-  clean: true,
-  shims: true,
-  platform: 'node',
   minify: true,
-  target: 'node14',
-  format: ['cjs', 'esm'],
-  dts: true,
 })

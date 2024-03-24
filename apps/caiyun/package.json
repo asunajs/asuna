@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/caiyun",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "移动云盘签到",
   "main": "./index.ts",
   "type": "module",
@@ -29,6 +29,7 @@
     "@asign/build": "workspace:^",
     "@asign/caiyun-core": "workspace:^",
     "@asunajs/utils": "workspace:^",
+    "@asign/utils-pure": "workspace:^",
     "@types/tough-cookie": "^4.0.5",
     "dotenv": "^16.4.4"
   },

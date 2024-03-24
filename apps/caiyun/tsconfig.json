@@ -8,7 +8,13 @@
     "moduleResolution": "NodeNext",
     "outDir": "./",
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": [
+      "ESNext"
+    ]
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

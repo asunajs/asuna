@@ -12,19 +12,23 @@
     "docs:build": "pnpm --filter docs build",
     "docs:preview": "pnpm --filter docs preview",
     "docs:start": "pnpm --filter docs start",
-    "format": "biome format --write .",
+    "format": "dprint fmt",
     "lint": "oxlint -c ./eslintrc.json --fix",
     "prepare": "husky"
   },
-  "keywords": ["sign", "airscript", "wps"],
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps"
+  ],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "1.6.0",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@types/node": "^20.11.17",
     "copyfiles": "^2.4.1",
+    "dprint": "^0.45.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "oxlint": "^0.2.13",

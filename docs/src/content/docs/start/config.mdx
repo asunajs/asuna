@@ -20,8 +20,8 @@ Node.js 支持多种格式的配置文件，请直接跳转到您喜欢的格式
 
 - `.json` 推荐
 - `.json5`
-- `.{js,ts,mjs,mts,cjs,cts}`
-- `.{yml,yaml}`
+- `.{js,ts,mjs,mts,cjs,cts}` 支持所有的 js/ts 后缀，后续可能统称为 `js` 格式
+- `.{yml,yaml}` 后续可能统称为 `yaml` 格式
 
 ### JSON
 
@@ -51,6 +51,20 @@ JSON 是一种数据传输格式，并不适合用来做配置文件，之所以
 详细请参考下一节的 JSON5
 :::
 
+为了与 json5 行为一致，我们为 json 增加了环境变量的支持
+
+```json
+{
+  "message": {
+    "pushplus": {
+      "token": "`$env.PUSHPLUS_TOKEN`"
+    }
+  }
+}
+```
+
+语法如 `pushplus.token` 所示，在字符串中使用 \` 表达式 \` （注意前后的符号，且 \` 只能是这个字符串的开头和结尾）表示这是一个表达式（当然目前这个表达式仅支持用来插入环境变量）
+
 ### JSON5
 
 :::note[注意]
@@ -59,7 +73,7 @@ JSON 是一种数据传输格式，并不适合用来做配置文件，之所以
 
 实际上，本项目的 JSON5/JSON 是当成 JavaScript Object 处理的（JSON 写入后格式会变回为 json），并且可以通过 $env 获取环境变量。
 
-```json5 title="另一个 JSON5 例子.json"
+```json5 title="一个 JSON5 例子.json5"
 {
   // 这是一个数组
   caiyun: [
@@ -90,11 +104,7 @@ JSON 是一种数据传输格式，并不适合用来做配置文件，之所以
 caiyun 的 auth、alipan 的 token 等会自动更新的字段不要使用非字符串字面量，因为最终它们都会被覆写为字符串字面量。
 :::
 
-### JavaScript/TypeScript
-
-:::note[注意]
-ts/js 的支持还在适配中，目前暂时无法使用
-:::
+### JavaScript
 
 前面的 JSON5 好像就是一个笑话，因为本来就支持 JavaScript/TypeScript。（推荐 mjs 或 mts）
 
@@ -222,7 +232,9 @@ PS：采用 [jiti](https://unjs.io/packages/jiti) 实现 ts/esm/cjs 的兼容
 
 ## 配置路径
 
-配置的名称必须是以下之一（加载顺序排序）：
+### 默认配置
+
+默认配置的名称必须是以下之一（加载顺序排序）：
 
 - `asign.json`（推荐）
 - `asign.json5`
@@ -239,3 +251,18 @@ PS：采用 [jiti](https://unjs.io/packages/jiti) 实现 ts/esm/cjs 的兼容
 
 1. 你运行命令的目录下（linux 运行 `ls`，windows 运行 `dir` 就能看到这个文件为准，或其下的 config 目录）
 2. 被允许的脚本的同级目录下（也就是它的旁边，或其下的 config 目录）
+
+### 自定义配置
+
+当然你也可以自定义配置文件路径，不拘束于文件名和放置位置，只需要给运行的脚本传入参数即可
+
+需要注意的是，你的配置文件必须是上面提到的格式以及后缀
+
+```js
+const { run } = require('@asunajs/caiyun');
+
+(async () => {
+  // 自定义路径
+  await run('./demodmeo.ts');
+})();
+```

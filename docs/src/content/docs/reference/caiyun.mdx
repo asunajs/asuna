@@ -66,28 +66,14 @@ exports.handler = async function (event, context, callback) {
 };
 ```
 
-## 配置文件
+### 青龙面板
 
-:::tip[提示]
-ts 转文档正在编写中，故此处只提供大概配置方式
+[青龙面板](/guides/qinglong/)
+
+## 配置
+
+:::note[提示]
+以下部分内容为自动生成，可能存在部分不准确，仅供参考
 :::
 
-以 JSON 为例。
-
-```json
-{
-  "caiyun": [
-    {
-      "auth": "登录帐号的 authorization，从<https://yun.139.com/>的 COOKIE 或其它端主页抓取（'可以'删除开头的 `Basic `，直接 `cG` 开头）",
-      "shake": {
-        "enable": false,
-        "num": 15,
-        "delay": 2
-      },
-      "garden": {
-        "enable": false
-      }
-    }
-  ]
-}
-```
+@include: ../core/caiyun/options.md

@@ -1,16 +1,17 @@
 import {
-  type M,
   createApi,
   createGardenApi,
-  getJwtToken,
-  run as runCore,
-  getOldConfig,
   createNewAuth,
+  getJwtToken,
+  getOldConfig,
+  type M,
+  run as runCore,
 } from '@asign/caiyun-core'
-import { type LoggerPushData, createLogger, sleep } from '@asunajs/utils'
+import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
-import { type NormalizedOptions, createRequest } from '@catlair/node-got'
+import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
+import { createRequest, type NormalizedOptions } from '@catlair/node-got'
 import { CookieJar } from 'tough-cookie'
 
 export type Config = {
@@ -19,33 +20,16 @@ export type Config = {
 }
 export type Option = { pushData?: LoggerPushData[] }
 
-function getAuthInfo(basicToken: string) {
-  basicToken = basicToken.replace('Basic ', '')
-
-  const rawToken = Buffer.from(basicToken, 'base64').toString('utf-8')
-  const [platform, phone, authToken] = rawToken.split(':')
-
-  return {
-    phone,
-    authToken,
-    basicToken,
-    platform,
-  }
-}
-
-export async function main(config: any, option?: Option) {
+export async function main(
+  config: any,
+  localStorage: M['localStorage'] = {},
+  option?: Option,
+) {
   const logger = await createLogger({ pushData: option?.pushData })
-  const { phone, authToken, basicToken, platform } = getAuthInfo(config.auth)
-
-  if (phone.length !== 11 || !phone.startsWith('1')) {
+  if (config.phone.length !== 11 || !config.phone.startsWith('1')) {
     logger.info(`auth 格式解析错误，请查看是否填写正确的 auth`)
     return
   }
-
-  config.phone = phone
-  config.auth = `Basic ${basicToken}`
-  config.token = authToken
-  config.platform = platform
 
   const cookieJar = new CookieJar()
   const baseUA =
@@ -81,7 +65,7 @@ export async function main(config: any, option?: Option) {
     headers: {
       'user-agent': DATA.baseUA,
       'x-requested-with': DATA.mcloudRequested,
-      charset: 'utf-8',
+      'charset': 'utf-8',
       'content-type': 'application/json;charset=UTF-8',
     },
   })
@@ -94,6 +78,7 @@ export async function main(config: any, option?: Option) {
     DATA,
     sleep,
     store: {},
+    localStorage,
   }
 
   logger.info(`==============`)
@@ -104,7 +89,10 @@ export async function main(config: any, option?: Option) {
   await runCore($)
   const newAuth = await createNewAuth($)
   logger.info(`==============\n\n`)
-  return newAuth
+  return {
+    newAuth,
+    localStorage,
+  }
 }
 
 /**
@@ -128,6 +116,7 @@ export async function run(inputPath?: string) {
   if (!caiyun || !caiyun.length) return logger.error('未找到配置文件/变量')
 
   const pushData: LoggerPushData[] = []
+  const ls = getLocalStorage(path, 'caiyun')
 
   for (let index = 0; index < caiyun.length; index++) {
     const c = caiyun[index]
@@ -137,32 +126,32 @@ export async function run(inputPath?: string) {
       continue
     }
     try {
-      const newAuth = await main(c, { pushData })
+      const authInfo = getAuthInfo(c.auth)
+      const { newAuth, localStorage } = await main(
+        {
+          ...c,
+          ...authInfo,
+        },
+        ls[authInfo.phone],
+        { pushData },
+      )
       if (newAuth) {
         rewriteConfigSync(path, ['caiyun', index, 'auth'], newAuth)
+      }
+      if (localStorage) {
+        ls[authInfo.phone] = localStorage
       }
     } catch (error) {
       logger.error(error)
     }
   }
 
-  if (pushData.length && config.message) {
-    const message = config.message
-    if (message.onlyError && !pushData.some((el) => el.type === 'error')) {
-      return
-    }
-    const msg = pushData
-      .map((m) => `[${m.type} ${m.date.toLocaleTimeString()}]${m.msg}`)
-      .join('\n')
-    msg &&
-      (await sendNotify(
-        {
-          logger: await createLogger(),
-          http: { fetch: (op: any) => createRequest().request(op) },
-        },
-        message,
-        message.title || 'asign 运行推送',
-        msg,
-      ))
-  }
+  setLocalStorage(path, 'caiyun', ls)
+
+  await pushMessage({
+    pushData,
+    message: config.message,
+    sendNotify,
+    createRequest,
+  })
 }

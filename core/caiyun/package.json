@@ -4,17 +4,25 @@
   "description": "",
   "main": "index.ts",
   "type": "module",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "scripts": {
-    "schema": "tsx untyped.mts"
+    "schema": "tsx typed.ts"
   },
-  "keywords": ["sign", "airscript", "wps", "caiyun", "10086"],
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "caiyun",
+    "10086"
+  ],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
-    "@asunajs/utils": "workspace:^",
     "@asign/utils-pure": "workspace:^",
-    "untyped": "^1.4.2"
+    "@asunajs/utils": "workspace:^"
   }
 }

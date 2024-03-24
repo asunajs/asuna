@@ -2,8 +2,13 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "outputMode": "new-only"
     },
-    "schema": {}
+    "schema": {
+      "outputs": ["options*"],
+      "outputMode": "new-only",
+      "inputs": ["core/**/typed.ts"]
+    }
   }
 }

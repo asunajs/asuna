@@ -1,12 +1,15 @@
 import type { LoggerType } from '@asunajs/utils'
 import type { ApiType, GardenApiType } from './api.js'
-import { Untyped as Config } from './config.js'
+import { Caiyun } from './options.d.js'
 
 export interface M {
   api: ApiType
   gardenApi?: GardenApiType
   logger: LoggerType
-  config: Config
+  config: Caiyun & {
+    phone: string
+    token: string
+  }
   DATA: {
     baseUA: string
     mailUaEnd: string
@@ -17,6 +20,17 @@ export interface M {
   store: {
     files?: string[]
     [key: string]: any
+  }
+  localStorage: {
+    shareFind?: {
+      /** 最后更新时间 */
+      lastUpdate: number
+      /** 完成次数 */
+      count: number
+    }
+    hc1T?: {
+      lastUpdate: number
+    }
   }
 }
 
@@ -381,4 +395,27 @@ export type BlindboxUser = BaseType<{
   /** 中国移动？1 为是 */
   isChinaMobile: 1 | 2
   isNewUser: 1
+}>
+
+export type CloudRecord = BaseType<{
+  current: number
+  total: number
+  pages: number
+  canExchangeText: any[]
+  optimizeCountSql: boolean
+  size: number
+  records: {
+    summary: string
+    inserttime: string
+    marketname: string
+    hasBak: number
+    num: number
+    id: number
+    receiveStatus: number
+    type: string
+    updatetime: string
+    mark: string
+  }[]
+  searchCount: boolean
+  orders: any[]
 }>

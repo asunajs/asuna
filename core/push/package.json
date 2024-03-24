@@ -6,15 +6,21 @@
   "exports": {
     ".": {
       "import": "./index.ts"
+    },
+    "./typed": {
+      "import": "./typed.ts"
     }
   },
   "main": "index.ts",
   "files": [],
-  "scripts": {},
+  "scripts": {
+    "schema": "tsx typed.ts"
+  },
   "keywords": [],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^"
   }
 }
