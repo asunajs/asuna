@@ -112,6 +112,32 @@ importers:
         version: 16.4.5
     publishDirectory: dist
 
+  apps/quark:
+    dependencies:
+      '@asunajs/conf':
+        specifier: workspace:^
+        version: link:../../packages/conf
+      '@asunajs/push':
+        specifier: workspace:^
+        version: link:../../packages/push
+      '@catlair/node-got':
+        specifier: ^0.0.10
+        version: 0.0.10
+    devDependencies:
+      '@asign/build':
+        specifier: workspace:^
+        version: link:../../build
+      '@asign/quark-core':
+        specifier: workspace:^
+        version: link:../../core/quark
+      '@asign/utils-pure':
+        specifier: workspace:^
+        version: link:../../packages/utils-pure
+      '@asunajs/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
+    publishDirectory: dist
+
   build:
     devDependencies:
       '@swc/core':
@@ -168,6 +194,21 @@ importers:
       '@asign/types':
         specifier: workspace:^
         version: link:../types
+
+  core/quark:
+    devDependencies:
+      '@asign/typed':
+        specifier: workspace:^
+        version: link:../../packages/typed
+      '@asign/types':
+        specifier: workspace:^
+        version: link:../types
+      '@asign/utils-pure':
+        specifier: workspace:^
+        version: link:../../packages/utils-pure
+      '@asunajs/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
 
   core/types: {}
 
@@ -343,6 +384,21 @@ importers:
       '@swc/core':
         specifier: ^1.4.1
         version: 1.4.8
+
+  wps/quark:
+    devDependencies:
+      '@asign/build':
+        specifier: workspace:^
+        version: link:../../build
+      '@asign/quark-core':
+        specifier: workspace:^
+        version: link:../../core/quark
+      '@asign/utils-pure':
+        specifier: workspace:^
+        version: link:../../packages/utils-pure
+      '@asign/wps-utils':
+        specifier: workspace:^
+        version: link:../utils
 
   wps/utils:
     devDependencies:

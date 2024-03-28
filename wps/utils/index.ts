@@ -1,4 +1,13 @@
-import { type ApiOptions, type Email, pushplus, serverChan, workWeixin, workWeixinBot } from '@asign/push-core'
+import {
+  type ApiOptions,
+  bark,
+  type Email,
+  pushplus,
+  serverChan,
+  twoIm,
+  workWeixin,
+  workWeixinBot,
+} from '@asign/push-core'
 import { createLogger } from '@asign/utils-pure'
 
 function getCookieJSON(cookie: string) {
@@ -100,6 +109,16 @@ export function createRequest({
   }
 }
 
+export function createSimpleRequest(headers: Record<string, string>) {
+  return {
+    get: (url: string) => HTTP.get(url, { headers }).json(),
+    post: (url: string, data: any) =>
+      HTTP.post(url, typeof data === 'string' ? data : JSON.stringify(data), {
+        headers,
+      }).json(),
+  }
+}
+
 export function getPushConfig() {
   const usedRange = Application.Sheets.Item('推送').UsedRange
   if (!usedRange) {
@@ -177,7 +196,7 @@ export async function sendNotify(
   title: string,
   text: string,
 ) {
-  const cbs = { pushplus, serverChan, workWeixin, email, workWeixinBot }
+  const cbs = { pushplus, serverChan, workWeixin, email, workWeixinBot, bark, twoIm }
   for (const [name, d] of Object.entries(data)) {
     const cb = cbs[name]
     if (!cb) continue

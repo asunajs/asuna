@@ -1,0 +1,30 @@
+{
+  "name": "@asign/quark-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "type": "module",
+
+  "scripts": {
+    "schema": "tsx typed.ts"
+  },
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "quark"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@asign/typed": "workspace:^",
+    "@asign/types": "workspace:^",
+    "@asign/utils-pure": "workspace:^",
+    "@asunajs/utils": "workspace:^"
+  }
+}

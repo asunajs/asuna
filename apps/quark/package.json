@@ -1,0 +1,56 @@
+{
+  "name": "@asunajs/quark",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "夸克云盘签到",
+  "main": "index.ts",
+  "types": "index.d.ts",
+  "bin": "cli.js",
+  "scripts": {
+    "prepublish": "copyfiles package.json README.md dist/",
+    "build": "tsup"
+  },
+  "keywords": [
+    "sign",
+    "airscript",
+    "wps",
+    "quark"
+  ],
+  "author": "catlair",
+  "license": "MIT",
+  "dependencies": {
+    "@asunajs/conf": "workspace:^",
+    "@asunajs/push": "workspace:^",
+    "@catlair/node-got": "^0.0.10"
+  },
+  "devDependencies": {
+    "@asign/quark-core": "workspace:^",
+    "@asign/build": "workspace:^",
+    "@asign/utils-pure": "workspace:^",
+    "@asunajs/utils": "workspace:^"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.mjs",
+        "require": "./index.cjs"
+      }
+    },
+    "main": "./index.cjs",
+    "module": "./index.mjs",
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "url": "git+https://github.com/asunajs/asign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asunajs/asign/issues"
+  },
+  "engines": {
+    "node": ">= 14.12.1"
+  },
+  "homepage": "https://as.js.cool"
+}
