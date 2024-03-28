@@ -54,9 +54,10 @@ async function main(index, ASIGN_ALIPAN_TOKEN, option?) {
   ActiveSheet.Columns('C').Rows(index).Value = DATA.deviceId
 }
 
-const columnA = ActiveSheet.Columns('A')
 // 获取当前工作表的使用范围
-const usedRange = ActiveSheet.UsedRange
+const sheet = Application.Sheets.Item('阿里云盘') || Application.Sheets.Item('alipan') || ActiveSheet
+const usedRange = sheet.UsedRange
+const columnA = sheet.Columns('A')
 const len = usedRange.Row + usedRange.Rows.Count - 1
 const pushData = []
 

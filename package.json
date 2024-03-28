@@ -9,6 +9,7 @@
     "schema": "turbo run schema --cache-dir=.turbo",
     "ci:publish": "pnpm run build && pnpm publish --no-git-checks -F \"@asunajs/*\"",
     "ci:version": "changeset version && pnpm install",
+    "ci:publish:dist": "tsx build/mv-dist.ts && cd dist && pnpm publish --no-git-checks",
     "docs:dev": "pnpm --filter docs dev",
     "docs:build": "pnpm --filter docs build",
     "docs:preview": "pnpm --filter docs preview",

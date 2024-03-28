@@ -1,0 +1,31 @@
+{
+  "name": "@asunajs/dist",
+  "version": "0.0.1",
+  "description": "asign dist",
+  "main": "./index.ts",
+  "type": "module",
+  "types": "./index.d.ts",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "url": "git+https://github.com/asunajs/asign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asunajs/asign/issues"
+  },
+  "engines": {
+    "node": ">= 14.12.1"
+  },
+  "homepage": "https://as.js.cool"
+}

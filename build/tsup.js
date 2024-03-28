@@ -45,7 +45,7 @@ export const cliDefuConfig = defineConfig({
 
 export const qlDefuConfig = defineConfig({
   ...appDefuConfig,
-  entry: ['cli.ts'],
+  entry: ['qinglong.ts'],
   minify: true,
   outDir: 'out',
   splitting: false,

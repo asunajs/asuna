@@ -11,6 +11,10 @@ export async function transform(inputCode: string) {
     .replaceAll('await ', '')
     .replaceAll('async ', '')
     .replaceAll(/(application\/.+);\s?charset=utf-8/gi, '$1')
+    .replaceAll('logger.start', 'logger.info')
+    .replaceAll('logger.success', 'logger.info')
+    .replaceAll('logger.fail', 'logger.info')
+    .replaceAll('logger.fatal', 'logger.error')
 
   return await swc.transform(code, {
     jsc: {
