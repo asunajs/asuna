@@ -200,7 +200,7 @@ async function doTaskByHeaders($: M, headers: ClientTypeHeaders) {
       [] as number[],
     )
     await $.sleep(1000)
-    return await _run(taskList.filter((task) => stateList.indexOf(task.taskId) !== -1))
+    return await _run(stateList.length ? taskList.filter((task) => stateList.indexOf(task.taskId) !== -1) : taskList)
 
     async function _run(
       _taskList: TaskList['result'],
@@ -208,8 +208,11 @@ async function doTaskByHeaders($: M, headers: ClientTypeHeaders) {
       await $.sleep(5000)
       await doTask($, _taskList, headers)
       await $.sleep(4000)
-      const stateList = await getTaskStateList($, headers)
-      await givenWater($, stateList.filter(({ taskState }) => taskState === 1), headers)
+      const stateList = (await getTaskStateList($, headers)).filter(({ taskState }) => taskState === 1).map((
+        { taskId },
+      ) => taskId)
+
+      await givenWater($, taskList.filter((task) => stateList.indexOf(task.taskId) !== -1), headers)
     }
   } catch (error) {
     $.logger.error('任务异常', error)

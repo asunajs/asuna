@@ -2,6 +2,8 @@ import type { LoggerType } from '@asunajs/utils'
 import type { ApiType, GardenApiType } from './api.js'
 import { Caiyun } from './options.d.js'
 
+export type { Caiyun }
+
 export interface M {
   api: ApiType
   gardenApi?: GardenApiType

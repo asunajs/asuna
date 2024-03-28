@@ -13,6 +13,7 @@ import type {
   NoteBooks,
   OpenBlindbox,
   Orchestration,
+  PcUploadFile,
   QuerySpecToken,
   Shake,
   SignInfoInWx,
@@ -235,6 +236,39 @@ export function createApi(http: Http) {
             'x-huawei-channelSrc': '10000023',
             'Content-Type': 'application/xml; charset=UTF-8',
           },
+        },
+      )
+    },
+    pcUploadFileRequest(
+      account: string | number,
+      parentCatalogID: string,
+      contentSize: number,
+      contentName: string,
+      digest: string,
+    ) {
+      return http.post<PcUploadFile>(
+        `${yun139Url}/orchestration/personalCloud/uploadAndDownload/v1.0/pcUploadFileRequest`,
+        {
+          commonAccountInfo: { account: String(account) },
+          fileCount: 1,
+          totalSize: contentSize,
+          uploadContentList: [
+            {
+              contentName: contentName,
+              contentSize: contentSize,
+              comlexFlag: 0,
+              digest: digest,
+            },
+          ],
+          newCatalogName: '',
+          parentCatalogID: parentCatalogID,
+          operation: 0,
+          path: '',
+          manualRename: 2,
+          autoCreatePath: [],
+          tagID: '',
+          tagType: '',
+          seqNo: '',
         },
       )
     },

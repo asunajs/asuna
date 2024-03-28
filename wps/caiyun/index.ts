@@ -1,9 +1,9 @@
 import { createApi, createGardenApi, createNewAuth, getJwtToken, M, run } from '@asign/caiyun-core'
-import type { Untyped } from '@asign/caiyun-core'
+import type { Caiyun } from '@asign/caiyun-core'
 import { createLogger, getAuthInfo, getHostname } from '@asign/utils-pure'
 import { createCookieJar, createRequest, getPushConfig, sendWpsNotify } from '@asign/wps-utils'
 
-type Config = Partial<Untyped> & {
+type Config = Partial<Caiyun> & {
   auth: string
   token?: string
   phone?: string
@@ -83,11 +83,12 @@ export async function main(index, config: Config, option?) {
   return await createNewAuth($)
 }
 
-const columnA = ActiveSheet.Columns('A')
 // 获取当前工作表的使用范围
-const usedRange = ActiveSheet.UsedRange
+const sheet = Application.Sheets.Item('移动云盘') || Application.Sheets.Item('caiyun') || ActiveSheet
+const usedRange = sheet.UsedRange
+const columnA = sheet.Columns('A')
 const len = usedRange.Row + usedRange.Rows.Count - 1,
-  BColumn = ActiveSheet.Columns('B')
+  BColumn = sheet.Columns('B')
 const pushData = []
 
 for (let i = 1; i <= len; i++) {

@@ -1,6 +1,6 @@
-import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
+import { getXmlElement, randomHex } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
-import { getParentCatalogID, uploadFileRequest } from './service.js'
+import { getParentCatalogID, pcUploadFileRequest } from './service.js'
 import type { M } from './types.js'
 
 export * from './api.js'
@@ -168,10 +168,7 @@ async function getNoteAuthToken($: M) {
 }
 
 async function uploadFileDaily($: M) {
-  await uploadFileRequest($, getParentCatalogID(), {
-    digest: 'D41D8CD98F00B204E9800998ECF8427E',
-    contentSize: 0,
-  })
+  await pcUploadFileRequest($, getParentCatalogID())
 }
 
 async function createNoteDaily($: M) {
@@ -198,7 +195,7 @@ async function _clickTask($: M, id: number, currstep: number) {
   const idCurrstepMap = {
     434: 22,
   }
-  if (idCurrstepMap[id]) {
+  if (idCurrstepMap[id] && currstep === idCurrstepMap[id]) {
     await clickTask($, id)
     return true
   }
@@ -213,7 +210,11 @@ async function dailyTask($: M) {
   const doingList: number[] = []
 
   for (const taskItem of day) {
-    if (taskItem.state === 'FINISH' || taskItem.enable !== 1) continue
+    if (taskItem.state === 'FINISH') {
+      $.logger.info(`${taskItem.name} 已完成`)
+      continue
+    }
+    if (taskItem.enable !== 1) continue
     if (await _clickTask($, taskItem.id, taskItem.currstep)) {
       await taskFuncList[taskItem.id]?.($)
       doingList.push(taskItem.id)
