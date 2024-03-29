@@ -27,6 +27,10 @@ export default defineConfig({
           label: '故障排除',
           link: '/errors/',
         },
+        {
+          label: '示例',
+          autogenerate: { directory: 'demo' },
+        },
       ],
       editLink: {
         baseUrl: 'https://github.com/asunajs/asign/edit/dev/docs',

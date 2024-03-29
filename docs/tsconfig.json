@@ -8,6 +8,9 @@
       ],
       "@assets/*": [
         "src/assets/*"
+      ],
+      "@imgs/*": [
+        "src/assets/images/*"
       ]
     }
   }
