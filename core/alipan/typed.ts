@@ -3,6 +3,7 @@ import { writeFileSync } from 'fs'
 
 export const config = z.object({
   token: z.string().describe('refresh_token'),
+  skipUpload: z.boolean().describe('是否跳过需要上传文件的任务'),
 }).describe('阿里云盘配置')
 
 const types = {

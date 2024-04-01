@@ -1,9 +1,14 @@
 import type { LoggerType } from '@asunajs/utils'
 import type { ApiType } from './api.js'
 
+import type { Alipan } from './options.js'
+
+export type Config = Alipan
+
 export interface M {
   api: ApiType
   logger: LoggerType
+  config: Alipan
   DATA: {
     'refreshToken'?: string
     'deviceId'?: string

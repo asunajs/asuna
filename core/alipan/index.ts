@@ -145,7 +145,7 @@ async function deviceRoomListHandle(deviceRooms: DeviceRoom['items']) {
   return {
     nofinishDevices: Array.from(nofinishDevices),
     rewardEnergys: Array.from(rewardEnergys),
-    okNum: okNum,
+    okNum,
   }
 }
 
@@ -326,6 +326,8 @@ async function signInTask($: M) {
 
   await request($, $.api.updateDeviceExtras, '上报备份')
 
+  if ($.config.skipUpload === true) return
+
   const needDeleteFiles = new Map<string, string>()
 
   for (let i = 0; i < 10; i++) {
@@ -357,7 +359,10 @@ async function printSignInInfo($: M) {
 }
 
 export async function run($: M) {
-  const taskList = [deviceRoomTask, signInTask, signIn, printSignInInfo]
+  const taskList = [signInTask, signIn, printSignInInfo]
+  if ($.config.skipUpload !== true) {
+    taskList.unshift(deviceRoomTask)
+  }
   for (const task of taskList) {
     await task($)
     await $.sleep(1000)

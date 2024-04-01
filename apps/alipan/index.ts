@@ -1,4 +1,4 @@
-import { createApi, type M, refreshToken, run as runCore } from '@asign/alipan-core'
+import { Config, createApi, type M, refreshToken, run as runCore } from '@asign/alipan-core'
 import { randomHex } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
@@ -17,10 +17,10 @@ function getXSignature(DATA: M['DATA'], userId: string) {
   return t || randomHex(128) + '01' // 随机生成有一定概率无效
 }
 
-export type Config = { token: string }
 export type Option = { pushData?: LoggerPushData[] }
 
-export async function main({ token }: Config, option?: Option) {
+export async function main(config: Config, option?: Option) {
+  const token = config.token
   if (!token) return
   const logger = await createLogger({ pushData: option?.pushData })
   const DATA = {
@@ -58,6 +58,7 @@ export async function main({ token }: Config, option?: Option) {
     logger: logger,
     DATA: DATA,
     sleep: sleep,
+    config,
   }
 
   const rtData = await refreshToken($, token.trim())

@@ -4,13 +4,20 @@
 
 refresh_token
 
+### `skipUpload`
+
+- **类型**: `布尔值`
+
+是否跳过需要上传文件的任务
+
 ### 示例
 
 ```json
 {
   "alipan": [
     {
-      "token": "absens"
+      "token": "socius",
+      "skipUpload": true
     }
   ]
 }
