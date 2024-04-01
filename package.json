@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "new:build": "turbo run build --no-cache --force",
     "test": "turbo run test",
     "schema": "turbo run schema --cache-dir=.turbo",
-    "ci:publish": "pnpm run build && pnpm publish --no-git-checks -F \"@asunajs/*\"",
+    "ci:publish": "turbo run build --filter=!docs && pnpm publish --no-git-checks -F \"@asunajs/*\"",
     "ci:version": "changeset version && pnpm install",
     "ci:publish:dist": "tsx build/mv-dist.ts && cd dist && pnpm publish --no-git-checks",
     "docs:dev": "pnpm --filter docs dev",

@@ -1,13 +1,4 @@
-import {
-  type ApiOptions,
-  bark,
-  type Email,
-  pushplus,
-  serverChan,
-  twoIm,
-  workWeixin,
-  workWeixinBot,
-} from '@asign/push-core'
+import { type ApiOptions, bark, type Email, pushplus, serverChan, workWeixin, workWeixinBot } from '@asign/push-core'
 import { createLogger } from '@asign/utils-pure'
 
 function getCookieJSON(cookie: string) {
@@ -196,11 +187,15 @@ export async function sendNotify(
   title: string,
   text: string,
 ) {
-  const cbs = { pushplus, serverChan, workWeixin, email, workWeixinBot, bark, twoIm }
+  const cbs = { pushplus, serverChan, workWeixin, email, workWeixinBot, bark }
   for (const [name, d] of Object.entries(data)) {
-    const cb = cbs[name]
-    if (!cb) continue
-    cb(op, d, title, text)
+    try {
+      const cb = cbs[name]
+      if (!cb) continue
+      cb(op, d, title, text)
+    } catch (error) {
+      op.logger.error('未知异常', error)
+    }
   }
 }
 

@@ -99,7 +99,7 @@ export async function serverChan(
     },
     data: {
       text: title,
-      desp: text.replaceAll('\n', '\n\n'),
+      desp: text.replace(/\n/g, '\n\n'),
       ...option,
     },
   })
