@@ -9,6 +9,11 @@ sidebar:
 
 [`@asunajs/alipan`](https://www.npmjs.com/package/@asunajs/alipan)
 
+## WPS 表名
+
+- `alipan`
+- `阿里云盘`
+
 ## 使用方法
 
 :::tip[提示]
