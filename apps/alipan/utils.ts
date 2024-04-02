@@ -1,5 +1,7 @@
 import { sha256 } from '@asunajs/utils'
-import { ecdsaSign, publicKeyCreate } from 'secp256k1'
+import secp256k1 from 'secp256k1'
+
+const { publicKeyCreate, ecdsaSign } = secp256k1
 
 export function getSignature(nonce: number, user_id: string, deviceId: string) {
   const toHex = (bytes: Uint8Array) => Buffer.from(bytes).toString('hex')
