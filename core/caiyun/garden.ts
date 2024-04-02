@@ -92,7 +92,7 @@ async function signInGarden($: M) {
 }
 
 async function clickCartoon($: M) {
-  const cartoonTypes = await request($, $.gardenApi.getCartoons, { name: '获取场景列表', defu: [] })
+  const cartoonTypes = await request($, $.gardenApi.getCartoons, { name: '获取已经完成的场景列表', defu: [] })
 
   await asyncForEach(
     (['cloud', 'color', 'widget', 'mail'] as const).filter(cart => !cartoonTypes.includes(cart)),
@@ -195,11 +195,13 @@ async function doTask(
 async function doTaskByHeaders($: M, headers: ClientTypeHeaders) {
   try {
     const taskList = await getTaskList($, headers)
-    const stateList = (await getTaskStateList($, headers)).reduce(
+    const _stateList = await getTaskStateList($, headers)
+    const stateList = _stateList.reduce(
       (arr, { taskId, taskState }) => taskState === 0 ? [...arr, taskId] : arr,
       [] as number[],
     )
     await $.sleep(1000)
+    if (_stateList.length && !stateList.length) return
     return await _run(stateList.length ? taskList.filter((task) => stateList.indexOf(task.taskId) !== -1) : taskList)
 
     async function _run(
@@ -237,7 +239,7 @@ async function givenWater(
         headers,
       )
       if (water === 0) $.logger.error(`领取${taskName}奖励失败`, msg)
-      else $.logger.debug(`领取${taskName}奖励`)
+      else $.logger.success(`领取${taskName}奖励`)
     },
     async () => await $.sleep(6000),
   )

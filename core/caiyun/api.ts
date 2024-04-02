@@ -387,7 +387,7 @@ export function createApi(http: Http) {
     blindboxUser() {
       return http.post<BlindboxUser>(
         `${caiyunUrl}/ycloud/blindbox/user/info`,
-        {},
+        { from: 'main' },
         {
           headers: {
             accept: 'application/json',
@@ -396,14 +396,16 @@ export function createApi(http: Http) {
       )
     },
     openBlindbox() {
+      return
       return http.post<OpenBlindbox>(
         `${caiyunUrl}/ycloud/blindbox/draw/openBox?from=main`,
-        {},
+        { from: 'main' },
         {
           headers: {
             'accept': 'application/json',
             'x-requested-with': 'cn.cj.pe',
-            'referer': 'https://caiyun.feixin.10086.cn/',
+            'referer':
+              'https://caiyun.feixin.10086.cn:7071/portal/caiyunOfficialAccount/index.html?path=blindBox&sourceid=1016',
             'origin': 'https://caiyun.feixin.10086.cn',
             'user-agent':
               'Mozilla/5.0 (Linux; Android 10; Redmi K20 Pro Build/QKQ1.190828.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.106 Mobile Safari/537.36(139PE_WebView_Android_10.2.2_mcloud139)',

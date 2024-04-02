@@ -1,4 +1,4 @@
-import { getXmlElement, randomHex } from '@asign/utils-pure'
+import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
 import { getParentCatalogID, pcUploadFileRequest } from './service.js'
 import type { M } from './types.js'
@@ -168,7 +168,10 @@ async function getNoteAuthToken($: M) {
 }
 
 async function uploadFileDaily($: M) {
-  await pcUploadFileRequest($, getParentCatalogID())
+  const contentID = await pcUploadFileRequest($, getParentCatalogID())
+  if (contentID) {
+    setStoreArray($.store, 'files', contentID)
+  }
 }
 
 async function createNoteDaily($: M) {
@@ -625,9 +628,9 @@ async function blindboxTask($: M) {
       $.logger.info('今日无机会')
       return
     }
-    for (let index = 0; index < result.chanceNum; index++) {
-      await openBlindbox($)
-    }
+    // for (let index = 0; index < result.chanceNum; index++) {
+    //   await openBlindbox($)
+    // }
   } catch (error) {
     $.logger.error('开盲盒任务异常', error)
   }
@@ -672,17 +675,17 @@ export async function run($: M) {
   const { config } = $
 
   const taskList = [
-    signIn,
-    signInWx,
-    wxDraw,
-    monthTaskOnMail,
-    dailyTask,
-    monthTask,
-    hotTask,
-    shareFindTask,
-    hc1Task,
+    // signIn,
+    // signInWx,
+    // wxDraw,
+    // monthTaskOnMail,
+    // dailyTask,
+    // monthTask,
+    // hotTask,
+    // shareFindTask,
+    // hc1Task,
     // blindboxTask,
-    receive,
+    // receive,
   ]
 
   if (config) {
