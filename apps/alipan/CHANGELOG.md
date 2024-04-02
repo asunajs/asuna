@@ -1,5 +1,13 @@
 # @asunajs/alipan
 
+## 0.1.3
+
+### Patch Changes
+
+- [#23](https://github.com/asunajs/as/pull/23) [`9a93640`](https://github.com/asunajs/as/commit/9a936405c019da48f82d9039040ed36a89331e83) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix: secp256k1 为 cjs 包
+
+- [`9c8c8c0`](https://github.com/asunajs/as/commit/9c8c8c01acc71282642a7ffe9f9664f0bb88d239) Thanks [@catlair](https://github.com/catlair)! - 不知道更新了啥，闭源后也不计较这些了
+
 ## 0.1.2
 
 ### Patch Changes

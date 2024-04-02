@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.1.3
+
+### Patch Changes
+
+- [`d866739`](https://github.com/asunajs/as/commit/d866739fb1291e9e1d40ca2e08f2e9cede211319) Thanks [@catlair](https://github.com/catlair)! - perf: 优化果园任务完成判断
+
 ## 0.1.2
 
 ### Patch Changes
