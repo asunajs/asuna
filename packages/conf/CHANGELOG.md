@@ -1,5 +1,11 @@
 # @asunajs/conf
 
+## 0.0.6
+
+### Patch Changes
+
+- [`75c46cb`](https://github.com/asunajs/as/commit/75c46cbf4dc1b5ad7d40245479f26f1c553f033c) Thanks [@catlair](https://github.com/catlair)! - fix: 使用绝对路径调用脚本时配置路径问题
+
 ## 0.0.4
 
 ### Patch Changes
