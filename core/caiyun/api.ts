@@ -396,7 +396,6 @@ export function createApi(http: Http) {
       )
     },
     openBlindbox() {
-      return
       return http.post<OpenBlindbox>(
         `${caiyunUrl}/ycloud/blindbox/draw/openBox?from=main`,
         { from: 'main' },

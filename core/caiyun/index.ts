@@ -273,7 +273,7 @@ async function monthTaskOnMail($: M) {
   const { month } = await request(
     $,
     $.api.getTaskList,
-    '获取任务列表',
+    '获取邮箱任务列表',
     'newsign_139mail',
   )
   if (!month) return
@@ -582,10 +582,11 @@ async function openBlindbox($: M) {
       case 0:
         return $.logger.info('获得', result.prizeName)
       case 200105:
+        return $.logger.debug('什么都没有哦')
       case 200106:
-        return $.logger.info(code, msg)
+        return $.logger.fail('异常', code, msg)
       default:
-        return $.logger.warn('开盲盒失败', code, msg)
+        return $.logger.warn('未知原因失败', code, msg)
     }
   } catch (error) {
     $.logger.error('openBlindbox 异常', error)
@@ -600,6 +601,9 @@ async function getBlindboxCount($: M) {
   try {
     const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务')
     if (!taskList) return
+
+    console.log(taskList)
+    return
     const taskIds = taskList.reduce((taskIds, task) => {
       if (task.status === 0) taskIds.push(task.taskId)
       return taskIds
@@ -615,11 +619,14 @@ async function blindboxTask($: M) {
   $.logger.fail('bug 修复中，跳过')
   return
   try {
-    await getBlindboxCount($)
+    // await getBlindboxCount($)
     const { result, code, msg } = await $.api.blindboxUser()
     if (!result || code !== 0) {
       $.logger.error('获取盲盒信息失败', code, msg)
-      return await openBlindbox($)
+      // return await openBlindbox($)
+    }
+    if (result.firstTime) {
+      $.logger.success('今日首次登录，获取次数 +1')
     }
     if (result.isChinaMobile === 1) {
       $.logger.debug(`尊敬的移不动用户`)
@@ -675,17 +682,17 @@ export async function run($: M) {
   const { config } = $
 
   const taskList = [
-    // signIn,
-    // signInWx,
-    // wxDraw,
-    // monthTaskOnMail,
-    // dailyTask,
-    // monthTask,
-    // hotTask,
-    // shareFindTask,
-    // hc1Task,
-    // blindboxTask,
-    // receive,
+    signIn,
+    signInWx,
+    wxDraw,
+    monthTaskOnMail,
+    dailyTask,
+    monthTask,
+    hotTask,
+    shareFindTask,
+    hc1Task,
+    blindboxTask,
+    receive,
   ]
 
   if (config) {

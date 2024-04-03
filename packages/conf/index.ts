@@ -13,12 +13,26 @@ import { parseYAML, setInYAML } from './yaml.js'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /**
+ * 获取运行文件所在目录
+ */
+function _getFileDir() {
+  try {
+    if (['.js', '.mjs', '.cjs', '.ts', '.mts', '.cts'].find(ext => ext === extname(process.argv[1]))) {
+      return dirname(process.argv[1])
+    }
+    return __dirname
+  } catch {
+    return __dirname
+  }
+}
+
+/**
  * 获取配置文件路径
  * 配置文件可能有以下几种地方：
  * 1. cwd()
- * 2. __dirname
+ * 2. 运行文件的目录
  * 3. cwd() -> ./config
- * 4. __dirname -> ./config
+ * 4. 运行文件的目录 -> ./config
  * 配置文件可能文件名
  * asign.yaml asign.yml
  * asign.json asign.json5
@@ -40,7 +54,8 @@ export function getConfigPath() {
     'asign.yaml',
     'asign.yml',
   ]
-  const dirs = [cwd, `${cwd}/config`, __dirname, `${__dirname}/config`]
+  const dirname = _getFileDir()
+  const dirs = [cwd, `${cwd}/config`, dirname, `${dirname}/config`]
 
   for (const dir of dirs) {
     for (const file of files) {
