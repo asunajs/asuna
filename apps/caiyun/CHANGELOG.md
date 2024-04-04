@@ -1,5 +1,13 @@
 # @asunajs/caiyun
 
+## 0.1.5
+
+### Patch Changes
+
+- [`d1a6c6b`](https://github.com/asunajs/as/commit/d1a6c6ba6cd1ee1eb2ee52342f6224ac0e5463c0) Thanks [@catlair](https://github.com/catlair)! - feat: 添加上月备份奖励领取
+
+- [`17bedd3`](https://github.com/asunajs/as/commit/17bedd3264713d2386c2e0717845c3fcec93542b) Thanks [@catlair](https://github.com/catlair)! - perf: 优化等待和日志逻辑
+
 ## 0.1.4
 
 ### Patch Changes
