@@ -1,0 +1,24 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[json5]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "oxc_language_server.configPath": "../eslintrc.json"
+}

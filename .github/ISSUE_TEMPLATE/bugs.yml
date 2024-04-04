@@ -1,0 +1,59 @@
+name: Bug 反馈
+description: 如果您发现了一个错误，请在此提交您的错误报告。
+title: '[Bug]: '
+labels: ['问题']
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间填写这个 bug 报告!
+        在你填写之前你应该确认看过相关文档，然后查找 issue，确定该问题没有被提到（除非原问题已经被关闭）然后在提交该报告。
+  - type: textarea
+    id: type
+    attributes:
+      label: 模块类型
+      description: 反馈的 Bug 出现在什么地方？例如 caiyun、alipan、或者通用（如配置系统、日志系统），如果是 caiyun 这种，请附带版本
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: 运行环境和版本
+      description: 您的程序是运行在什么环境下的，是什么版本的软件？
+      placeholder: 腾讯云函数、本地 Windows11、MacOS、青龙面板 2.13.2 等。
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 还有，告诉我们，你希望发生什么，能否复现？有截图？
+      placeholder: 告诉我们你看到了什么!
+    validations:
+      required: true
+  - type: textarea
+    id: what-expected
+    attributes:
+      label: 预期的结果
+      description: 如果没有错误，将会是什么样的？
+      placeholder: 告诉我们它应该是怎么样的!
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关的日志输出
+      description: 请复制并粘贴任何相关的日志输出。 这将自动格式化为代码，因此无需背板。
+      render: shell
+  - type: textarea
+    id: config
+    attributes:
+      label: 相关的配置，注意个人隐私。
+      description: 请复制并粘贴任何相关配置（例如 jury 问题直接贴出 jury 部分的配置）。
+      render: txt
+  - type: textarea
+    id: help-me
+    attributes:
+      label: 有效的帮助
+      description: 对此您能提供什么有效的帮助？
+      placeholder: 告诉我们您能提供的帮助!
