@@ -200,8 +200,8 @@ async function doTaskByHeaders($: M, headers: ClientTypeHeaders) {
       (arr, { taskId, taskState }) => taskState === 0 ? [...arr, taskId] : arr,
       [] as number[],
     )
-    await $.sleep(1000)
     if (_stateList.length && !stateList.length) return
+    await $.sleep(2000)
     return await _run(stateList.length ? taskList.filter((task) => stateList.indexOf(task.taskId) !== -1) : taskList)
 
     async function _run(
@@ -213,7 +213,7 @@ async function doTaskByHeaders($: M, headers: ClientTypeHeaders) {
       const stateList = (await getTaskStateList($, headers)).filter(({ taskState }) => taskState === 1).map((
         { taskId },
       ) => taskId)
-
+      await $.sleep(200)
       await givenWater($, taskList.filter((task) => stateList.indexOf(task.taskId) !== -1), headers)
     }
   } catch (error) {

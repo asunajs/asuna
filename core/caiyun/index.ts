@@ -147,6 +147,7 @@ async function clickTask($: M, task: number) {
 
 async function deleteFiles($: M, ids: string[]) {
   try {
+    $.logger.debug(`删除文件${ids.join(',')}`)
     const {
       data: {
         createBatchOprTaskRes: { taskID },
@@ -602,42 +603,39 @@ async function getBlindboxCount($: M) {
     const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务')
     if (!taskList) return
 
-    console.log(taskList)
-    return
     const taskIds = taskList.reduce((taskIds, task) => {
       if (task.status === 0) taskIds.push(task.taskId)
       return taskIds
     }, [])
     for (const taskId of taskIds) {
       await registerBlindboxTask($, taskId)
+      await $.sleep(1000)
     }
   } catch (error) {}
 }
 
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
-  $.logger.fail('bug 修复中，跳过')
-  return
+  $.logger.debug('bug 修复中，测试中，可能导致无效开启')
   try {
-    // await getBlindboxCount($)
+    await getBlindboxCount($)
+    await $.sleep(666)
     const { result, code, msg } = await $.api.blindboxUser()
     if (!result || code !== 0) {
       $.logger.error('获取盲盒信息失败', code, msg)
-      // return await openBlindbox($)
+      return await openBlindbox($)
     }
     if (result.firstTime) {
       $.logger.success('今日首次登录，获取次数 +1')
-    }
-    if (result.isChinaMobile === 1) {
-      $.logger.debug(`尊敬的移不动用户`)
     }
     if (result?.chanceNum === 0) {
       $.logger.info('今日无机会')
       return
     }
-    // for (let index = 0; index < result.chanceNum; index++) {
-    //   await openBlindbox($)
-    // }
+    for (let index = 0; index < result.chanceNum; index++) {
+      await openBlindbox($)
+      await $.sleep(1000)
+    }
   } catch (error) {
     $.logger.error('开盲盒任务异常', error)
   }
@@ -691,7 +689,6 @@ export async function run($: M) {
     hotTask,
     shareFindTask,
     hc1Task,
-    blindboxTask,
     receive,
   ]
 
@@ -701,6 +698,9 @@ export async function run($: M) {
     }
     if (config.shake && config.shake.enable) {
       taskList.push(shakeTask)
+    }
+    if (config.blindbox && config.blindbox.enable) {
+      taskList.push(blindboxTask)
     }
   }
 
@@ -742,14 +742,17 @@ export function getTokenExpireTime(token: string) {
  * 获取是否需要刷新
  * @description 有效期 30 天，还有 5 天，需要刷新
  */
-export function isNeedRefresh(token: string) {
-  const expireTime = getTokenExpireTime(token)
+export function isNeedRefresh(expireTime: number) {
   return expireTime - Date.now() < 432000000
 }
 
 export async function createNewAuth($: M) {
   const config = $.config
-  if (!isNeedRefresh(config.token)) {
+  const expireTime = getTokenExpireTime(config.token)
+  // 打印还有多少天过期
+  $.logger.debug(`------【检测账号有效期】------`)
+  $.logger.debug(`token 有效期 ${Math.floor((expireTime - Date.now()) / 86400000)} 天`)
+  if (!isNeedRefresh(expireTime)) {
     return
   }
   $.logger.info('尝试生成新的 auth')

@@ -36,4 +36,13 @@ export interface Caiyun {
      */
     digest?: string
   }
+  /**
+   * 盲盒配置
+   */
+  blindbox?: {
+    /**
+     * 是否开启该功能
+     */
+    enable?: boolean
+  }
 }
