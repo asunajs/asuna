@@ -1,29 +1,12 @@
 import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { gardenTask } from './garden.js'
 import { getParentCatalogID, pcUploadFileRequest } from './service.js'
+import { taskExpansionTask } from './service/taskExpansion.js'
 import type { M } from './types.js'
+import { request } from './utils/index.js'
 
 export * from './api.js'
 export * from './types.js'
-
-async function request<T extends (...args: any[]) => any>(
-  $: M,
-  api: T,
-  name: string,
-  ...args: Parameters<T>
-): Promise<Awaited<ReturnType<T>>['result']> {
-  try {
-    const { code, message, msg, result } = await api(...args)
-    if (code !== 0) {
-      $.logger.fatal(`${name}失败`, code, message || msg)
-    } else {
-      return result
-    }
-  } catch (error) {
-    $.logger.error(`${name}异常`, error)
-  }
-  return {}
-}
 
 export async function getSsoTokenApi($: M, phone: number | string) {
   try {
@@ -681,6 +664,7 @@ export async function run($: M) {
 
   const taskList = [
     signIn,
+    taskExpansionTask,
     signInWx,
     wxDraw,
     monthTaskOnMail,

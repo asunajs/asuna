@@ -1,5 +1,6 @@
 import type { Http } from '@asign/types'
 import { hashCode } from '@asign/utils-pure'
+import { createSignInApi } from './api/signin.js'
 import type { TaskList } from './TaskType.js'
 import type {
   BatchList,
@@ -429,6 +430,7 @@ export function createApi(http: Http) {
         `${caiyunUrl}/market/signin/public/cloudRecord?type=${type}&pageNumber=${pn}&pageSize=${ps}`,
       )
     },
+    ...createSignInApi(http),
   }
 }
 
