@@ -14,6 +14,7 @@ export async function transform(inputCode: string) {
     .replaceAll('logger.start', 'logger.info')
     .replaceAll('logger.success', 'logger.info')
     .replaceAll('logger.fail', 'logger.info')
+    .replaceAll('logger.trace', 'logger.info')
     .replaceAll('logger.fatal', 'logger.error')
 
   return await swc.transform(code, {

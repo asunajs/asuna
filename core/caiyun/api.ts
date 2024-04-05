@@ -22,7 +22,7 @@ import type {
   TyrzLogin,
 } from './types.js'
 
-export * from './gardenApi.js'
+export * from './api/garden.js'
 
 export function createApi(http: Http) {
   const yun139Url = 'https://yun.139.com'

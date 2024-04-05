@@ -1,6 +1,7 @@
 import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
-import { gardenTask } from './garden.js'
+import { TASK_LIST } from './constant/taskList.js'
 import { getParentCatalogID, pcUploadFileRequest } from './service.js'
+import { gardenTask } from './service/garden.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
 import type { M } from './types.js'
 import { request } from './utils/index.js'
@@ -189,34 +190,6 @@ async function _clickTask($: M, id: number, currstep: number) {
   return currstep === 0 ? await clickTask($, id) : true
 }
 
-async function dailyTask($: M) {
-  $.logger.start('------【每日】------')
-  const { day } = await request($, $.api.getTaskList, '获取任务列表')
-  if (!day || !day.length) return $.logger.info(`无任务列表，结束`)
-  const taskFuncList = { 106: uploadFileDaily, 107: createNoteDaily }
-  const doingList: number[] = []
-
-  for (const taskItem of day) {
-    if (taskItem.state === 'FINISH') {
-      $.logger.info(`${taskItem.name} 已完成`)
-      continue
-    }
-    if (taskItem.enable !== 1) continue
-    if (await _clickTask($, taskItem.id, taskItem.currstep)) {
-      await taskFuncList[taskItem.id]?.($)
-      doingList.push(taskItem.id)
-    }
-  }
-
-  if (doingList.length) {
-    const { day } = await request($, $.api.getTaskList, '获取任务列表')
-    if (!day || !day.length) return
-    for (const taskItem of day) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
-    }
-  }
-}
-
 async function shareTime($: M) {
   try {
     const files = $.store.files
@@ -236,93 +209,8 @@ async function shareTime($: M) {
   }
 }
 
-async function hotTask($: M) {
-  $.logger.start('------【热门任务】------')
-  const { time } = await request($, $.api.getTaskList, '获取任务列表')
-  if (!time) return
-  const taskIds = [434]
-  const taskFuncList = { 434: shareTime }
-
-  for (const taskItem of time) {
-    if (taskItem.state === 'FINISH' || taskItem.enable !== 1) continue
-    if (!taskIds.includes(taskItem.id)) continue
-    if (await _clickTask($, taskItem.id, taskItem.currstep)) {
-      ;(await taskFuncList[taskItem.id]?.($))
-        && $.logger.success(`完成：${taskItem.name}`)
-    }
-  }
-}
-
-async function monthTaskOnMail($: M) {
-  const { month } = await request(
-    $,
-    $.api.getTaskList,
-    '获取邮箱任务列表',
-    'newsign_139mail',
-  )
-  if (!month) return
-  const doingList: number[] = []
-
-  for (const taskItem of month) {
-    if (![1008, 1009, 1010, 1013, 1014, 1016, 1017].includes(taskItem.id)) continue
-    if (taskItem.state === 'FINISH') continue
-    if (await _clickTask($, taskItem.id, taskItem.currstep)) {
-      doingList.push(taskItem.id)
-    }
-  }
-
-  if (doingList.length) {
-    const { month } = await request(
-      $,
-      $.api.getTaskList,
-      '获取任务列表',
-      'newsign_139mail',
-    )
-    if (!month) return
-    for (const taskItem of month) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
-    }
-  }
-}
-
-async function loginPc($: M) {
-  return await refreshToken($)
-}
-
-async function monthTask($: M) {
-  const { month } = await request(
-    $,
-    $.api.getTaskList,
-    '获取任务列表',
-  )
-  if (!month) return
-  const doingList: number[] = []
-  const taskFuncList = { 113: loginPc }
-
-  for (const taskItem of month) {
-    if (![113].includes(taskItem.id)) continue
-    if (taskItem.state === 'FINISH') continue
-    if (await _clickTask($, taskItem.id, taskItem.currstep)) {
-      await taskFuncList[taskItem.id]?.($)
-      doingList.push(taskItem.id)
-    }
-  }
-
-  if (doingList.length) {
-    const { month } = await request(
-      $,
-      $.api.getTaskList,
-      '获取任务列表',
-    )
-    if (!month) return
-    for (const taskItem of month) {
-      if (doingList.includes(taskItem.id) && taskItem.state === 'FINISH') $.logger.success(`完成：${taskItem.name}`)
-    }
-  }
-}
-
 async function getAppTaskList($: M, marketname: 'sign_in_3' | 'newsign_139mail' = 'sign_in_3') {
-  const { month, day, time, new: new_ } = await request(
+  const { month = [], day = [], time = [], new: new_ = [] } = await request(
     $,
     $.api.getTaskList,
     '获取任务列表',
@@ -332,79 +220,55 @@ async function getAppTaskList($: M, marketname: 'sign_in_3' | 'newsign_139mail' 
   return [...month, ...day, ...time, ...new_]
 }
 
+async function getAllAppTaskList($: M) {
+  const list1 = await getAppTaskList($, 'sign_in_3')
+  const list2 = await getAppTaskList($, 'newsign_139mail')
+
+  return list1.concat(list2)
+}
+
+function getTaskRunner() {
+  return {
+    113: refreshToken,
+    106: uploadFileDaily,
+    107: createNoteDaily,
+    434: shareTime,
+  }
+}
+
 async function appTask($: M) {
-  // 邮箱支持的任务列表
-  const emailTaskList = {
-    1008: {
-      name: '去“发现广场”浏览精彩内容',
-      id: 1008,
-      runner: false,
-      group: 'month',
-    },
-    1009: {
-      name: '前往“云盘”查看个人动态',
-      id: 1009,
-      runner: false,
-      group: 'month',
-    },
-    1010: {
-      name: '浏览限免影视大片',
-      id: 1010,
-      runner: false,
-      group: 'month',
-    },
-    1013: {
-      name: '查看“我的附件”',
-      id: 1013,
-      runner: false,
-      group: 'month',
-    },
-    1014: {
-      name: '体验“PDF转换”功能',
-      id: 1014,
-      runner: false,
-      group: 'month',
-    },
-    1016: {
-      name: '体验“云笔记”功能',
-      id: 1016,
-      runner: false,
-      group: 'month',
-    },
-    1017: {
-      name: '登录移动云盘APP云朵中心',
-      id: 1017,
-      runner: false,
-      group: 'month',
-    },
+  $.logger.start('------【任务列表】------')
+  const taskList = await getAllAppTaskList($)
+  const taskRunner = getTaskRunner()
+
+  const doingList: number[] = []
+
+  // 后续可能有的任务需要主动排序
+  taskList.sort((a, b) => a.id - b.id)
+
+  for (const task of taskList) {
+    if (task.state === 'FINISH' || task.enable !== 1) continue
+    if (TASK_LIST[task.id]) {
+      if (await _clickTask($, task.id, task.currstep)) {
+        await taskRunner[task.id]?.($)
+        doingList.push(task.id)
+        await $.sleep(500)
+      }
+    }
   }
 
-  // 移动云盘支持的任务列表
-  const cloudTaskList = {
-    113: {
-      name: '使用PC客户端',
-      id: 113,
-      runner: false,
-      groupid: 'month',
-    },
-    106: {
-      name: '手动上传一个文件',
-      id: 106,
-      runner: uploadFileDaily,
-      group: 'day',
-    },
-    107: {
-      name: '创建一篇云笔记',
-      id: 107,
-      runner: createNoteDaily,
-      group: 'day',
-    },
-    434: {
-      name: '分享文件有好礼',
-      id: 434,
-      runner: undefined,
-      group: 'day',
-    },
+  const skipCheck = [434]
+
+  if (doingList.length) {
+    for (const task of await getAllAppTaskList($)) {
+      if (doingList.includes(task.id)) {
+        if (task.state === 'FINISH') {
+          $.logger.success('成功', task.name)
+        } else {
+          !skipCheck.includes(task.id) && $.logger.fail('失败', task.name)
+        }
+      }
+    }
   }
 }
 
@@ -591,6 +455,7 @@ async function getBlindboxCount($: M) {
       return taskIds
     }, [])
     for (const taskId of taskIds) {
+      $.logger.debug('注册盲盒任务', taskId)
       await registerBlindboxTask($, taskId)
       await $.sleep(1000)
     }
@@ -601,8 +466,6 @@ async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
   $.logger.debug('bug 修复中，测试中，可能导致无效开启')
   try {
-    await getBlindboxCount($)
-    await $.sleep(666)
     const { result, code, msg } = await $.api.blindboxUser()
     if (!result || code !== 0) {
       $.logger.error('获取盲盒信息失败', code, msg)
@@ -611,6 +474,8 @@ async function blindboxTask($: M) {
     if (result.firstTime) {
       $.logger.success('今日首次登录，获取次数 +1')
     }
+    await $.sleep(666)
+    await getBlindboxCount($)
     if (result?.chanceNum === 0) {
       $.logger.info('今日无机会')
       return
@@ -667,10 +532,7 @@ export async function run($: M) {
     taskExpansionTask,
     signInWx,
     wxDraw,
-    monthTaskOnMail,
-    dailyTask,
-    monthTask,
-    hotTask,
+    appTask,
     shareFindTask,
     hc1Task,
     receive,

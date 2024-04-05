@@ -1,6 +1,15 @@
 import type { Http } from '@asign/types'
-import type { Cartoons, CartoonType, InitTree, TaskList } from './GardenType.js'
-import type { CartoonResult, GivenTask, SignIn, SignInfo, TaskResult } from './GardenType.js'
+import type {
+  CartoonResult,
+  Cartoons,
+  CartoonType,
+  GivenTask,
+  InitTree,
+  SignIn,
+  SignInfo,
+  TaskList,
+  TaskResult,
+} from '../types/garden.js'
 
 export interface ClientTypeHeaders {
   'user-agent'?: string

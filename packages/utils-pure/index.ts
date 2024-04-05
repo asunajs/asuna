@@ -39,10 +39,18 @@ export function createLogger(options?: { pushData: LoggerPushData[] }) {
     }
     console[type](...args)
   }
+  const info = (...args: any[]) => wrap('info', ...args),
+    error = (...args: any[]) => wrap('error', ...args)
   return {
-    info: (...args: any[]) => wrap('info', ...args),
-    error: (...args: any[]) => wrap('error', ...args),
-    debug: (...args: any[]) => wrap('info', ...args),
+    info,
+    error,
+    fatal: error,
+    debug: info,
+    start: info,
+    success: info,
+    fail: info,
+    trace: info,
+    warn: (...args: any[]) => wrap('warn', ...args),
   }
 }
 

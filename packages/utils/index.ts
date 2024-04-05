@@ -10,7 +10,24 @@ export function sleep(time: number) {
 }
 
 export interface LoggerPushData {
-  level: number
+  /**
+   * 0 fatal and error
+   *
+   * 1 warn
+   *
+   * 2 normal
+   *
+   * 3 info success fail ready start
+   *
+   * 4 debug
+   *
+   * 5 trace
+   *
+   * 999 verbose
+   *
+   * -999 silent
+   */
+  level: 0 | 1 | 2 | 3 | 4 | 5 | -999 | 999 | number
   type: string
   msg: string
   date: Date
