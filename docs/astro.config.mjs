@@ -8,7 +8,7 @@ export default defineConfig({
     starlight({
       title: 'ASign.js',
       social: {
-        github: 'https://github.com/asunajs/asign',
+        github: 'https://github.com/asunajs/asuna',
       },
       sidebar: [
         {
@@ -33,7 +33,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: 'https://github.com/asunajs/asign/edit/dev/docs',
+        baseUrl: 'https://github.com/asunajs/asuna/edit/dev/docs',
       },
       locales: {
         root: {
