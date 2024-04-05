@@ -150,3 +150,8 @@ asign.ls.json
 packages/demo
 
 .npmrc
+docs/.astro
+
+Cargo.lock
+
+target
