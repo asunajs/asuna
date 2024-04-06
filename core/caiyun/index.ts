@@ -202,7 +202,10 @@ async function shareTime($: M) {
       [files[0]],
       '',
     )
-    if (code === '0') return true
+    if (code === '0') {
+      $.logger.success(`分享链接成功`)
+      return true
+    }
     $.logger.fail(`分享链接失败`, code, message)
   } catch (error) {
     $.logger.error(`分享链接异常`, error)
@@ -248,7 +251,14 @@ async function appTask($: M) {
 
   for (const task of taskList) {
     if (task.state === 'FINISH' || task.enable !== 1) continue
+
     if (TASK_LIST[task.id]) {
+      // 在没开启备份的前提下，本月 20 号前不做 app 的月任务
+      if (task.marketname === 'sign_in_3' && task.groupid === 'month' && new Date().getDate() < 20) {
+        $.logger.debug('透过任务（未开启备份）', task.name)
+        continue
+      }
+
       if (await _clickTask($, task.id, task.currstep)) {
         await taskRunner[task.id]?.($)
         doingList.push(task.id)
@@ -445,10 +455,18 @@ async function registerBlindboxTask($: M, taskId: number) {
   await request($, $.api.registerBlindboxTask, '注册盲盒', taskId)
 }
 
-async function getBlindboxCount($: M) {
+async function getBlindboxCount($: M, isChinaMobile: boolean) {
   try {
     const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务')
     if (!taskList) return
+
+    if (!isChinaMobile) {
+      // 从 taskList 中删除 id 78 139邮箱阅读账单 79 去139邮箱APP写邮件
+      ;[78, 79].forEach((id) => {
+        const index = taskList.findIndex((task) => task.taskId === id)
+        if (index !== -1) taskList.splice(index, 1)
+      })
+    }
 
     const taskIds = taskList.reduce((taskIds, task) => {
       if (task.status === 0) taskIds.push(task.taskId)
@@ -466,16 +484,17 @@ async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
   $.logger.debug('bug 修复中，测试中，可能导致无效开启')
   try {
-    const { result, code, msg } = await $.api.blindboxUser()
-    if (!result || code !== 0) {
+    const { result: r1, code, msg } = await $.api.blindboxUser()
+    if (!r1 || code !== 0) {
       $.logger.error('获取盲盒信息失败', code, msg)
       return await openBlindbox($)
     }
-    if (result.firstTime) {
+    if (r1.firstTime) {
       $.logger.success('今日首次登录，获取次数 +1')
     }
     await $.sleep(666)
-    await getBlindboxCount($)
+    await getBlindboxCount($, r1.isChinaMobile === 1)
+    const { result } = await $.api.blindboxUser()
     if (result?.chanceNum === 0) {
       $.logger.info('今日无机会')
       return

@@ -21,6 +21,7 @@ export interface M {
   sleep: (time: number) => Promise<number>
   store: {
     files?: string[]
+    curMonthBackup?: boolean
     [key: string]: any
   }
   localStorage: {
