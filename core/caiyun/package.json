@@ -7,6 +7,14 @@
   "files": [
     "index.js"
   ],
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./options": {
+      "import": "./options.ts"
+    }
+  },
   "scripts": {
     "schema": "tsx typed.ts"
   },

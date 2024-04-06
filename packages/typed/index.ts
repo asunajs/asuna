@@ -11,6 +11,10 @@ import { getPath } from '@dprint/markdown'
 import { readFileSync } from 'node:fs'
 import { generateMarkdown as _gMarkdown, type Schema } from './json2md.js'
 
+export function getDefulat(schema: ZodType<any>) {
+  return defaults(zodToJsonSchema(schema))
+}
+
 export function generateSchemas(schemas: Record<string, ZodType<any>>) {
   return Object.fromEntries(
     Object.entries(schemas).map(([key, schema]) => {

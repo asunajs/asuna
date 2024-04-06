@@ -74,7 +74,9 @@ async function initTree($: M) {
     $.gardenApi.initTree,
     '初始化果园',
   )
+  if (!nickName) return false
   $.logger.info(`${nickName}拥有${treeLevel}级果树，当前水滴${collectWater}`)
+  return true
 }
 
 async function signInGarden($: M) {
@@ -252,7 +254,10 @@ export async function gardenTask($: M) {
     if (!token) return $.logger.error(`跳过果园任务`)
     await loginGarden($, token, $.config.phone)
 
-    await initTree($)
+    if (!(await initTree($))) {
+      $.logger.warn('获取果园信息失败，请确认已经激活果园')
+      return
+    }
 
     await signInGarden($)
 

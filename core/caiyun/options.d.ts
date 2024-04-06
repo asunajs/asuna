@@ -28,7 +28,7 @@ export interface Caiyun {
    */
   garden?: {
     /**
-     * 是否开启该功能
+     * 是否开启该功能，需要注意的是果园需要自己去 APP 手动激活一下，否则等待你的全是报错
      */
     enable?: boolean
     /**
@@ -41,7 +41,7 @@ export interface Caiyun {
    */
   blindbox?: {
     /**
-     * 是否开启该功能
+     * 是否开启该功能，目前测试中，请不要开启
      */
     enable?: boolean
   }

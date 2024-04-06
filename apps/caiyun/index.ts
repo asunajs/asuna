@@ -7,24 +7,24 @@ import {
   type M,
   run as runCore,
 } from '@asign/caiyun-core'
+import { defuConfig } from '@asign/caiyun-core/options'
 import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
 import { createRequest, type NormalizedOptions } from '@catlair/node-got'
+import { defu } from 'defu'
 import { CookieJar } from 'tough-cookie'
 
-export type Config = {
-  token?: string
-  auth: string
-}
+export type Config = M['config']
 export type Option = { pushData?: LoggerPushData[] }
 
 export async function main(
-  config: any,
+  config: Config,
   localStorage: M['localStorage'] = {},
   option?: Option,
 ) {
+  config = defu(config, defuConfig)
   const logger = await createLogger({ pushData: option?.pushData })
   if (config.phone.length !== 11 || !config.phone.startsWith('1')) {
     logger.info(`auth 格式解析错误，请查看是否填写正确的 auth`)

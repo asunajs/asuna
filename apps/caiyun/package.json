@@ -23,13 +23,14 @@
     "@asunajs/conf": "workspace:^",
     "@asunajs/push": "workspace:^",
     "@catlair/node-got": "^0.0.10",
+    "defu": "^6.1.4",
     "tough-cookie": "^4.1.3"
   },
   "devDependencies": {
     "@asign/build": "workspace:^",
     "@asign/caiyun-core": "workspace:^",
-    "@asunajs/utils": "workspace:^",
     "@asign/utils-pure": "workspace:^",
+    "@asunajs/utils": "workspace:^",
     "@types/tough-cookie": "^4.0.5",
     "dotenv": "^16.4.4"
   },
