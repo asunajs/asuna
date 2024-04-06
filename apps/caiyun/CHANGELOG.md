@@ -1,5 +1,13 @@
 # @asunajs/caiyun
 
+## 0.1.6
+
+### Patch Changes
+
+- [`c26cc73`](https://github.com/asunajs/asuna/commit/c26cc73adbedda6c08b05a769cd261b3b1838194) Thanks [@catlair](https://github.com/catlair)! - feat: 在未备份时跳过双倍任务
+
+- [`f5534f6`](https://github.com/asunajs/asuna/commit/f5534f68dfb21879574256c3b798d3fb7db6870d) Thanks [@catlair](https://github.com/catlair)! - feat: 添加配置默认值
+
 ## 0.1.5
 
 ### Patch Changes
