@@ -20,5 +20,6 @@
   "[toml]": {
     "editor.defaultFormatter": "dprint.dprint"
   },
-  "oxc_language_server.configPath": "../eslintrc.json"
+  "oxc_language_server.configPath": "../eslintrc.json",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

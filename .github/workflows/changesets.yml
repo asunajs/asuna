@@ -39,6 +39,7 @@ jobs:
 
       - name: create and publish versions
         uses: changesets/action@v1.4.6
+        id: changesets
         with:
           publish: pnpm ci:publish
           version: pnpm ci:version
@@ -47,3 +48,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish dist
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm run ci:pub:dist
