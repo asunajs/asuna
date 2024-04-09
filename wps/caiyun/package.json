@@ -15,7 +15,6 @@
     "@asign/build": "workspace:^",
     "@asign/caiyun-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
-    "@asign/wps-utils": "workspace:^",
-    "@swc/core": "^1.4.1"
+    "@asign/wps-utils": "workspace:^"
   }
 }

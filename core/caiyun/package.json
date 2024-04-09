@@ -13,6 +13,9 @@
     },
     "./options": {
       "import": "./options.ts"
+    },
+    "./service": {
+      "import": "./service.ts"
     }
   },
   "scripts": {

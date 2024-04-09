@@ -5,19 +5,20 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "new:build": "turbo run build --no-cache --force",
+    "new:build": "turbo run build --force",
     "test": "turbo run test",
     "schema": "turbo run schema --cache-dir=.turbo",
     "ci:publish": "turbo run build --filter=!docs && pnpm publish --no-git-checks -F \"@asunajs/*\"",
     "ci:version": "changeset version && pnpm install",
-    "ci:publish:dist": "tsx build/mv-dist.ts && cd dist && pnpm publish --no-git-checks",
+    "ci:pub:dist": "tsx build/mv-dist.ts && cd dist && pnpm publish --no-git-checks",
     "docs:dev": "pnpm --filter docs dev",
     "docs:build": "pnpm --filter docs build",
     "docs:preview": "pnpm --filter docs preview",
     "docs:start": "pnpm --filter docs start",
     "format": "dprint fmt",
     "lint": "oxlint -c ./eslintrc.json --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "changeset": "changeset"
   },
   "keywords": [
     "sign",
@@ -29,16 +30,16 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
-    "@types/node": "^20.11.17",
+    "@types/node": "^20.12.6",
     "copyfiles": "^2.4.1",
-    "dprint": "^0.45.0",
+    "dprint": "^0.45.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "oxlint": "^0.2.13",
+    "oxlint": "^0.2.16",
     "tsup": "^8.0.2",
-    "tsx": "^4.7.1",
-    "turbo": "^1.12.3",
-    "typescript": "^5.3.3"
+    "tsx": "^4.7.2",
+    "turbo": "^1.13.2",
+    "typescript": "^5.4.4"
   },
   "private": true
 }

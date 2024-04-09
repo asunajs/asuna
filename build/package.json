@@ -19,6 +19,6 @@
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
-    "@swc/core": "^1.4.1"
+    "@swc/core": "^1.4.12"
   }
 }

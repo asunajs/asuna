@@ -12,7 +12,9 @@
     "prepublish": "copyfiles package.json README.md dist/",
     "build": "tsup --dts-resolve"
   },
-  "keywords": ["qinglong"],
+  "keywords": [
+    "qinglong"
+  ],
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
@@ -21,7 +23,7 @@
   },
   "optionalDependencies": {
     "hpagent": "^1.2.0",
-    "nodemailer": "^6.9.10"
+    "nodemailer": "^6.9.13"
   },
   "publishConfig": {
     "directory": "dist",
