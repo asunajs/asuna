@@ -86,13 +86,13 @@ export async function main(index, config: Config, option?) {
 // 获取当前工作表的使用范围
 const sheet = Application.Sheets.Item('移动云盘') || Application.Sheets.Item('caiyun') || ActiveSheet
 const usedRange = sheet.UsedRange
-const columnA = sheet.Columns('A')
+const AColumn = sheet.Columns('A')
 const len = usedRange.Row + usedRange.Rows.Count - 1,
   BColumn = sheet.Columns('B')
 const pushData = []
 
 for (let i = 1; i <= len; i++) {
-  const cell = columnA.Rows(i)
+  const cell = AColumn.Rows(i)
   if (cell.Text) {
     console.log(`执行第 ${i} 行`)
     runMain(i, cell)
@@ -115,7 +115,11 @@ function runMain(i: number, cell: { Text: string }) {
     )
     if (newAuth) {
       console.log(`更新 auth 成功`)
-      BColumn.Rows(i).Value = newAuth
+      if (cell.Text.length === 11) {
+        BColumn.Rows(i).Value = newAuth
+      } else {
+        AColumn.Rows(i).Value = newAuth
+      }
     }
   } catch (error) {
     console.log(error.message)
