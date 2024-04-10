@@ -1,5 +1,7 @@
 import type { Http } from '@asign/types'
 import { hashCode } from '@asign/utils-pure'
+import { createBackupGiftApi } from './api/backupGift.js'
+import { createMsgPushApi } from './api/msgPush.js'
 import { createSignInApi } from './api/signin.js'
 import type { TaskList } from './TaskType.js'
 import type {
@@ -233,9 +235,9 @@ export function createApi(http: Http) {
         {
           headers: {
             // 'hcy-cool-flag': '1',
-            'x-yun-app-channel': '10000023',
+            'x-huawei-uploadSrc': '1',
             'x-huawei-channelSrc': '10000023',
-            'Content-Type': 'application/xml; charset=UTF-8',
+            'Content-Type': 'text/xml; charset=UTF-8',
           },
         },
       )
@@ -255,14 +257,14 @@ export function createApi(http: Http) {
           totalSize: contentSize,
           uploadContentList: [
             {
-              contentName: contentName,
-              contentSize: contentSize,
+              contentName,
+              contentSize,
               comlexFlag: 0,
-              digest: digest,
+              digest,
             },
           ],
           newCatalogName: '',
-          parentCatalogID: parentCatalogID,
+          parentCatalogID,
           operation: 0,
           path: '',
           manualRename: 2,
@@ -431,6 +433,8 @@ export function createApi(http: Http) {
       )
     },
     ...createSignInApi(http),
+    ...createMsgPushApi(http),
+    ...createBackupGiftApi(http),
   }
 }
 

@@ -1,7 +1,9 @@
 import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { TASK_LIST } from './constant/taskList.js'
 import { getParentCatalogID, pcUploadFileRequest } from './service.js'
+import { backupGiftTask } from './service/backupGift.js'
 import { gardenTask } from './service/garden.js'
+import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
 import type { M } from './types.js'
 import { request } from './utils/index.js'
@@ -458,20 +460,13 @@ async function registerBlindboxTask($: M, taskId: number) {
 async function getBlindboxCount($: M, isChinaMobile: boolean) {
   try {
     const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务')
-    if (!taskList) return
+    if (!Array.isArray(taskList)) return
 
-    if (!isChinaMobile) {
-      // 从 taskList 中删除 id 78 139邮箱阅读账单 79 去139邮箱APP写邮件
-      ;[78, 79].forEach((id) => {
-        const index = taskList.findIndex((task) => task.taskId === id)
-        if (index !== -1) taskList.splice(index, 1)
-      })
-    }
-
-    const taskIds = taskList.reduce((taskIds, task) => {
-      if (task.status === 0) taskIds.push(task.taskId)
-      return taskIds
-    }, [])
+    const taskIds = (isChinaMobile ? taskList : taskList.filter(task => task.memo && task.memo.includes('isLimit')))
+      .reduce((taskIds, task) => {
+        if (task.status === 0) taskIds.push(task.taskId)
+        return taskIds
+      }, [])
     for (const taskId of taskIds) {
       $.logger.debug('注册盲盒任务', taskId)
       await registerBlindboxTask($, taskId)
@@ -483,6 +478,7 @@ async function getBlindboxCount($: M, isChinaMobile: boolean) {
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
   $.logger.debug('bug 修复中，测试中，可能导致无效开启')
+  return
   try {
     const { result: r1, code, msg } = await $.api.blindboxUser()
     if (!r1 || code !== 0) {
@@ -555,6 +551,8 @@ export async function run($: M) {
     shareFindTask,
     hc1Task,
     receive,
+    msgPushOnTask,
+    backupGiftTask,
   ]
 
   if (config) {

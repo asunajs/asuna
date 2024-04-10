@@ -28,6 +28,7 @@ export async function uploadFileRequest(
     const isNeedUpload = getXmlElement(xml, 'isNeedUpload')
     if (isNeedUpload === '1') {
       $.logger.fail('未找到该文件，该文件需要手动上传')
+      return
     }
     const contentID = getXmlElement(xml, 'contentID')
     if (contentID) {
