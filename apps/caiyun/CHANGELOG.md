@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.1.7
+
+### Patch Changes
+
+- [`b0d185a`](https://github.com/asunajs/asuna/commit/b0d185a93aba98aa9fa6e5add3c428120af5e51a) Thanks [@catlair](https://github.com/catlair)! - feat: 自动领取每月通知和备份奖励
+
 ## 0.1.6
 
 ### Patch Changes
