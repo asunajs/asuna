@@ -12,9 +12,9 @@ import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
-import { createRequest, type NormalizedOptions } from '@catlair/node-got'
 import { defu } from 'defu'
 import { CookieJar } from 'tough-cookie'
+import { createRequest } from './got.js'
 
 export type Config = M['config']
 export type Option = { pushData?: LoggerPushData[] }
@@ -48,16 +48,11 @@ export async function main(
     cookieJar,
     hooks: {
       beforeRequest: [
-        (options: NormalizedOptions) => {
-          if (options.url.hostname === 'caiyun.feixin.10086.cn') {
+        (options) => {
+          if ((options.url as URL).hostname === 'caiyun.feixin.10086.cn') {
             jwtToken && (options.headers['jwttoken'] = jwtToken)
           } else {
             options.headers['authorization'] = config.auth
-          }
-          // @ts-ignore
-          if (options.native) {
-            // @ts-ignore
-            options.requestOptions.isReturnNativeResponse = true
           }
         },
       ],
