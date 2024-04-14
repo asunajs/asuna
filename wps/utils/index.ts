@@ -227,3 +227,16 @@ export function sendWpsNotify(pushData: any[], pushConfig: any) {
     }
   }
 }
+
+export function _hash(algorithm: string, input: string | Buffer) {
+  const hash = Crypto.createHash(algorithm).update(input)
+  return hash.digest('hex')
+}
+
+export function sha256(input: string | Buffer) {
+  return _hash('sha256', input)
+}
+
+export function md5(input: string | Buffer) {
+  return _hash('md5', input)
+}

@@ -1,4 +1,4 @@
-import type { LoggerType } from '@asunajs/utils'
+import type { LoggerType } from '@asign/types'
 import type { ApiType, GardenApiType } from './api.js'
 import { Caiyun } from './options.d.js'
 
@@ -19,6 +19,7 @@ export interface M {
     mcloudRequested: string
   }
   sleep: (time: number) => Promise<number>
+  md5: (input: any) => string
   store: {
     files?: string[]
     curMonthBackup?: boolean

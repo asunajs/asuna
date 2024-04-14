@@ -19,6 +19,7 @@ export function randomNumber(low: number, high = low) {
 }
 
 export function getXmlElement(xml: string, tag: string) {
+  if (!xml.match) return ''
   const m = xml.match(`<${tag}>(.*)</${tag}>`)
   return m ? m[1] : ''
 }

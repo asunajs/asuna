@@ -54,16 +54,16 @@ export async function createLogger(options?: { pushData: LoggerPushData[] }) {
   })
 }
 
-export function _hash(algorithm: string, input: string) {
+export function _hash(algorithm: string, input: crypto.BinaryLike) {
   const hash = crypto.createHash(algorithm).update(input)
   return hash.digest('hex')
 }
 
-export function sha256(input: string) {
+export function sha256(input: crypto.BinaryLike) {
   return _hash('sha256', input)
 }
 
-export function md5(input: string) {
+export function md5(input: crypto.BinaryLike) {
   return _hash('md5', input)
 }
 

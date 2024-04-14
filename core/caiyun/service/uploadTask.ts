@@ -1,5 +1,4 @@
 import { createTime, isWps } from '@asign/utils-pure'
-import { md5 } from '@asunajs/utils'
 import { getParentCatalogID, uploadFile } from '../service.js'
 import type { M } from '../types.js'
 
@@ -24,11 +23,11 @@ function randomFile(size: number) {
   return buffer
 }
 
-function getRandomFile(size: number) {
+async function getRandomFile($: M, size: number) {
   const buffer = randomFile(1024 * 1024 * size)
   return {
     buffer,
-    fileMd5: md5(buffer).toUpperCase(),
+    fileMd5: $.md5(buffer).toUpperCase(),
     fileSize: buffer.length,
   }
 }
@@ -40,7 +39,7 @@ async function _upload($: M, size: number, digest?: string, contentSize?: number
       fileMd5: digest,
       fileSize: contentSize,
     }
-    : getRandomFile(size)
+    : await getRandomFile($, size)
   const success = await uploadFile($, getParentCatalogID(), {
     digest: file.fileMd5,
     contentSize: file.fileSize,

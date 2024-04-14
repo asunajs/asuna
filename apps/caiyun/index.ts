@@ -11,7 +11,15 @@ import { defuConfig } from '@asign/caiyun-core/options'
 import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
-import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
+import {
+  createLogger,
+  getLocalStorage,
+  type LoggerPushData,
+  md5,
+  pushMessage,
+  setLocalStorage,
+  sleep,
+} from '@asunajs/utils'
 import { defu } from 'defu'
 import { CookieJar } from 'tough-cookie'
 import { createRequest } from './got.js'
@@ -72,6 +80,7 @@ export async function main(
     logger,
     DATA,
     sleep,
+    md5,
     store: {},
     localStorage,
   }
