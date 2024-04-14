@@ -1,6 +1,13 @@
 // 邮箱支持的任务列表
 export const emailTaskList = {
   /**
+   * 从固定入口签到
+   */
+  1005: {
+    id: 1005,
+    group: 'time',
+  },
+  /**
    * 去“发现广场”浏览精彩内容
    */
   1008: {
@@ -75,6 +82,15 @@ export const cloudTaskList = {
     id: 107,
     runner: true,
     group: 'day',
+  },
+
+  /**
+   * 当月上传容量满1G
+   */
+  110: {
+    id: 110,
+    runner: true,
+    group: 'month',
   },
 
   /**
@@ -166,4 +182,5 @@ export const SKIP_TASK_LIST = [
   /** 组团领现金 */ 991,
   /** 开启通知领云朵 */ 406,
   /** 月月备份领好礼 */ 385,
+  /** 30G流量0元领 */ 120,
 ]

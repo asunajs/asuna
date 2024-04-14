@@ -242,6 +242,19 @@ export function createApi(http: Http) {
         },
       )
     },
+    uploadFile(url: string, id: string, file: Buffer | string, size: number) {
+      return http.post(url, file, {
+        headers: {
+          'UploadtaskID': id + '-',
+          'x-huawei-uploadSrc': '1',
+          'Content-Type': 'application/octet-stream',
+          'x-huawei-channelSrc': '10000023',
+          'User-Agent': 'okhttp/3.11.0',
+          'contentSize': size.toString(),
+          'Range': `bytes=0-${(size - 1).toString()}`,
+        },
+      })
+    },
     pcUploadFileRequest(
       account: string | number,
       parentCatalogID: string,

@@ -12,7 +12,13 @@ export async function uploadFileRequest(
     contentName = 'asign-' + randomHex(4) + ext,
     createTime = _createTime(),
   } = {},
-) {
+  needUpload?: boolean,
+): Promise<{
+  contentID?: string
+  redirectionUrl?: string
+  uploadTaskID?: string
+  contentName?: string
+}> {
   try {
     const xml = await $.api.uploadFileRequest(
       {
@@ -27,18 +33,76 @@ export async function uploadFileRequest(
     )
     const isNeedUpload = getXmlElement(xml, 'isNeedUpload')
     if (isNeedUpload === '1') {
+      if (needUpload) {
+        return {
+          redirectionUrl: getXmlElement(xml, 'redirectionUrl'),
+          uploadTaskID: getXmlElement(xml, 'uploadTaskID'),
+          contentName: getXmlElement(xml, 'contentName'),
+        }
+      }
       $.logger.fail('未找到该文件，该文件需要手动上传')
-      return
+      return {}
     }
     const contentID = getXmlElement(xml, 'contentID')
     if (contentID) {
       contentID && setStoreArray($.store, 'files', [contentID])
+      return {
+        contentID,
+      }
+    }
+    $.logger.error(`上传文件请求失败`, xml)
+  } catch (error) {
+    $.logger.error(`上传文件请求异常`, error)
+  }
+  return {}
+}
+
+export async function uploadFile(
+  $: M,
+  parentCatalogID: string,
+  {
+    ext = '.png',
+    digest = randomHex(32).toUpperCase(),
+    contentSize = randomNumber(1, 1000) as number | string,
+    manualRename = 2,
+    contentName = 'asign-' + randomHex(4) + ext,
+    createTime = _createTime(),
+  } = {},
+  file: Buffer | string,
+) {
+  try {
+    const { redirectionUrl, uploadTaskID, contentID } = await uploadFileRequest($, parentCatalogID, {
+      ext,
+      digest,
+      contentSize,
+      manualRename,
+      contentName,
+      createTime,
+    }, true)
+    if (contentID) {
       return true
     }
-    $.logger.error(`上传文件失败`, xml)
+    if (!redirectionUrl || !file) {
+      return
+    }
+    const size = typeof file === 'string' ? file.length : file.byteLength
+    $.logger.debug('别着急，文件上传中。。。')
+    const xml = await $.api.uploadFile(redirectionUrl.replace(/&amp;/g, '&'), uploadTaskID, file, size)
+    const resultCode = getXmlElement(xml, 'resultCode')
+    switch (resultCode) {
+      case '0':
+        return true
+      case '9119':
+        $.logger.fail(`上传文件失败：md5校验失败`)
+        return false
+      default:
+        $.logger.error(`上传文件失败`, xml)
+        return false
+    }
   } catch (error) {
     $.logger.error(`上传文件异常`, error)
   }
+  return false
 }
 
 export async function pcUploadFileRequest($: M, path: string) {
@@ -55,9 +119,9 @@ export async function pcUploadFileRequest($: M, path: string) {
         ({ contentID }) => contentID,
       )
     }
-    $.logger.error(`上传文件失败`, message)
+    $.logger.error(`上传文件请求失败`, message)
   } catch (error) {
-    $.logger.error(`上传文件异常`, error)
+    $.logger.error(`上传文件请求异常`, error)
   }
 }
 

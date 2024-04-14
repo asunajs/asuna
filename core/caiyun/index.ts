@@ -5,6 +5,7 @@ import { backupGiftTask } from './service/backupGift.js'
 import { gardenTask } from './service/garden.js'
 import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
+import { uploadTask } from './service/uploadTask.js'
 import type { M } from './types.js'
 import { request } from './utils/index.js'
 
@@ -238,6 +239,7 @@ function getTaskRunner() {
     106: uploadFileDaily,
     107: createNoteDaily,
     434: shareTime,
+    110: uploadTask,
   }
 }
 
@@ -256,13 +258,20 @@ async function appTask($: M) {
 
     if (TASK_LIST[task.id]) {
       // 在没开启备份的前提下，本月 20 号前不做 app 的月任务
-      if (task.marketname === 'sign_in_3' && task.groupid === 'month' && new Date().getDate() < 20) {
-        $.logger.debug('透过任务（未开启备份）', task.name)
+      if (
+        task.marketname === 'sign_in_3' && task.groupid === 'month'
+        && ($.store.curMonthBackup === false && new Date().getDate() < 20)
+      ) {
+        $.logger.debug('跳过过任务（未开启备份）', task.name)
         continue
       }
 
       if (await _clickTask($, task.id, task.currstep)) {
-        await taskRunner[task.id]?.($)
+        if (task.id === 110) {
+          await taskRunner[task.id]?.($, task.process)
+        } else {
+          await taskRunner[task.id]?.($)
+        }
         doingList.push(task.id)
         await $.sleep(500)
       }
@@ -531,6 +540,7 @@ async function hc1Task($: M) {
 }
 
 async function afterTask($: M) {
+  $.logger.start('------【搽屁股】------')
   // 删除文件
   try {
     $.store && $.store.files && (await deleteFiles($, $.store.files))
