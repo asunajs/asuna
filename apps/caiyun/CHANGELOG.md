@@ -1,5 +1,15 @@
 # @asunajs/caiyun
 
+## 0.2.0
+
+### Minor Changes
+
+- [`bd61e86`](https://github.com/asunajs/asuna/commit/bd61e864a0c9af5bc19e2fe94fadba7db9329514) Thanks [@catlair](https://github.com/catlair)! - chore: 迁移请求库至 got@14
+
+### Patch Changes
+
+- [`452df12`](https://github.com/asunajs/asuna/commit/452df12bf4d6a11f295ee91b2bd74755b2177bb4) Thanks [@catlair](https://github.com/catlair)! - feat: 每月上传 1G 任务
+
 ## 0.1.7
 
 ### Patch Changes
