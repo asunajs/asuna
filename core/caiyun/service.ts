@@ -32,18 +32,20 @@ export async function uploadFileRequest(
       },
     )
     const isNeedUpload = getXmlElement(xml, 'isNeedUpload')
+
+    const contentID = getXmlElement(xml, 'contentID')
     if (isNeedUpload === '1') {
       if (needUpload) {
         return {
           redirectionUrl: getXmlElement(xml, 'redirectionUrl'),
           uploadTaskID: getXmlElement(xml, 'uploadTaskID'),
           contentName: getXmlElement(xml, 'contentName'),
+          contentID,
         }
       }
       $.logger.fail('未找到该文件，该文件需要手动上传')
       return {}
     }
-    const contentID = getXmlElement(xml, 'contentID')
     if (contentID) {
       contentID && setStoreArray($.store, 'files', [contentID])
       return {
@@ -79,11 +81,8 @@ export async function uploadFile(
       contentName,
       createTime,
     }, true)
-    if (contentID) {
-      return true
-    }
     if (!redirectionUrl || !file) {
-      return
+      return Boolean(contentID)
     }
     const size = typeof file === 'string' ? file.length : file.byteLength
     $.logger.debug('别着急，文件上传中。。。')
@@ -91,6 +90,7 @@ export async function uploadFile(
     const resultCode = getXmlElement(xml, 'resultCode')
     switch (resultCode) {
       case '0':
+        contentID && setStoreArray($.store, 'files', [contentID])
         return true
       case '9119':
         $.logger.fail(`上传文件失败：md5校验失败`)

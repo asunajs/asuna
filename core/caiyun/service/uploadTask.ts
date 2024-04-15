@@ -1,34 +1,28 @@
-import { createTime, isWps } from '@asign/utils-pure'
+import { createTime, isWps, randomHex } from '@asign/utils-pure'
 import { getParentCatalogID, uploadFile } from '../service.js'
 import type { M } from '../types.js'
 
-/**
- * 生成一个指定大小的随机文件Buffer
- * @param size 指定的文件大小，单位为字节
- * @returns 返回一个大小为指定size的Buffer对象
- */
-function randomFile(size: number) {
-  // 创建指定大小的buffer
-  const buffer = Buffer.alloc(size)
-
-  // 随机数据填充
-  const len = Math.floor(Math.random() * 10)
-  for (let i = 0; i < len; i++) {
-    const randomIndex = Math.floor(Math.random() * size)
-    if (randomIndex >= 0 && randomIndex < size) { // 确保索引在有效范围内
-      buffer[randomIndex] = Math.floor(Math.random() * 256)
-    }
+function getBufferMd5($: M, input: Buffer) {
+  // 分块计算 md5
+  const chunkSize = 1048576
+  const md5 = $.crypto.createHash('md5')
+  for (let i = 0; i < input.length; i += chunkSize) {
+    md5.update(input.subarray(i, i + chunkSize))
   }
-
-  return buffer
+  return md5.digest('hex')
 }
 
 async function getRandomFile($: M, size: number) {
-  const buffer = randomFile(1024 * 1024 * size)
+  // 创建指定大小的buffer
+  const buffer = Buffer.concat([
+    Buffer.from(randomHex(16) + new Date().getTime()),
+    Buffer.alloc(size * 1048576),
+  ])
+
   return {
     buffer,
-    fileMd5: $.md5(buffer).toUpperCase(),
-    fileSize: buffer.length,
+    fileMd5: getBufferMd5($, buffer),
+    fileSize: buffer.byteLength,
   }
 }
 
@@ -65,15 +59,15 @@ export async function uploadTask($: M, progressNum: number) {
   const needM = 1025 - Math.floor(progressNum / 1024 / 1024)
 
   let digest: string, contentSize: number
-  // 每次只上传 200 MB 的文件
-  for (let i = 0; i < needM; i += 200) {
-    const r = await _upload($, 200, digest, contentSize)
+  // 每次只上传 100 MB 的文件
+  for (let i = 0; i < needM; i += 100) {
+    const r = await _upload($, 100, digest, contentSize)
     if (r.digest) {
       digest = r.digest
       contentSize = r.contentSize
     }
 
-    if (needM - 200 > 0) {
+    if (needM - 100 > 0) {
       await $.sleep(3000)
     }
   }

@@ -1,7 +1,7 @@
 import { createApi, createGardenApi, createNewAuth, getJwtToken, M, run } from '@asign/caiyun-core'
 import type { Caiyun } from '@asign/caiyun-core'
 import { createLogger, getAuthInfo, getHostname } from '@asign/utils-pure'
-import { createCookieJar, createRequest, getPushConfig, md5, sendWpsNotify } from '@asign/wps-utils'
+import { createCookieJar, createRequest, getPushConfig, sendWpsNotify } from '@asign/wps-utils'
 
 type Config = Partial<Caiyun> & {
   auth: string
@@ -69,7 +69,6 @@ export async function main(index, config: Config, option?) {
     logger: logger as any,
     DATA,
     sleep: Time.sleep,
-    md5,
     config: config as any,
     gardenApi: createGardenApi(http),
     store: {},

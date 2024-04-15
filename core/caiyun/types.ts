@@ -2,6 +2,8 @@ import type { LoggerType } from '@asign/types'
 import type { ApiType, GardenApiType } from './api.js'
 import { Caiyun } from './options.d.js'
 
+import type crypto from 'crypto'
+
 export type { Caiyun }
 
 export interface M {
@@ -19,7 +21,7 @@ export interface M {
     mcloudRequested: string
   }
   sleep: (time: number) => Promise<number>
-  md5: (input: any) => string
+  crypto?: typeof crypto
   store: {
     files?: string[]
     curMonthBackup?: boolean
