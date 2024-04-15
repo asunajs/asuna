@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.1
+
+### Patch Changes
+
+- [`15c444a`](https://github.com/asunajs/asuna/commit/15c444a1c40ec3dbd673764b0dac3a0395cf9969) Thanks [@catlair](https://github.com/catlair)! - fix: 真实上传的文件未删除
+
 ## 0.2.0
 
 ### Minor Changes
