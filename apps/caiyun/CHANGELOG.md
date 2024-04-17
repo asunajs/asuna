@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.2
+
+### Patch Changes
+
+- [`52993da`](https://github.com/asunajs/asuna/commit/52993dabb863f5e59983f9682f72093bbbf834a8) Thanks [@catlair](https://github.com/catlair)! - fix: 上传文件时低配置出现内存和 CPU 爆满
+
 ## 0.2.1
 
 ### Patch Changes
