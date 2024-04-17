@@ -12,10 +12,11 @@ import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
-import crypto from 'crypto'
 import { defu } from 'defu'
 import { CookieJar } from 'tough-cookie'
 import { createRequest } from './got.js'
+import { uploadTask } from './service/uploadTask.js'
+import { myMD5 } from './utils/md5.js'
 
 export type Config = M['config']
 export type Option = { pushData?: LoggerPushData[] }
@@ -73,7 +74,10 @@ export async function main(
     logger,
     DATA,
     sleep,
-    crypto,
+    node: {
+      uploadTask,
+      myMD5,
+    },
     store: {},
     localStorage,
   }

@@ -5,7 +5,6 @@ import { backupGiftTask } from './service/backupGift.js'
 import { gardenTask } from './service/garden.js'
 import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
-import { uploadTask } from './service/uploadTask.js'
 import type { M } from './types.js'
 import { request } from './utils/index.js'
 
@@ -233,20 +232,20 @@ async function getAllAppTaskList($: M) {
   return list1.concat(list2)
 }
 
-function getTaskRunner() {
+function getTaskRunner($: M) {
   return {
     113: refreshToken,
     106: uploadFileDaily,
     107: createNoteDaily,
     434: shareTime,
-    110: uploadTask,
+    110: $.node && $.node.uploadTask,
   }
 }
 
 async function appTask($: M) {
   $.logger.start('------【任务列表】------')
   const taskList = await getAllAppTaskList($)
-  const taskRunner = getTaskRunner()
+  const taskRunner = getTaskRunner($)
 
   const doingList: number[] = []
 
