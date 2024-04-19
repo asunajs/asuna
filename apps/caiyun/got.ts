@@ -42,5 +42,10 @@ export function createRequest(options: ExtendOptions = {}) {
         await api.post(url, _options).text(),
       )
     },
+    async request<T = any>(options?: MyOptions): Promise<T> {
+      options || (options = {} as MyOptions)
+      options.body = stringify(options.body)
+      return await api(options) as T
+    },
   }
 }

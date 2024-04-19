@@ -116,10 +116,9 @@ async function uploadFileApi(url: string, id: string, randomBuffer: Buffer) {
 
   stream.resume()
 
-  return new Promise((resolve, reject) => {
+  return new Promise<boolean>((resolve, reject) => {
     stream.on('error', reject)
     stream.on('response', async (res) => {
-      console.log(res)
       resolve(res.ok)
     })
   })
