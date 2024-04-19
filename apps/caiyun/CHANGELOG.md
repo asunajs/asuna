@@ -1,5 +1,15 @@
 # @asunajs/caiyun
 
+## 0.2.3
+
+### Patch Changes
+
+- [#39](https://github.com/asunajs/asuna/pull/39) [`5d42841`](https://github.com/asunajs/asuna/commit/5d428418de8f9b4eaa65f7fcd6bc52e4b249eee6) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix: 消息通知奖励领取
+
+- [#39](https://github.com/asunajs/asuna/pull/39) [`2472d49`](https://github.com/asunajs/asuna/commit/2472d49dadf3cc7ca9cadc9a29f7a7e1bd102d4a) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix: got 缺少 request
+
+- [`db99abe`](https://github.com/asunajs/asuna/commit/db99abe6fae57808f3e6535e56fedfff00b49ca2) Thanks [@catlair](https://github.com/catlair)! - pref: 优化任务 logger
+
 ## 0.2.2
 
 ### Patch Changes
