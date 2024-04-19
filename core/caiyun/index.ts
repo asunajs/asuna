@@ -452,7 +452,7 @@ async function openBlindbox($: M) {
       case 200105:
         return $.logger.debug('什么都没有哦')
       case 200106:
-        return $.logger.fail('异常', code, msg)
+        return $.logger.error('异常', code, msg)
       default:
         return $.logger.warn('未知原因失败', code, msg)
     }
@@ -486,7 +486,6 @@ async function getBlindboxCount($: M, isChinaMobile: boolean) {
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
   $.logger.debug('bug 修复中，测试中，可能导致无效开启')
-  return
   try {
     const { result: r1, code, msg } = await $.api.blindboxUser()
     if (!r1 || code !== 0) {

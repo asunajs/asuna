@@ -21,7 +21,7 @@ export async function msgPushOnTask($: M) {
 
     if (secondTaskStatus === 2) {
       $.logger.info('领取奖励')
-      await request($, $.api.clickTask, '领取消息通知奖励', 911)
+      await request($, $.api.obtainMsgPushOn, '领取消息通知奖励')
       return
     }
 

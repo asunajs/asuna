@@ -11,10 +11,20 @@ type MsgPushStatus = BaseType<{
   total: 31
 }>
 
+type MsgPushObtain = BaseType<{
+  obtainCode: number
+  description: string
+}>
+
 export function createMsgPushApi(http: Http) {
   return {
     getMsgPushOn() {
       return http.get<MsgPushStatus>(`${marketUrl}/msgPushOn/task/status`)
+    },
+    obtainMsgPushOn() {
+      return http.post<MsgPushObtain>(`${marketUrl}/msgPushOn/task/obtain`, {
+        type: 2,
+      })
     },
   }
 }
