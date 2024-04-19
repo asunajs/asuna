@@ -45,6 +45,7 @@ export async function uploadTask($: M, progressNum: number) {
     $.logger.debug('当前环境为WPS，不支持上传文件')
     return
   }
+  $.logger.debug('已经上传', progressNum, '字节')
   const needM = 1025 - Math.floor(progressNum / 1024 / 1024)
 
   let digest: string, contentSize: number
@@ -76,6 +77,7 @@ export async function uploadFile(
   randomBuffer: Buffer,
 ) {
   try {
+    $.logger.debug('开始上传文件', digest)
     const { redirectionUrl, uploadTaskID, contentID } = await uploadFileRequest($, parentCatalogID, {
       ext,
       digest,
@@ -87,7 +89,7 @@ export async function uploadFile(
     if (!redirectionUrl || !randomBuffer) {
       return Boolean(contentID)
     }
-    $.logger.debug('别着急，文件上传中。。。')
+    $.logger.debug('别着急，文件上传中。。。', contentID)
     const ok = await uploadFileApi(redirectionUrl.replace(/&amp;/g, '&'), uploadTaskID, randomBuffer)
     if (ok) {
       contentID && setStoreArray($.store, 'files', [contentID])

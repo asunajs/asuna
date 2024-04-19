@@ -110,6 +110,14 @@ export const cloudTaskList = {
   },
 
   /**
+   * 从固定入口访问云朵中心
+   */
+  409: {
+    id: 409,
+    group: 'month',
+  },
+
+  /**
    * 去发现频道看大片
    */
   426: {

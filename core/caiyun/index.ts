@@ -1,5 +1,5 @@
 import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
-import { TASK_LIST } from './constant/taskList.js'
+import { SKIP_TASK_LIST, TASK_LIST } from './constant/taskList.js'
 import { getParentCatalogID, pcUploadFileRequest } from './service.js'
 import { backupGiftTask } from './service/backupGift.js'
 import { gardenTask } from './service/garden.js'
@@ -124,7 +124,7 @@ async function clickTask($: M, task: number) {
     if (code === 0) {
       return true
     }
-    $.logger.error(`点击任务${task}失败`, msg)
+    $.logger.fail(`点击任务${task}失败`, msg)
   } catch (error) {
     $.logger.error(`点击任务${task}异常`, error)
   }
@@ -274,6 +274,8 @@ async function appTask($: M) {
         doingList.push(task.id)
         await $.sleep(500)
       }
+    } else if (!SKIP_TASK_LIST.includes(task.id)) {
+      await clickTask($, task.id)
     }
   }
 
@@ -285,7 +287,11 @@ async function appTask($: M) {
         if (task.state === 'FINISH') {
           $.logger.success('成功', task.name)
         } else {
-          !skipCheck.includes(task.id) && $.logger.fail('失败', task.name)
+          !skipCheck.includes(task.id) && $.logger.fail('失败', task.name, '请手动完成')
+        }
+      } else if (task.groupid === 'month' || task.groupid === 'day') {
+        if (task.state !== 'FINISH') {
+          $.logger.fail('未完成', task.name, '请手动完成')
         }
       }
     }
