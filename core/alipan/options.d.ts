@@ -9,5 +9,5 @@ export interface Alipan {
   /**
    * 是否跳过需要上传文件的任务
    */
-  skipUpload: boolean
+  skipUpload?: boolean
 }

@@ -10,7 +10,7 @@ export interface Http {
     options?: Option,
   ): Promise<T>
   get<T = any>(url: string, options?: Option): Promise<T>
-  request<T = any>(options?: Option): Promise<T>
+  request?<T = any>(options?: Option): Promise<T>
   setOption?(option: Option): void
 }
 

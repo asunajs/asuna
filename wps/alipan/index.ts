@@ -15,7 +15,7 @@ async function main(index, ASIGN_ALIPAN_TOKEN, option?) {
     refreshToken: '',
   }
 
-  let accessToken
+  let accessToken: string
 
   function getHeaders() {
     return {
@@ -35,10 +35,13 @@ async function main(index, ASIGN_ALIPAN_TOKEN, option?) {
     api: createApi(createRequest({ getHeaders })),
     logger: logger as any,
     DATA: DATA,
+    config: {
+      token: ASIGN_ALIPAN_TOKEN.trim(),
+    },
     sleep: Time.sleep,
   }
 
-  const rtData = await refreshToken($, ASIGN_ALIPAN_TOKEN.trim())
+  const rtData = await refreshToken($, $.config.token)
   if (!rtData) return
   DATA.refreshToken = rtData.refresh_token
   accessToken = rtData.access_token

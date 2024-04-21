@@ -5,6 +5,7 @@ import { createMsgPushApi } from './api/msgPush.js'
 import { createSignInApi } from './api/signin.js'
 import type { TaskList } from './TaskType.js'
 import type {
+  BaseType,
   BatchList,
   BlindboxInfo,
   BlindboxUser,
@@ -25,6 +26,11 @@ import type {
 } from './types.js'
 
 export * from './api/garden.js'
+
+export type Journaling =
+  | 'National_BlindBox_userLogin'
+  | 'National_BlindBox_login'
+  | 'National_BlindBox_loginAppOuterEnd'
 
 export function createApi(http: Http) {
   const yun139Url = 'https://yun.139.com'
@@ -436,6 +442,28 @@ export function createApi(http: Http) {
           headers: {
             'content-type': 'application/x-www-form-urlencoded',
             'platform': 'h5',
+          },
+        },
+      )
+    },
+    /**
+     * 该接口用于测试
+     */
+    // post(url:string,data:Record<string,any>|string,headers:Record<string,any>){
+    //   return http.post(url,data,{
+    //     headers
+    //   })
+    // },
+    /**
+     * 登记
+     */
+    journaling(optkeyword: Journaling, sourceid = 1010) {
+      return http.post<BaseType>(
+        `${caiyunUrl}/portal/journaling`,
+        `account=&module=uservisit&optkeyword=${optkeyword}&fromId=&flag=&fileId=&fileType=&fileExtname=&fileSize=&sourceid=${sourceid}&linkId=`,
+        {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
           },
         },
       )

@@ -44,7 +44,7 @@ export interface M {
 export interface BaseType<T = any> {
   code: number
   msg: string
-  result: T
+  result?: T
 }
 
 export interface QuerySpecToken {

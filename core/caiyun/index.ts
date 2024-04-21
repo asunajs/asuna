@@ -471,28 +471,36 @@ async function registerBlindboxTask($: M, taskId: number) {
   await request($, $.api.registerBlindboxTask, '注册盲盒', taskId)
 }
 
-async function getBlindboxCount($: M, isChinaMobile: boolean) {
+async function getBlindboxCount($: M) {
   try {
     const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务')
     if (!Array.isArray(taskList)) return
 
-    const taskIds = (isChinaMobile ? taskList : taskList.filter(task => task.memo && task.memo.includes('isLimit')))
-      .reduce((taskIds, task) => {
-        if (task.status === 0) taskIds.push(task.taskId)
-        return taskIds
-      }, [])
-    for (const taskId of taskIds) {
-      $.logger.debug('注册盲盒任务', taskId)
-      await registerBlindboxTask($, taskId)
+    const tasks = taskList.filter(task => task.memo && task.memo.includes('isLimit') && task.status === 0)
+    for (const { id } of tasks) {
+      $.logger.debug('注册盲盒任务', id)
+      await registerBlindboxTask($, id)
       await $.sleep(1000)
     }
-  } catch (error) {}
+  } catch (error) {
+    $.logger.error(error)
+  }
+}
+
+async function blindboxJournaling({ api, sleep }: M) {
+  await api.journaling('National_BlindBox_userLogin')
+  await sleep(200)
+  await api.journaling('National_BlindBox_login')
+  await sleep(200)
+  await api.journaling('National_BlindBox_loginAppOuterEnd')
+  await sleep(200)
 }
 
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
-  $.logger.debug('bug 修复中，测试中，可能导致无效开启')
+  $.logger.error('已经修复无法完成的错误，但仍然存在丢次数的问题')
   try {
+    await blindboxJournaling($)
     const { result: r1, code, msg } = await $.api.blindboxUser()
     if (!r1 || code !== 0) {
       $.logger.error('获取盲盒信息失败', code, msg)
@@ -502,10 +510,10 @@ async function blindboxTask($: M) {
       $.logger.success('今日首次登录，获取次数 +1')
     }
     await $.sleep(666)
-    await getBlindboxCount($, r1.isChinaMobile === 1)
+    await getBlindboxCount($)
     const { result } = await $.api.blindboxUser()
+    $.logger.debug('剩余次数', result.chanceNum)
     if (result?.chanceNum === 0) {
-      $.logger.info('今日无机会')
       return
     }
     for (let index = 0; index < result.chanceNum; index++) {
@@ -563,6 +571,7 @@ export async function run($: M) {
     wxDraw,
     appTask,
     shareFindTask,
+    blindboxTask,
     hc1Task,
     receive,
     msgPushOnTask,
@@ -576,9 +585,9 @@ export async function run($: M) {
     if (config.shake && config.shake.enable) {
       taskList.push(shakeTask)
     }
-    if (config.blindbox && config.blindbox.enable) {
-      taskList.push(blindboxTask)
-    }
+    // if (config.blindbox && config.blindbox.enable) {
+    //   taskList.push(blindboxTask)
+    // }
   }
 
   for (const task of taskList) {
