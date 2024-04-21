@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.4
+
+### Patch Changes
+
+- [`3f70a9c`](https://github.com/asunajs/asuna/commit/3f70a9cd4b8d9df0c6bfe436c57dc682ba1db17a) Thanks [@catlair](https://github.com/catlair)! - fix(caiyun): 盲盒
+
 ## 0.2.3
 
 ### Patch Changes
