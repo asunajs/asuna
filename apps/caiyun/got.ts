@@ -1,9 +1,13 @@
 import { destr } from 'destr'
 import { type ExtendOptions, got, type Options } from 'got'
 
-type MyOptions = Options & {
-  native?: boolean
-}
+type MyOptions =
+  & Partial<Options>
+  & {
+    native?: boolean
+    data?: any
+    timeout?: number | Options['timeout']
+  }
 
 function stringify(value: any) {
   if (Buffer.isBuffer(value) || typeof value !== 'object') {
@@ -39,12 +43,26 @@ export function createRequest(options: ExtendOptions = {}) {
         return await api.post(url, _options) as T
       }
       return destr(
+        // @ts-ignore
         await api.post(url, _options).text(),
       )
     },
     async request<T = any>(options?: MyOptions): Promise<T> {
       options || (options = {} as MyOptions)
-      options.body = stringify(options.body)
+      if (options.data) {
+        options.body = options.data
+        delete options.data
+      }
+      if (typeof options.timeout === 'number') {
+        options.timeout = {
+          request: options.timeout,
+        }
+      }
+      if (options.headers['content-type'] && options.headers['content-type'].includes('form-urlencoded')) {
+        options.body = new URLSearchParams(options.body as any).toString()
+      } else {
+        options.body = stringify(options.body)
+      }
       return await api(options) as T
     },
   }
