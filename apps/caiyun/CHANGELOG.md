@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.5
+
+### Patch Changes
+
+- [`a776c70`](https://github.com/asunajs/asuna/commit/a776c70395cb3e47fa97de004019530e3921083c) Thanks [@catlair](https://github.com/catlair)! - fix: 盲盒 ojbk
+
 ## 0.2.4
 
 ### Patch Changes
