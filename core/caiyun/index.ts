@@ -451,6 +451,7 @@ async function shareFindTask($: M) {
 
 async function openBlindbox($: M) {
   try {
+    $.logger.debug('开盲盒')
     const { code, msg, result } = await $.api.openBlindbox()
     switch (code) {
       case 0:
@@ -467,20 +468,40 @@ async function openBlindbox($: M) {
   }
 }
 
+async function openBlindboxAfterGetCount($: M) {
+  try {
+    const { chanceNum } = await request($, $.api.blindboxUser, '获取盲盒任务')
+    if (!chanceNum) return
+    await $.sleep(666)
+    for (let i = 0; i < chanceNum; i++) {
+      await openBlindbox($)
+      await $.sleep(666)
+    }
+  } catch (error) {
+    $.logger.error('开盒异常', error)
+  }
+}
+
 async function registerBlindboxTask($: M, taskId: number) {
   await request($, $.api.registerBlindboxTask, '注册盲盒', taskId)
 }
 
-async function getBlindboxCount($: M) {
+async function openMoreBlindbox($: M) {
   try {
     const taskList = await request($, $.api.getBlindboxTask, '获取盲盒任务')
     if (!Array.isArray(taskList)) return
 
-    const tasks = taskList.filter(task => task.memo && task.memo.includes('isLimit') && task.status === 0)
-    for (const { id } of tasks) {
-      $.logger.debug('注册盲盒任务', id)
-      await registerBlindboxTask($, id)
-      await $.sleep(1000)
+    const tasks = taskList.filter(task => task.memo && !task.memo.includes('isLimit') && task.status === 0)
+
+    if (tasks.length <= 0) {
+      return
+    }
+
+    for (const { taskName, taskId } of tasks) {
+      $.logger.debug('注册盲盒任务', taskName)
+      await registerBlindboxTask($, taskId)
+      await $.sleep(666)
+      await openBlindboxAfterGetCount($)
     }
   } catch (error) {
     $.logger.error(error)
@@ -498,28 +519,25 @@ async function blindboxJournaling({ api, sleep }: M) {
 
 async function blindboxTask($: M) {
   $.logger.start('------【开盲盒】------')
-  $.logger.error('已经修复无法完成的错误，但仍然存在丢次数的问题')
   try {
     await blindboxJournaling($)
-    const { result: r1, code, msg } = await $.api.blindboxUser()
-    if (!r1 || code !== 0) {
-      $.logger.error('获取盲盒信息失败', code, msg)
+    const r1 = await request($, $.api.blindboxUser, '获取盲盒用户信息')
+    if (typeof r1.chanceNum !== 'number') {
       return await openBlindbox($)
+    }
+    if (r1.chanceNum === 0 && r1.taskNum >= 2) {
+      $.logger.info('今日已完成')
+      return
     }
     if (r1.firstTime) {
       $.logger.success('今日首次登录，获取次数 +1')
     }
-    await $.sleep(666)
-    await getBlindboxCount($)
-    const { result } = await $.api.blindboxUser()
-    $.logger.debug('剩余次数', result.chanceNum)
-    if (result?.chanceNum === 0) {
-      return
-    }
-    for (let index = 0; index < result.chanceNum; index++) {
+    // 先完成一波
+    for (let i = 0; i < r1.chanceNum; i++) {
       await openBlindbox($)
-      await $.sleep(1000)
+      await $.sleep(666)
     }
+    await openMoreBlindbox($)
   } catch (error) {
     $.logger.error('开盲盒任务异常', error)
   }
@@ -573,6 +591,7 @@ export async function run($: M) {
     shareFindTask,
     blindboxTask,
     hc1Task,
+    shakeTask,
     receive,
     msgPushOnTask,
     backupGiftTask,
@@ -582,12 +601,6 @@ export async function run($: M) {
     if (config.garden && config.garden.enable) {
       taskList.push(gardenTask)
     }
-    if (config.shake && config.shake.enable) {
-      taskList.push(shakeTask)
-    }
-    // if (config.blindbox && config.blindbox.enable) {
-    //   taskList.push(blindboxTask)
-    // }
   }
 
   for (const task of taskList) {

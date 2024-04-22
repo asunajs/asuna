@@ -69,7 +69,13 @@ export async function main(index, config: Config, option?) {
     logger: logger as any,
     DATA,
     sleep: Time.sleep,
-    config: config as any,
+    config: {
+      shake: {
+        num: 15,
+        delay: 2,
+      },
+      ...config,
+    } as any,
     gardenApi: createGardenApi(http),
     store: {},
     localStorage: {},
