@@ -10,11 +10,11 @@ import {
 import { defuConfig } from '@asign/caiyun-core/options'
 import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
+import { createRequest } from '@asunajs/http'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
 import { defu } from 'defu'
 import { CookieJar } from 'tough-cookie'
-import { createRequest } from './got.js'
 import { uploadTask } from './service/uploadTask.js'
 import { myMD5 } from './utils/md5.js'
 
@@ -33,7 +33,6 @@ export async function main(
     return
   }
 
-  const cookieJar = new CookieJar()
   const baseUA =
     'Mozilla/5.0 (Linux; Android 13; 22041216C Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.178 Mobile Safari/537.36'
 
@@ -47,7 +46,6 @@ export async function main(
   let jwtToken: string
 
   const http = createRequest({
-    cookieJar,
     hooks: {
       beforeRequest: [
         (options) => {
@@ -80,6 +78,7 @@ export async function main(
     },
     store: {},
     localStorage,
+    http,
   }
 
   logger.info(`==============`)

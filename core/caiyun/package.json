@@ -15,7 +15,7 @@
       "import": "./options.ts"
     },
     "./service": {
-      "import": "./service.ts"
+      "import": "./service/index.ts"
     }
   },
   "scripts": {
@@ -34,6 +34,7 @@
     "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
     "@asign/utils-pure": "workspace:^",
-    "@asunajs/utils": "workspace:^"
+    "@asunajs/utils": "workspace:^",
+    "@types/tough-cookie": "^4.0.5"
   }
 }

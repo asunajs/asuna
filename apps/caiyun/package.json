@@ -21,10 +21,9 @@
   "license": "MIT",
   "dependencies": {
     "@asunajs/conf": "workspace:^",
+    "@asunajs/http": "workspace:^",
     "@asunajs/push": "workspace:^",
-    "defu": "^6.1.4",
-    "destr": "^2.0.3",
-    "tough-cookie": "^4.1.3"
+    "defu": "^6.1.4"
   },
   "devDependencies": {
     "@asign/build": "workspace:^",
@@ -32,8 +31,7 @@
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^",
     "@types/tough-cookie": "^4.0.5",
-    "dotenv": "^16.4.5",
-    "got": "^14.2.1"
+    "dotenv": "^16.4.5"
   },
   "publishConfig": {
     "directory": "dist",

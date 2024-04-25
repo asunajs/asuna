@@ -1,8 +1,8 @@
 import type { M } from '@asign/caiyun-core'
 import { getParentCatalogID, uploadFileRequest } from '@asign/caiyun-core/service'
 import { createTime as _createTime, isWps, randomHex, randomNumber, setStoreArray } from '@asign/utils-pure'
+import { got } from '@asunajs/http'
 import { randomBytes } from 'crypto'
-import { got } from 'got'
 
 function getRandomFile($: M) {
   // 创建指定大小的buffer

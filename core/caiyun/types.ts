@@ -1,4 +1,4 @@
-import type { LoggerType } from '@asign/types'
+import type { Http, LoggerType } from '@asign/types'
 import type { ApiType, GardenApiType } from './api.js'
 import { Caiyun } from './options.d.js'
 
@@ -39,6 +39,7 @@ export interface M {
     uploadTask: ($: M, progressNum: number) => Promise<void>
     myMD5: (s: string) => string
   }
+  http: Http
 }
 
 export interface BaseType<T = any> {

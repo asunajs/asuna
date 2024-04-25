@@ -6,6 +6,8 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "moduleResolution": "Bundler",
-    "lib": ["ESNext"]
+    "lib": [
+      "ESNext"
+    ]
   }
 }

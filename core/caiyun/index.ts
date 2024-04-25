@@ -1,8 +1,8 @@
 import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { SKIP_TASK_LIST, TASK_LIST } from './constant/taskList.js'
-import { getParentCatalogID, pcUploadFileRequest } from './service.js'
 import { backupGiftTask } from './service/backupGift.js'
 import { gardenTask } from './service/garden.js'
+import { aiRedPackTask, getParentCatalogID, pcUploadFileRequest } from './service/index.js'
 import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
 import type { M } from './types.js'
@@ -22,6 +22,24 @@ export async function getSsoTokenApi($: M, phone: number | string) {
   } catch (error) {
     $.logger.error(`获取 ssoToken 异常`, error)
   }
+}
+
+export async function loginEmail($: M) {
+  const ssoToken = await getSsoTokenApi($, $.config.phone)
+  if (!ssoToken) return
+
+  try {
+    const { code, summary, var: data } = await $.api.loginMail(ssoToken)
+    if (code !== 'S_OK') {
+      $.logger.fatal('获取 sid 失败', code, summary)
+      return
+    }
+
+    return data
+  } catch (error) {
+    $.logger.error(`获取 sid 异常`, error)
+  }
+  return
 }
 
 async function getJwtTokenApi($: M, ssoToken: string) {
@@ -591,6 +609,7 @@ export async function run($: M) {
     shareFindTask,
     blindboxTask,
     hc1Task,
+    aiRedPackTask,
     shakeTask,
     receive,
     msgPushOnTask,

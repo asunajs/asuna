@@ -1,5 +1,7 @@
 import { createTime as _createTime, getXmlElement, randomHex, randomNumber, setStoreArray } from '@asign/utils-pure'
-import type { M } from './types.js'
+import type { M } from '../types.js'
+
+export * from './aiRedPack.js'
 
 export async function uploadFileRequest(
   $: M,

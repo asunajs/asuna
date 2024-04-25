@@ -1,9 +1,9 @@
 import { asyncForEach } from '@asign/utils-pure'
 import type { ClientTypeHeaders } from '../api.js'
 import { getSsoTokenApi } from '../index.js'
-import { getParentCatalogID, uploadFileRequest } from '../service.js'
 import type { M } from '../types.js'
 import type { TaskList } from '../types/garden.js'
+import { getParentCatalogID, uploadFileRequest } from './index.js'
 
 async function request<T extends (...args: any[]) => any>(
   $: M,

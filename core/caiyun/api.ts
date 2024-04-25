@@ -1,6 +1,8 @@
 import type { Http } from '@asign/types'
 import { hashCode } from '@asign/utils-pure'
+import { createAiRedPackApi } from './api/aiRedPack.js'
 import { createBackupGiftApi } from './api/backupGift.js'
+import { createMailChatApi } from './api/mailChat.js'
 import { createMsgPushApi } from './api/msgPush.js'
 import { createSignInApi } from './api/signin.js'
 import type { TaskList } from './TaskType.js'
@@ -24,6 +26,7 @@ import type {
   SignInInfo,
   TyrzLogin,
 } from './types.js'
+import type { LoginEmail } from './types/login.js'
 
 export * from './api/garden.js'
 
@@ -31,6 +34,12 @@ export type Journaling =
   | 'National_BlindBox_userLogin'
   | 'National_BlindBox_login'
   | 'National_BlindBox_loginAppOuterEnd'
+  | 'newsignin_index_app_signintimes'
+  | 'newsignin_index_signintimes'
+  | 'newsignin_index_app_client'
+  | 'newsignin_index_tab_1'
+  | 'newsignin_index_pv'
+  | 'newsignin_index_client'
 
 export function createApi(http: Http) {
   const yun139Url = 'https://yun.139.com'
@@ -72,11 +81,13 @@ export function createApi(http: Http) {
     getNoteAuthToken: async function getNoteAuthToken(
       token: string,
       account: string | number,
-    ): Promise<{
-      app_auth: string
-      app_number: string
-      note_token: string
-    }> {
+    ): Promise<
+      {
+        app_auth: string
+        app_number: string
+        note_token: string
+      } | undefined
+    > {
       const resp = await http.post(
         `${mnoteUrl}/noteServer/api/authTokenRefresh.do`,
         {
@@ -456,11 +467,12 @@ export function createApi(http: Http) {
     // },
     /**
      * 登记
+     * @param other 其它参数，& 开头
      */
-    journaling(optkeyword: Journaling, sourceid = 1010) {
+    journaling(optkeyword: Journaling, sourceid = 1010, other: `&${string}` | '' = '') {
       return http.post<BaseType>(
         `${caiyunUrl}/portal/journaling`,
-        `account=&module=uservisit&optkeyword=${optkeyword}&fromId=&flag=&fileId=&fileType=&fileExtname=&fileSize=&sourceid=${sourceid}&linkId=`,
+        `account=&module=uservisit&optkeyword=${optkeyword}&fromId=&flag=&fileId=&fileType=&fileExtname=&fileSize=&sourceid=${sourceid}&linkId=${other}`,
         {
           headers: {
             'content-type': 'application/x-www-form-urlencoded',
@@ -473,9 +485,23 @@ export function createApi(http: Http) {
         `${caiyunUrl}/market/signin/public/cloudRecord?type=${type}&pageNumber=${pn}&pageSize=${ps}`,
       )
     },
+    loginMail(token: string) {
+      return http.post<LoginEmail>(
+        'https://mail.10086.cn/login/inlogin.action',
+        `<?xml version="1.0" encoding="utf-8"?>
+      <object>
+       <string name="clientId">10804</string> 
+       <string name="version">9</string>
+       <string name="loginType">7</string> 
+       <string name="token">${token}</string> 
+      </object>`,
+      )
+    },
     ...createSignInApi(http),
     ...createMsgPushApi(http),
     ...createBackupGiftApi(http),
+    ...createAiRedPackApi(http),
+    ...createMailChatApi(http),
   }
 }
 
