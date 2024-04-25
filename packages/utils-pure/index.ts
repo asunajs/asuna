@@ -116,7 +116,7 @@ export function hashCode(str: string) {
   return hash
 }
 
-export function isWps() {
+export function isWps(): boolean {
   return globalThis.setTimeout === undefined && globalThis.HTTP
 }
 
