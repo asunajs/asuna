@@ -59,6 +59,5 @@ export function createMailChatApi(http: Http) {
     </object>`,
       )
     },
-    _together,
   }
 }

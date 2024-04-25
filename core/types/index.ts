@@ -11,7 +11,9 @@ export interface Http {
   ): Promise<T>
   get<T = any>(url: string, options?: Option): Promise<T>
   request?<T = any>(options?: Option): Promise<T>
-  setOption?(option: Option): void
+  setOptions?(option: Option): void
+  setHeader?(key: string, value: string): void
+  setCookie?(key: string, value: string, currentUrl: string): void
 }
 
 export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE'
