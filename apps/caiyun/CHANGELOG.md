@@ -1,5 +1,14 @@
 # @asunajs/caiyun
 
+## 0.2.6
+
+### Patch Changes
+
+- [`5352c0d`](https://github.com/asunajs/asuna/commit/5352c0d770759a2ddc8b4f809edcd4077034f58d) Thanks [@catlair](https://github.com/catlair)! - feat: ai redPack
+
+- Updated dependencies [[`1d25d51`](https://github.com/asunajs/asuna/commit/1d25d516d551dca5071911a4b81f5924583cb07a)]:
+  - @asunajs/http@0.0.1
+
 ## 0.2.5
 
 ### Patch Changes
