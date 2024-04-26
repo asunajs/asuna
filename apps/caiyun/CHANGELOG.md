@@ -1,5 +1,14 @@
 # @asunajs/caiyun
 
+## 0.2.7
+
+### Patch Changes
+
+- [`61f5a4a`](https://github.com/asunajs/asuna/commit/61f5a4adace01a1a385c8707f7ceef30a4224cd1) Thanks [@catlair](https://github.com/catlair)! - fix: tsup 压缩导致出现错误代码
+
+- Updated dependencies [[`61f5a4a`](https://github.com/asunajs/asuna/commit/61f5a4adace01a1a385c8707f7ceef30a4224cd1)]:
+  - @asunajs/http@0.0.2
+
 ## 0.2.6
 
 ### Patch Changes
