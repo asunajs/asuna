@@ -16,9 +16,9 @@ export const config = z.object({
       '上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务',
     ).default('202CB962AC59075B964B07152D234B70'),
   }).optional().describe('果园配置'),
-  blindbox: z.object({
-    enable: z.boolean().default(false).optional().describe('是否开启该功能，目前测试中，请不要开启'),
-  }).optional().describe('盲盒配置'),
+  aiRedPack: z.object({
+    enable: z.boolean().default(true).optional().describe('是否开启该功能'),
+  }).optional().describe('AI 红包'),
 }).describe('中国移动云盘配置')
 
 const types = {

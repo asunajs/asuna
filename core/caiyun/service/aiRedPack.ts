@@ -11,14 +11,30 @@ export async function aiRedPackTask($: M) {
     return
   }
 
-  const sid = await init($)
-  if (!sid) return
+  try {
+    await blindboxJournaling($)
 
-  let count = 4
+    const sid = await init($)
+    if (!sid) return
 
-  while (!(await _task($, sid)) && count > 0) {
-    count--
+    let count = 4
+
+    while (!(await _task($, sid)) && count > 0) {
+      count--
+    }
+  } catch (error) {
+    $.logger.error('AI红包', error)
   }
+}
+
+async function blindboxJournaling({ api, sleep }: M) {
+  const marketName = '&marketName=National_LanternRiddlesal_LanternRiddles'
+  await api.journaling('National_LanternRiddles_client_all', 1008, marketName)
+  await sleep(200)
+  await api.journaling('National_LanternRiddles_pv', 1008, marketName)
+  await sleep(200)
+  await api.journaling('National_LanternRiddles_client_isApp', 1008, marketName)
+  await sleep(200)
 }
 
 async function _task($: M, sid: string) {

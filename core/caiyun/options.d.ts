@@ -37,11 +37,11 @@ export interface Caiyun {
     digest?: string
   }
   /**
-   * 盲盒配置
+   * AI 红包
    */
-  blindbox?: {
+  aiRedPack?: {
     /**
-     * 是否开启该功能，目前测试中，请不要开启
+     * 是否开启该功能
      */
     enable?: boolean
   }

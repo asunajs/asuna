@@ -34,6 +34,9 @@ export type Journaling =
   | 'National_BlindBox_userLogin'
   | 'National_BlindBox_login'
   | 'National_BlindBox_loginAppOuterEnd'
+  | 'National_LanternRiddles_pv'
+  | 'National_LanternRiddles_client_isApp'
+  | 'National_LanternRiddles_client_all'
 
 export function createApi(http: Http) {
   const yun139Url = 'https://yun.139.com'

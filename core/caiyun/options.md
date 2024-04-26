@@ -43,14 +43,14 @@ cookie authorization 字段
 
 上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务
 
-### `blindbox`
+### `aiRedPack`
 
 #### `enable`
 
 - **类型**: `布尔值`
-- **默认值**: `false`
+- **默认值**: `true`
 
-是否开启该功能，目前测试中，请不要开启
+是否开启该功能
 
 ### 示例
 
@@ -58,17 +58,17 @@ cookie authorization 字段
 {
   "caiyun": [
     {
-      "auth": "terminatio",
+      "auth": "maxime",
       "shake": {
-        "enable": false,
+        "enable": true,
         "num": 15,
-        "delay": 2
+        "delay": 1005782227222528
       },
       "garden": {
         "enable": true,
-        "digest": "aperteYdymFxytOGTgOnNvBAOupvykEK"
+        "digest": "202CB962AC59075B964B07152D234B70"
       },
-      "blindbox": {
+      "aiRedPack": {
         "enable": true
       }
     }
@@ -89,8 +89,8 @@ cookie authorization 字段
     "enable": true,
     "digest": "202CB962AC59075B964B07152D234B70"
   },
-  "blindbox": {
-    "enable": false
+  "aiRedPack": {
+    "enable": true
   }
 }
 ```
