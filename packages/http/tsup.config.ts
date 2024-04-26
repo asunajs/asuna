@@ -4,6 +4,6 @@ import { defineConfig } from 'tsup'
 export default defineConfig({
   ...appDefuConfig,
   entry: ['index.ts'],
-  minify: true,
+  minify: false,
   dts: false, // 未知错误，关闭
 })

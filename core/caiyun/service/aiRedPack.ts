@@ -159,7 +159,7 @@ async function openRedPack($: M, puzzleId: string) {
       case 0:
         return result.prizeName
       case 10010020:
-        $.logger.fail(code, msg)
+        $.logger.fail('可能你需要去 APP 手动完成一次', code, msg)
         return -1
       default:
         $.logger.fail('打开红包失败', code, msg)
