@@ -46,14 +46,14 @@ export function mergeOptions(options: MyOptions, globalOptions: GotExtendOptions
 
   // 兼容之前的配置，后续删除
   if (_options.data) {
-    _options.body = options.data
+    _options.body = _options.data
     delete _options.data
   }
 
   if (
     _options.body && _options.headers['content-type'] && _options.headers['content-type'].includes('form-urlencoded')
   ) {
-    _options.body = new URLSearchParams(options.body as any).toString()
+    _options.body = new URLSearchParams(_options.body as any).toString()
   } else if (isPlainObject(options.body)) {
     _options.body = JSON.stringify(options.body)
   }
@@ -62,7 +62,10 @@ export function mergeOptions(options: MyOptions, globalOptions: GotExtendOptions
 }
 
 export function createRequest(options: GotExtendOptions = {}) {
-  const globalOptions = defu(options, { method: 'POST', timeout: { request: 30000 } } as GotExtendOptions)
+  const globalOptions = defu(
+    options,
+    { method: 'POST', timeout: { request: 30000 }, throwHttpErrors: false } as GotExtendOptions,
+  )
   globalOptions.headers = toLowerCaseHeaders(globalOptions.headers)
 
   if (!globalOptions.cookieJar) {
@@ -91,19 +94,24 @@ export function createRequest(options: GotExtendOptions = {}) {
     return request<T>({ url, method: 'post', body, ...options })
   }
 
-  return {
+  const http = {
     request,
     get,
     post,
     setOptions(options: GotExtendOptions) {
       options.headers = toLowerCaseHeaders(options.headers)
       merge(globalOptions, options)
+      return http
     },
     setHeader(key: string, value: string) {
       globalOptions.headers[key.toLowerCase()] = value
+      return http
     },
     setCookie(key: string, value: string, currentUrl: string) {
       ;(globalOptions.cookieJar as CookieJar).setCookieSync(`${key}=${value}`, currentUrl)
+      return http
     },
   }
+
+  return http
 }
