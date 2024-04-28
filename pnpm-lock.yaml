@@ -42,7 +42,7 @@ importers:
         specifier: ^1.13.2
         version: 1.13.3
       typescript:
-        specifier: ^5.4.4
+        specifier: ^5.4.5
         version: 5.4.5
 
   apps/alipan:
@@ -104,9 +104,6 @@ importers:
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../../packages/utils
-      '@types/tough-cookie':
-        specifier: ^4.0.5
-        version: 4.0.5
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -123,15 +120,6 @@ importers:
       '@asunajs/push':
         specifier: workspace:^
         version: link:../../packages/push
-      defu:
-        specifier: ^6.1.4
-        version: 6.1.4
-      destr:
-        specifier: ^2.0.3
-        version: 2.0.3
-      tough-cookie:
-        specifier: ^4.1.3
-        version: 4.1.3
     devDependencies:
       '@asign/build':
         specifier: workspace:^
@@ -422,6 +410,9 @@ importers:
 
   packages/utils:
     devDependencies:
+      '@asign/types':
+        specifier: workspace:^
+        version: link:../../core/types
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12

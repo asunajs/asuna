@@ -42,7 +42,7 @@ export function mergeOptions(options: MyOptions, globalOptions: GotExtendOptions
   /**
    * 最终配置
    */
-  const _options = defu(options, globalOptions)
+  const _options = defu(options, globalOptions) as MyOptions
 
   // 兼容之前的配置，后续删除
   if (_options.data) {

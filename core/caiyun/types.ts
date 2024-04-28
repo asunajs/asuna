@@ -1,5 +1,6 @@
 import type { Http, LoggerType } from '@asign/types'
-import type { ApiType, GardenApiType } from './api.js'
+import type { ApiType } from './api.js'
+import type { GardenApiType } from './api/garden.js'
 import { Caiyun } from './options.d.js'
 
 export type { Caiyun }

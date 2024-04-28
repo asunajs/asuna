@@ -30,7 +30,6 @@
     "@asign/caiyun-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^",
-    "@types/tough-cookie": "^4.0.5",
     "dotenv": "^16.4.5"
   },
   "publishConfig": {

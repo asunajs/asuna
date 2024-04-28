@@ -1,7 +1,7 @@
 import type { Http } from '@asign/types'
 import { mw2TogetherUrl } from '../constant/index.js'
 
-interface MailChatTask {
+export interface MailChatTask {
   /**
    * 'S_OK'
    */
@@ -11,7 +11,7 @@ interface MailChatTask {
   queueSize: number
 }
 
-interface MailChatMsg {
+export interface MailChatMsg {
   /**
    * 'S_OK'
    */
@@ -24,8 +24,8 @@ interface MailChatMsg {
 }
 
 export function createMailChatApi(http: Http) {
-  function _together<T = any>(name: string, sid: string, data: string) {
-    return http.post<T>(
+  function _together<T = any>(name: string, sid: string, data: string): Promise<T> {
+    return http.post(
       `${mw2TogetherUrl}?func=together:${name}&sid=${sid}&behaviorData=&rnd=${Math.random()}&cguid=2348352175888&k=5921&comefrom=2066`,
       data,
     )

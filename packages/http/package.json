@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prepublish": "copyfiles package.json README.md dist/",
-    "build": "tsup"
+    "build": "tsup --dts-resolve"
   },
   "keywords": [],
   "author": "catlair",

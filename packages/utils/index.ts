@@ -1,3 +1,4 @@
+import type { LoggerType } from '@asign/types'
 import crypto, { createCipheriv, createDecipheriv } from 'crypto'
 import fs, { existsSync, readFileSync, writeFileSync } from 'fs'
 import path, { dirname } from 'path'
@@ -33,7 +34,7 @@ export interface LoggerPushData {
   date: Date
 }
 
-export async function createLogger(options?: { pushData: LoggerPushData[] }) {
+export async function createLogger(options?: { pushData: LoggerPushData[] }): Promise<LoggerType> {
   const { createConsola, consola } = await import('consola')
   consola.options.level = 5
   return createConsola({
@@ -93,8 +94,6 @@ export function getConfig(name: string) {
   ).find((path) => fs.existsSync(path))
   return configPath ? readJsonFile(configPath) : undefined
 }
-
-export type LoggerType = Awaited<ReturnType<typeof createLogger>>
 
 function _getLocalStorage(path: string) {
   return existsSync(path) ? JSON.parse(readFileSync(path, 'utf-8')) : {}

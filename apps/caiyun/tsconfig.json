@@ -6,7 +6,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "moduleResolution": "NodeNext",
-    "outDir": "./",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "lib": [
@@ -15,6 +15,7 @@
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "**/asign.config.*"
   ]
 }

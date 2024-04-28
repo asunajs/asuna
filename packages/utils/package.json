@@ -33,6 +33,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@asign/types": "workspace:^",
     "@types/lodash-es": "^4.17.12",
     "consola": "^3.2.3",
     "lodash-es": "^4.17.21"

@@ -14,7 +14,6 @@ import { createRequest } from '@asunajs/http'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
 import { defu } from 'defu'
-import { CookieJar } from 'tough-cookie'
 import { uploadTask } from './service/uploadTask.js'
 import { myMD5 } from './utils/md5.js'
 

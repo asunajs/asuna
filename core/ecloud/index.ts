@@ -101,7 +101,6 @@ async function drawPrizeTask($: M) {
 }
 
 export async function run($: M) {
-  // 检测 https://cloud.189.cn/api/portal/listGrow.action?noCache=0.5555609671834492
   try {
     await login($)
     await $.sleep(2000)
