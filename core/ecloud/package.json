@@ -22,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@asign/typed": "workspace:^",
+    "tsconfig": "workspace:*",
     "@asign/types": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^"

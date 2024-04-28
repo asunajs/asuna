@@ -1,12 +1,9 @@
 {
+  "extends": "tsconfig/node.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "moduleResolution": "Bundler",
-    "outDir": "./"
+    "outDir": "./dist"
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "dist"
+  ]
 }

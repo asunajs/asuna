@@ -29,5 +29,8 @@
     },
     "main": "index.ts",
     "module": "index.ts"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
   }
 }

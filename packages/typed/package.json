@@ -34,6 +34,7 @@
     "@anatine/zod-mock": "^3.13.4",
     "@dprint/formatter": "^0.2.1",
     "@dprint/json": "^0.19.2",
+    "tsconfig": "workspace:*",
     "@dprint/markdown": "^0.16.4",
     "@dprint/typescript": "^0.89.3",
     "@faker-js/faker": "^8.4.1",

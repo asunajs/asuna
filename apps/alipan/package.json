@@ -25,6 +25,7 @@
     "secp256k1": "^5.0.0"
   },
   "devDependencies": {
+    "tsconfig": "workspace:*",
     "@asign/alipan-core": "workspace:^",
     "@asign/build": "workspace:^",
     "@asign/utils-pure": "workspace:^",

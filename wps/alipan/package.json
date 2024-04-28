@@ -12,6 +12,7 @@
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "tsconfig": "workspace:*",
     "@asign/alipan-core": "workspace:^",
     "@asign/build": "workspace:^",
     "@asign/utils-pure": "workspace:^",

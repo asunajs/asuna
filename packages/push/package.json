@@ -19,6 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "@asign/push-core": "workspace:^",
+    "tsconfig": "workspace:*",
     "@types/nodemailer": "^6.4.14"
   },
   "optionalDependencies": {

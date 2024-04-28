@@ -27,6 +27,7 @@
     "@asign/quark-core": "workspace:^",
     "@asign/build": "workspace:^",
     "@asign/utils-pure": "workspace:^",
+    "tsconfig": "workspace:*",
     "@asunajs/utils": "workspace:^"
   },
   "publishConfig": {

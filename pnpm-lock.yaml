@@ -75,6 +75,9 @@ importers:
       '@types/secp256k1':
         specifier: ^4.0.6
         version: 4.0.6
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
     publishDirectory: dist
 
   apps/caiyun:
@@ -107,6 +110,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
     publishDirectory: dist
 
   apps/ecloud:
@@ -148,6 +154,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
     publishDirectory: dist
 
   apps/quark:
@@ -174,6 +183,9 @@ importers:
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../../packages/utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
     publishDirectory: dist
 
   build:
@@ -181,6 +193,9 @@ importers:
       '@swc/core':
         specifier: ^1.4.12
         version: 1.5.0
+      tsconfig:
+        specifier: workspace:*
+        version: link:../packages/tsconfig
 
   core/alipan:
     devDependencies:
@@ -196,6 +211,9 @@ importers:
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../../packages/utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   core/bilicomic:
     devDependencies:
@@ -226,6 +244,9 @@ importers:
       '@types/tough-cookie':
         specifier: ^4.0.5
         version: 4.0.5
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   core/ecloud:
     devDependencies:
@@ -241,6 +262,9 @@ importers:
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../../packages/utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   core/push:
     devDependencies:
@@ -250,6 +274,9 @@ importers:
       '@asign/types':
         specifier: workspace:^
         version: link:../types
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   core/quark:
     devDependencies:
@@ -265,8 +292,15 @@ importers:
       '@asunajs/utils':
         specifier: workspace:^
         version: link:../../packages/utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
-  core/types: {}
+  core/types:
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   docs:
     dependencies:
@@ -311,6 +345,9 @@ importers:
       magicast:
         specifier: ^0.3.3
         version: 0.3.4
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
       yaml:
         specifier: ^2.4.1
         version: 2.4.1
@@ -351,6 +388,9 @@ importers:
       tough-cookie:
         specifier: ^4.1.3
         version: 4.1.3
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
     publishDirectory: dist
 
   packages/push:
@@ -368,9 +408,14 @@ importers:
       '@types/nodemailer':
         specifier: ^6.4.14
         version: 6.4.14
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
     publishDirectory: dist
 
   packages/qinglong-api: {}
+
+  packages/tsconfig: {}
 
   packages/typed:
     devDependencies:
@@ -401,6 +446,9 @@ importers:
       scule:
         specifier: ^1.3.0
         version: 1.3.0
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
       zod:
         specifier: ^3.22.4
         version: 3.23.4
@@ -422,9 +470,16 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
     publishDirectory: dist
 
-  packages/utils-pure: {}
+  packages/utils-pure:
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
 
   tools/remark-plugins:
     devDependencies:
@@ -437,6 +492,9 @@ importers:
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
     publishDirectory: dist
 
   wps/alipan:
@@ -453,6 +511,9 @@ importers:
       '@asign/wps-utils':
         specifier: workspace:^
         version: link:../utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   wps/caiyun:
     devDependencies:
@@ -468,6 +529,9 @@ importers:
       '@asign/wps-utils':
         specifier: workspace:^
         version: link:../utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   wps/quark:
     devDependencies:
@@ -483,6 +547,9 @@ importers:
       '@asign/wps-utils':
         specifier: workspace:^
         version: link:../utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
   wps/utils:
     devDependencies:
@@ -492,6 +559,9 @@ importers:
       '@asign/utils-pure':
         specifier: workspace:^
         version: link:../../packages/utils-pure
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
 
 packages:
 

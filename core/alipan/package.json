@@ -19,6 +19,7 @@
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
+    "tsconfig": "workspace:*",
     "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
     "@asign/utils-pure": "workspace:^",

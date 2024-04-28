@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "to-vfile": "^8.0.0",
+    "tsconfig": "workspace:*",
     "remark": "^15.0.1",
     "remark-mdx": "^3.0.1"
   }

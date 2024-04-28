@@ -9,5 +9,8 @@
   },
   "description": "",
   "author": "catlair",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
 }

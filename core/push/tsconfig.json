@@ -1,12 +1,3 @@
 {
-  "compilerOptions": {
-    "module": "ESNext",
-    "target": "esnext",
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "moduleResolution": "Bundler",
-    "lib": ["ESNext"],
-    "rootDir": "./"
-  }
+  "extends": "tsconfig/core.json"
 }

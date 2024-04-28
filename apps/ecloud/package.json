@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@asign/build": "workspace:^",
+    "tsconfig": "workspace:*",
     "@asign/ecloud-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^",

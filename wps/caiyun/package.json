@@ -13,6 +13,7 @@
   "license": "MIT",
   "devDependencies": {
     "@asign/build": "workspace:^",
+    "tsconfig": "workspace:*",
     "@asign/caiyun-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "@asign/wps-utils": "workspace:^"

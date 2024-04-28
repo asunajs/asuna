@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@asign/build": "workspace:^",
+    "tsconfig": "workspace:*",
     "@asign/caiyun-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^",

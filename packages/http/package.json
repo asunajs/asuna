@@ -22,6 +22,7 @@
     "defu": "^6.1.4",
     "destr": "^2.0.3",
     "got": "^14.2.1",
+    "tsconfig": "workspace:*",
     "lodash-es": "^4.17.21",
     "tough-cookie": "^4.1.3"
   },

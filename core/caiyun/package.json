@@ -33,6 +33,7 @@
   "devDependencies": {
     "@asign/typed": "workspace:^",
     "@asign/types": "workspace:^",
+    "tsconfig": "workspace:*",
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^",
     "@types/tough-cookie": "^4.0.5"
