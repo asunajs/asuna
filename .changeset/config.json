@@ -6,6 +6,6 @@
   "linked": [],
   "access": "restricted",
   "baseBranch": "yui",
-  "updateInternalDependencies": "patch",
+  "updateInternalDependencies": "minor",
   "ignore": []
 }
