@@ -1,5 +1,6 @@
 interface Option {
   native?: boolean
+  headers?: Record<string, string>
   [x: string]: any
 }
 

@@ -33,6 +33,7 @@ export function createApi(http: Http) {
         returnUrl,
         mailSuffix: '@189.cn',
         paramId,
+        cb_SaveName: 3,
       })
     },
     async loginRedirect(): Promise<LoginRedirect> {
@@ -117,9 +118,14 @@ export function createApi(http: Http) {
         netdiskBonus: number
         isSign: boolean
       }>(
-        `https://cloud.189.cn/mkt/userSign.action?rand=${
+        `https://api.cloud.189.cn/mkt/userSign.action?rand=${
           new Date().getTime()
         }&clientType=TELEANDROID&version=${version}&model=${model}`,
+        {
+          headers: {
+            HOST: 'm.cloud.189.cn',
+          },
+        },
       )
     },
     http,

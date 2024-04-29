@@ -10,7 +10,7 @@ type Config = Partial<Caiyun> & {
   platform?: string
 }
 
-export async function main(index, config: Config, option?) {
+export async function main(index: number, config: Config, option?: { pushData: any }) {
   config = {
     ...config,
     ...getAuthInfo(config.auth),
@@ -46,7 +46,7 @@ export async function main(index, config: Config, option?) {
     'accept': 'application/json',
   }
 
-  function getHeaders(url) {
+  function getHeaders(url: string) {
     if (getHostname(url) === 'caiyun.feixin.10086.cn') {
       if (jwtToken) {
         return {
@@ -62,7 +62,14 @@ export async function main(index, config: Config, option?) {
     }
   }
 
-  const http = createRequest({ cookieJar, getHeaders })
+  const http = createRequest({
+    hooks: {
+      beforeRequest(options) {
+        options.headers = getHeaders(options.url)
+        return options
+      },
+    },
+  })
 
   const $: M = {
     api: createApi(http),

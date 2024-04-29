@@ -1,3 +1,4 @@
+import { toLowerCaseHeaders } from '@asign/utils-pure'
 import { defu } from 'defu'
 import destr from 'destr'
 import { type ExtendOptions as GotExtendOptions, got, type Options as GotOptions } from 'got'
@@ -20,14 +21,6 @@ type MyOptions =
   & {
     body?: GotOptions['body'] | Record<string, any>
   }
-
-function toLowerCaseHeaders(headers?: Record<string, string | string[]>) {
-  if (!headers) return {}
-  return Object.entries(headers).reduce(
-    (acc, [key, value]) => (acc[key.toLowerCase()] = value, acc),
-    {} as Record<string, string | string[]>,
-  )
-}
 
 export function mergeOptions(options: MyOptions, globalOptions: GotExtendOptions) {
   options.headers = toLowerCaseHeaders(options.headers)

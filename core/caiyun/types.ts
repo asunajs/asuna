@@ -40,7 +40,7 @@ export interface M {
     uploadTask: ($: M, progressNum: number) => Promise<void>
     myMD5: (s: string) => string
   }
-  http: Http
+  http?: Http
 }
 
 export interface BaseType<T = any> {

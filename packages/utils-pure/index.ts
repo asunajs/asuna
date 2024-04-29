@@ -126,3 +126,15 @@ export function createTime() {
     '',
   )
 }
+
+export function toLowerCaseHeaders(headers?: Record<string, string | string[]>) {
+  if (!headers) return {}
+  return Object.entries(headers).reduce(
+    (acc, [key, value]) => (acc[key.toLowerCase()] = value, acc),
+    {} as Record<string, string | string[]>,
+  )
+}
+
+export function isPlainObject(obj: any) {
+  return Array.isArray(obj) || Object.prototype.toString.call(obj) === '[object Object]'
+}

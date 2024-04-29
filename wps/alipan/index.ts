@@ -32,7 +32,14 @@ async function main(index, ASIGN_ALIPAN_TOKEN, option?) {
   }
 
   const $: M = {
-    api: createApi(createRequest({ getHeaders })),
+    api: createApi(createRequest({
+      hooks: {
+        beforeRequest(options) {
+          options.headers = getHeaders()
+          return options
+        },
+      },
+    })),
     logger: logger as any,
     DATA: DATA,
     config: {
