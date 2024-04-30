@@ -6,7 +6,7 @@ type Cookie = {
   [s: string]: unknown
 }
 
-function pareCookie(cookie: string) {
+function parseCookie(cookie: string) {
   return cookie.split(/;\s?/).reduce((t, cur, i) => {
     const a = cur.split('=')
     if (a[0] === '') return t
@@ -23,8 +23,8 @@ function pareCookie(cookie: string) {
   }, {})
 }
 
-function pareCookies(cookies: string[]) {
-  return arrayMap(cookies, pareCookie)
+function parseCookies(cookies: string[]) {
+  return arrayMap(cookies, parseCookie)
 }
 
 function stringifyCookies(cookies: Cookie[]) {
@@ -42,7 +42,7 @@ export function createCookieJar() {
     setCookies(cookieStrings: string[]) {
       if (!cookieStrings) return
       if (cookieStrings.length === 0) return
-      _.store = [..._.store, ...pareCookies(cookieStrings)]
+      _.store = [..._.store, ...parseCookies(cookieStrings)]
     },
     getCookieString() {
       return stringifyCookies(_.store)
