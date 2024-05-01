@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.9
+
+### Patch Changes
+
+- [`ea7027e`](https://github.com/asunajs/asuna/commit/ea7027ead8d15b18296482fad87081f2c866a221) Thanks [@catlair](https://github.com/catlair)! - feat(caiyun): 为开启备份的用户备份
+
 ## 0.2.8
 
 ### Patch Changes
