@@ -45,4 +45,8 @@ export interface Caiyun {
      */
     enable?: boolean
   }
+  /**
+   * 备份等待时间（秒）
+   */
+  backupWaitTime?: number
 }

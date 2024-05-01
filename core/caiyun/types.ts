@@ -40,6 +40,7 @@ export interface M {
     uploadTask: ($: M, progressNum: number) => Promise<void>
     myMD5: (s: string) => string
   }
+  md5: (input: any) => string
   http?: Http
 }
 

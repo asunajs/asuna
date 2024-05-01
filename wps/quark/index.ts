@@ -2,7 +2,7 @@ import { createApi, type M, run } from '@asign/quark-core'
 import { createLogger } from '@asign/utils-pure'
 import { createSimpleRequest, getPushConfig, sendWpsNotify } from '@asign/wps-utils'
 
-async function main(cookie: string, option?: { pushData: any }) {
+function main(cookie: string, option?: { pushData: any }) {
   if (!cookie) return
   const logger = createLogger({ pushData: option && option.pushData })
 

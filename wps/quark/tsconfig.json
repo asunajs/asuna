@@ -1,3 +1,6 @@
 {
-  "extends": "tsconfig/wps.json"
+  "extends": "tsconfig/wps.json",
+  "exclude": [
+    "dist"
+  ]
 }

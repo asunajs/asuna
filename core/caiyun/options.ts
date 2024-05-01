@@ -11,4 +11,5 @@ export const defuConfig = {
   aiRedPack: {
     enable: true,
   },
+  backupWaitTime: 20,
 }

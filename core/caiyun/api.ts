@@ -249,7 +249,7 @@ export function createApi(http: Http) {
         {
           headers: {
             // 'hcy-cool-flag': '1',
-            'x-huawei-uploadSrc': '1',
+            'x-huawei-uploadSrc': '2',
             'x-huawei-channelSrc': '10000023',
             'Content-Type': 'text/xml; charset=UTF-8',
           },

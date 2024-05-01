@@ -70,7 +70,7 @@ function mergeOptions(options: MyOptions, globalOptions: MyOptions) {
 
 export function createRequest(options: MyOptions = {}) {
   options.headers = toLowerCaseHeaders(options.headers) as any
-  if (options.headers['user-agent']) {
+  if (!options.headers['user-agent']) {
     options.headers['user-agent'] =
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
   }

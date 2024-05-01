@@ -130,3 +130,7 @@ export async function pcUploadFileRequest($: M, path: string) {
 export function getParentCatalogID() {
   return '00019700101000000001'
 }
+
+export function getBackParentCatalogID() {
+  return '00019700101000000043'
+}

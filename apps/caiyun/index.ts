@@ -12,7 +12,15 @@ import { getAuthInfo } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
 import { createRequest } from '@asunajs/http'
 import { sendNotify } from '@asunajs/push'
-import { createLogger, getLocalStorage, type LoggerPushData, pushMessage, setLocalStorage, sleep } from '@asunajs/utils'
+import {
+  createLogger,
+  getLocalStorage,
+  type LoggerPushData,
+  md5,
+  pushMessage,
+  setLocalStorage,
+  sleep,
+} from '@asunajs/utils'
 import { defu } from 'defu'
 import { uploadTask } from './service/uploadTask.js'
 import { myMD5 } from './utils/md5.js'
@@ -75,6 +83,7 @@ export async function main(
       uploadTask,
       myMD5,
     },
+    md5,
     store: {},
     localStorage,
     http,

@@ -149,7 +149,7 @@ async function clickTask($: M, task: number) {
   return false
 }
 
-async function deleteFiles($: M, ids: string[]) {
+export async function deleteFiles($: M, ids: string[]) {
   try {
     $.logger.debug(`删除文件${ids.join(',')}`)
     const {

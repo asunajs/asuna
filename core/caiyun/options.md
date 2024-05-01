@@ -52,25 +52,33 @@ cookie authorization 字段
 
 是否开启该功能
 
+### `backupWaitTime`
+
+- **类型**: `数字`
+- **默认值**: `20`
+
+备份等待时间（秒）
+
 ### 示例
 
 ```json
 {
   "caiyun": [
     {
-      "auth": "maxime",
+      "auth": "temeritas",
       "shake": {
         "enable": true,
-        "num": 15,
-        "delay": 1005782227222528
+        "num": 7335417093292032,
+        "delay": 1190027881086976
       },
       "garden": {
-        "enable": true,
+        "enable": false,
         "digest": "202CB962AC59075B964B07152D234B70"
       },
       "aiRedPack": {
         "enable": true
-      }
+      },
+      "backupWaitTime": 20
     }
   ]
 }
@@ -91,6 +99,7 @@ cookie authorization 字段
   },
   "aiRedPack": {
     "enable": true
-  }
+  },
+  "backupWaitTime": 20
 }
 ```

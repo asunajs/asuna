@@ -15,14 +15,8 @@ function getRandomFile($: M) {
   }
 }
 
-async function _upload($: M, digest?: string, contentSize?: number) {
-  const file = digest
-    ? {
-      randomBuffer: null,
-      fileMd5: digest,
-      fileSize: contentSize,
-    }
-    : getRandomFile($)
+async function _upload($: M) {
+  const file = getRandomFile($)
   const success = await uploadFile($, getParentCatalogID(), {
     digest: file.fileMd5,
     contentSize: file.fileSize,
@@ -32,12 +26,8 @@ async function _upload($: M, digest?: string, contentSize?: number) {
   }, file.randomBuffer)
 
   if (success) {
-    return {
-      digest: file.fileMd5,
-      contentSize: file.fileSize,
-    }
+    $.logger.debug('上传成功')
   }
-  return {}
 }
 
 export async function uploadTask($: M, progressNum: number) {
@@ -47,15 +37,11 @@ export async function uploadTask($: M, progressNum: number) {
   }
   $.logger.debug('已经上传', progressNum, '字节')
   const needM = 1025 - Math.floor(progressNum / 1024 / 1024)
+  $.logger.debug('需要上传', needM, 'MB')
 
-  let digest: string, contentSize: number
   // 每次只上传 200 MB 的文件
   for (let i = 0; i < needM; i += 200) {
-    const r = await _upload($, digest, contentSize)
-    if (r.digest) {
-      digest = r.digest
-      contentSize = r.contentSize
-    }
+    await _upload($)
 
     if (needM - 200 > 0) {
       await $.sleep(3000)
