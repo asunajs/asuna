@@ -1,5 +1,12 @@
 # @asunajs/caiyun
 
+## 0.2.8
+
+### Patch Changes
+
+- Updated dependencies [[`a2c797c`](https://github.com/asunajs/asuna/commit/a2c797c454fdfa5a1cde86a49c7946d189ef6a37)]:
+  - @asunajs/http@0.0.3
+
 ## 0.2.7
 
 ### Patch Changes
