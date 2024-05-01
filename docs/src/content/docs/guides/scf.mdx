@@ -1,0 +1,40 @@
+---
+title: 腾讯云函数
+description: 在腾讯云函数中使用
+sidebar:
+  order: 7
+---
+
+:::tip[提示]
+以天翼云 ecloud 为例
+:::
+
+## 创建函数
+
+略
+
+注意 Node.js 版本选 18.xx 及以上。并且建议创建空函数，避免依赖污染。
+
+## 安装依赖
+
+新建的函数中，有个 `src` 文件夹，其中有个 `index.js` 文件
+
+![安装依赖](@imgs/scf/scf_install.png)
+
+先打开终端，运行 `cd src` 进入 src 目录
+
+然后运行 `npm install @asunajs/ecloud` （注意 ecloud 是天翼云，其它自行替换）
+
+## 编辑 src/index.js
+
+```js
+const { run } = require('@asunajs/ecloud');
+
+exports.main_handler = async (event, context) => {
+  return await run();
+};
+```
+
+## 编辑 src/asign.config.js
+
+参考配置 [配置](/start/config/)

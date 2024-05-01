@@ -38,6 +38,52 @@ B 列为 密码
 
 使用参考 [使用例子](/demo/wps/)
 
+## 使用方法
+
+:::tip[提示]
+文档在建设中，精力有限，欢迎 PR
+:::
+
+安装
+
+```bash
+npm install @asunajs/ecloud
+```
+
+**注意：** `run` 可选参数，配置文件路径
+
+使用 cjs
+
+```js
+const { run } = require('@asunajs/ecloud');
+
+(async () => {
+  await run();
+})();
+```
+
+使用 esm
+
+```js
+import { run } from '@asunajs/ecloud';
+
+await run();
+```
+
+在阿里云函数中使用，其他环境请自行摸索
+
+```js
+const { run } = require('@asunajs/ecloud');
+
+exports.handler = async function (event, context, callback) {
+  callback(null, await run());
+};
+```
+
+### 青龙面板
+
+[青龙面板](/guides/qinglong/)
+
 ## 配置
 
 :::note[提示]
