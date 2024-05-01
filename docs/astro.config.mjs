@@ -33,7 +33,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: 'https://github.com/asunajs/asuna/edit/dev/docs',
+        baseUrl: 'https://github.com/asunajs/asuna/edit/yui/docs',
       },
       locales: {
         root: {

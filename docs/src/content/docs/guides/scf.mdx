@@ -15,6 +15,10 @@ sidebar:
 
 注意 Node.js 版本选 18.xx 及以上。并且建议创建空函数，避免依赖污染。
 
+注意设置超时时间，大约半分钟以上。
+
+注意部分内容需要设置公网配置为固定 IP 地址，否则可能出现 ip 验证失败。（例如天翼云）
+
 ## 安装依赖
 
 新建的函数中，有个 `src` 文件夹，其中有个 `index.js` 文件
@@ -28,6 +32,7 @@ sidebar:
 ## 编辑 src/index.js
 
 ```js
+// 记得修改为对应的名称
 const { run } = require('@asunajs/ecloud');
 
 exports.main_handler = async (event, context) => {
@@ -37,4 +42,6 @@ exports.main_handler = async (event, context) => {
 
 ## 编辑 src/asign.config.js
 
-参考配置 [配置](/start/config/)
+有哪些配置内容参考对应的指南，例如这里的 ecloud 可参考 [天翼云](/reference/ecloud/)
+
+配置文件参考 [配置文件参考](/start/config/)
