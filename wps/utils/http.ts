@@ -93,6 +93,10 @@ export function createRequest(options: MyOptions = {}) {
       options = hooks.beforeRequest(options)
     }
 
+    if (options.cookieJar) {
+      options.headers.cookie = options.cookieJar.getCookieString()
+    }
+
     const resp = HTTP.fetch(options.url, options)
 
     const respHeaders = resp.headers

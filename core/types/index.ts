@@ -15,6 +15,8 @@ export interface Http {
   setOptions?(option: Option): Http
   setHeader?(key: string, value: string): Http
   setCookie?(key: string, value: string, currentUrl: string): Http
+  getCookie?(currentUrl: string): string
+  initCookie?(cookieString: string, currentUrl: string): void
 }
 
 export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE'

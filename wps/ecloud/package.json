@@ -1,0 +1,21 @@
+{
+  "name": "@asign/ecloud-wps",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "files": [],
+  "scripts": {
+    "build": "tsup --config ../../build/tsup-wps.config.ts --env.WPS_NAME ecloud"
+  },
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "@asign/ecloud-core": "workspace:^",
+    "@asign/build": "workspace:^",
+    "@asign/utils-pure": "workspace:^",
+    "@asign/wps-utils": "workspace:^"
+  }
+}

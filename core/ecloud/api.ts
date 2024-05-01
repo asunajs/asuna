@@ -1,4 +1,5 @@
 import type { Http } from '@asign/types'
+import type { AccessToken, AppConf, EncryptConf, ListGrow, PrizeMarket, UserBrief, UserSign } from './types'
 
 type LoginRedirect = {
   lt: string
@@ -13,18 +14,18 @@ type LoginSubmit = {
 }
 
 export function createApi(http: Http) {
-  const apiUrl = 'https://open.e.189.cn/api/logbox' as const
-  const oauth2Url = apiUrl + '/oauth2'
+  const logboxUrl = 'https://open.e.189.cn/api/logbox' as const
+  const oauth2Url = logboxUrl + '/oauth2'
 
   return {
-    loginSubmit({ usernameEncrypt, passwordEncrypt, returnUrl, paramId, pre = '{NRP}' }) {
+    loginSubmit({ username, password, returnUrl, paramId, pre = '{NRP}' }) {
       return http.post<LoginSubmit>(oauth2Url + '/loginSubmit.do', {
         version: 'v2.0',
         appKey: 'cloud',
         apToken: '',
         accountType: '01',
-        userName: `${pre}${usernameEncrypt}`,
-        epd: `${pre}${passwordEncrypt}`,
+        userName: `${pre}${username}`,
+        epd: `${pre}${password}`,
         validateCode: '',
         captchaToken: '',
         captchaType: '',
@@ -69,55 +70,21 @@ export function createApi(http: Http) {
       }, {} as Record<string, string>)
     },
     appConf() {
-      return http.post(oauth2Url + '/appConf.do', { appKey: 'cloud' })
+      return http.post<AppConf>(oauth2Url + '/appConf.do', { appKey: 'cloud' })
     },
     encryptConf() {
-      // fuck typescript， 不写在这居然是 any
-      return http.post<
-        {
-          result: number
-          data: {
-            upSmsOn: string
-            pre: string // {NRP}
-            preDomain: string // card.e.189.cn
-            pubKey: string
-          }
-        }
-      >(apiUrl + '/config/encryptConf.do', 'appId=cloud')
+      return http.post<EncryptConf>(logboxUrl + '/config/encryptConf.do', 'appId=cloud')
     },
     loginCallback(toUrl: string) {
       return http.get(toUrl)
     },
     drawPrizeMarket(taskId: 'TASK_SIGNIN' | 'TASK_SIGNIN_PHOTOS' | 'TASK_2022_FLDFS_KJ') {
-      return http.get<
-        {
-          prizeId: 'SIGNIN_CLOUD_50M'
-          prizeName: '天翼云盘50M空间'
-          prizeGrade: number
-          prizeType: number
-          description: string
-          useDate: string
-          userId: number
-          isUsed: number
-          activityId: 'ACT_SIGNIN'
-          prizeStatus: number
-          showPriority: number
-          errorCode?: 'User_Not_Chance'
-          errorMsg?: string
-        }
-      >(
+      return http.get<PrizeMarket>(
         `https://m.cloud.189.cn/v2/drawPrizeMarketDetails.action?taskId=${taskId}&activityId=ACT_SIGNIN&noCache=${Math.random()}`,
       )
     },
     userSign(version = '10.1.4', model = 'iPhone14') {
-      return http.get<{
-        userSignId: string
-        userId: number
-        signTime: string
-        /** 1 -50 */
-        netdiskBonus: number
-        isSign: boolean
-      }>(
+      return http.get<UserSign>(
         `https://api.cloud.189.cn/mkt/userSign.action?rand=${
           new Date().getTime()
         }&clientType=TELEANDROID&version=${version}&model=${model}`,
@@ -126,6 +93,37 @@ export function createApi(http: Http) {
             HOST: 'm.cloud.189.cn',
           },
         },
+      )
+    },
+    getUserBriefInfo() {
+      return http.get<UserBrief>(
+        'https://cloud.189.cn/api/portal/v2/getUserBriefInfo.action',
+      )
+    },
+    getAccessTokenBySsKey(sessionKey: string, headers: Record<string, string>) {
+      return http.get<AccessToken>(
+        `https://cloud.189.cn/api/open/oauth2/getAccessTokenBySsKey.action?sessionKey=${sessionKey}`,
+        {
+          headers,
+        },
+      )
+    },
+    getFamilyList(headers: Record<string, string>) {
+      return http.get<string>('https://api.cloud.189.cn/open/family/manage/getFamilyList.action', {
+        headers,
+      })
+    },
+    familySign(familyId: string, headers: Record<string, string>) {
+      return http.get<string>(
+        `https://api.cloud.189.cn/open/family/manage/exeFamilyUserSign.action?familyId=${familyId}`,
+        {
+          headers,
+        },
+      )
+    },
+    getListGrow() {
+      return http.get<ListGrow>(
+        `https://cloud.189.cn/api/portal/listGrow.action?noCache=${Math.random()}`,
       )
     },
     http,

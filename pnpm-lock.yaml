@@ -536,6 +536,24 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
 
+  wps/ecloud:
+    devDependencies:
+      '@asign/build':
+        specifier: workspace:^
+        version: link:../../build
+      '@asign/ecloud-core':
+        specifier: workspace:^
+        version: link:../../core/ecloud
+      '@asign/utils-pure':
+        specifier: workspace:^
+        version: link:../../packages/utils-pure
+      '@asign/wps-utils':
+        specifier: workspace:^
+        version: link:../utils
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+
   wps/quark:
     devDependencies:
       '@asign/build':

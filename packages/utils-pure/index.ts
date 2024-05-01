@@ -138,3 +138,26 @@ export function toLowerCaseHeaders(headers?: Record<string, string | string[]>) 
 export function isPlainObject(obj: any) {
   return Array.isArray(obj) || Object.prototype.toString.call(obj) === '[object Object]'
 }
+
+/**
+ * 将对象排序并转为字符串 xxx=yyy&zzz=aaa，先
+ */
+export function sortStringify(obj: Record<string, any>) {
+  return Object.entries(obj)
+    .sort()
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+}
+
+export function getBeijingTime(timestamp?: string | number | Date) {
+  const time = timestamp ? new Date(timestamp) : new Date()
+  const [year, monthStr, dayStr] = time.toLocaleDateString('zh-CN').split('/')
+
+  return { year: parseInt(year, 10), month: parseInt(monthStr, 10), day: parseInt(dayStr, 10) }
+}
+
+export function getInToday(timestamp: string | number | Date) {
+  const today = getBeijingTime()
+  const time = getBeijingTime(timestamp)
+  return today.day === time.day && today.month === time.month && today.year === time.year
+}

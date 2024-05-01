@@ -104,6 +104,14 @@ export function createRequest(options: GotExtendOptions = {}) {
       ;(globalOptions.cookieJar as CookieJar).setCookieSync(`${key}=${value}`, currentUrl)
       return http
     },
+    initCookie(cookieString: string, currentUrl: string) {
+      cookieString.split(/;\s?/).filter(Boolean).forEach((cookie) =>
+        (globalOptions.cookieJar as CookieJar).setCookieSync(cookie, currentUrl)
+      )
+    },
+    getCookie(currentUrl: string) {
+      return (globalOptions.cookieJar as CookieJar).getCookieStringSync(currentUrl)
+    },
   }
 
   return http

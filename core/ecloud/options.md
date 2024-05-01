@@ -16,8 +16,8 @@
 {
   "ecloud": [
     {
-      "username": "harum",
-      "password": "lT2Tm9AabSRl8rx"
+      "username": "curatio",
+      "password": "I6R9JfznobCGEVI"
     }
   ]
 }
