@@ -35,23 +35,23 @@ export function mergeOptions(options: MyOptions, globalOptions: GotExtendOptions
   /**
    * 最终配置
    */
-  const _options = defu(options, globalOptions) as MyOptions
+  options = defu(options, globalOptions) as MyOptions
 
   // 兼容之前的配置，后续删除
-  if (_options.data) {
-    _options.body = _options.data
-    delete _options.data
+  if (options.data) {
+    options.body = options.data
+    delete options.data
   }
 
   if (
-    _options.body && _options.headers['content-type'] && _options.headers['content-type'].includes('form-urlencoded')
+    options.body && options.headers['content-type'] && options.headers['content-type'].includes('form-urlencoded')
   ) {
-    _options.body = new URLSearchParams(_options.body as any).toString()
+    options.body = new URLSearchParams(options.body as any).toString()
   } else if (isPlainObject(options.body)) {
-    _options.body = JSON.stringify(options.body)
+    options.body = JSON.stringify(options.body)
   }
 
-  return _options
+  return options
 }
 
 export function createRequest(options: GotExtendOptions = {}) {
