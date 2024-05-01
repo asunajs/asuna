@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/ecloud",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "天翼云盘签到",
   "main": "./index.ts",
   "type": "module",
