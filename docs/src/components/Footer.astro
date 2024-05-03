@@ -1,0 +1,49 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+
+import EditLink from '@astrojs/starlight/components/EditLink.astro';
+import LastUpdated from '@astrojs/starlight/components/LastUpdated.astro';
+import Pagination from '@astrojs/starlight/components/Pagination.astro';
+
+import Comments from './Comment.tsx';
+
+const isHomepage = Astro.props.slug === '';
+---
+
+<footer>
+
+	<div class="meta sl-flex">
+		<EditLink {...Astro.props} />
+		<LastUpdated {...Astro.props} />
+	</div>
+	<Pagination {...Astro.props} />
+
+  <!-- 是否是首页，则不显示评论 -->
+  {
+    !isHomepage ? (
+      <>
+        <hr class="hr-dotted"/>
+        <Comments client:only="react"/>
+      </>
+    ) : null
+  }
+</footer>
+
+<style>
+	.meta {
+		gap: 0.75rem 3rem;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		margin-block: 3rem 1.5rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.meta > :global(p:only-child) {
+		margin-inline-start: auto;
+	}
+  .hr-dotted {
+    margin-bottom: 1.4rem;
+    border: 0;
+    border-top: 0px dotted #a2a9b6;
+}
+</style>
