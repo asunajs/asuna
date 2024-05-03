@@ -31,28 +31,28 @@ npm install @asunajs/alipan
 使用 cjs
 
 ```js
-const { run } = require('@asunajs/alipan')
-;(async () => {
-  await run()
-})()
+const { run } = require('@asunajs/alipan');
+(async () => {
+  await run();
+})();
 ```
 
 使用 esm
 
 ```js
-import { run } from '@asunajs/alipan'
+import { run } from '@asunajs/alipan';
 
-await run()
+await run();
 ```
 
 在阿里云函数中使用，其他环境请自行摸索
 
 ```js
-const { run } = require('@asunajs/alipan')
+const { run } = require('@asunajs/alipan');
 
-exports.handler = async function(event, context, callback) {
-  callback(null, await run())
-}
+exports.handler = async function (event, context, callback) {
+  callback(null, await run());
+};
 ```
 
 ### 青龙面板
@@ -66,3 +66,10 @@ exports.handler = async function(event, context, callback) {
 :::
 
 @include: ../core/alipan/options.md
+
+## refresh_token 获取
+
+1. 打开并登录阿里云盘，https://www.alipan.com/
+2. 打开开发者工具 F12
+3. 选择控制台/Console
+4. 输入 `JSON.parse(localStorage.getItem('token')).refresh_token` 回车就能看到 refresh_token 了

@@ -100,3 +100,19 @@ exports.handler = async function (event, context, callback) {
 :::
 
 @include: ../core/caiyun/options.md
+
+## Auth 获取
+
+### PC 版
+
+1. 登录 https://yun.139.com/
+2. 打开开发者工具 F12
+3. 找到应用程序/Application/存储（火狐）
+4. 点击 Cookie
+5. https://yun.139.com/ 找到 authorization（Basic 开头的）
+
+![caiyun_auth](@imgs/config/caiyun_auth.png)
+
+### APP 版
+
+使用抓包工具找到请求头中的 Authorization 就行了
