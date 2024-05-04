@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.11
+
+### Patch Changes
+
+- [`a8ca7e2`](https://github.com/yuiasn/asuna/commit/a8ca7e23b5f3710c518a4da2b15c8efc2161376f) Thanks [@catlair](https://github.com/catlair)! - fix: toLocaleString 兼容
+
 ## 0.2.10
 
 ### Patch Changes
