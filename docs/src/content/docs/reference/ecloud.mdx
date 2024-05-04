@@ -91,3 +91,17 @@ exports.handler = async function (event, context, callback) {
 :::
 
 @include: ../core/ecloud/options.md
+
+## 手机/账号加密
+
+:::note[提示]
+仅 WPS 运行时需要，配置时填写加密后的内容。
+
+输入手机号，鼠标移出输入框后自动加密，点击后面的复制按钮复制加密后的手机号
+
+密码同理
+:::
+
+import { RsaEncrypt } from '../../../components/solid/RsaEncrypt.tsx';
+
+<RsaEncrypt name="haha" client:only="solid-js"></RsaEncrypt>

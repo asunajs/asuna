@@ -13,7 +13,12 @@
         "src/assets/images/*"
       ]
     },
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsx": "preserve",
+    "jsxImportSource": "solid-jsx",
+    "verbatimModuleSyntax": true,
+    "rootDirs": [
+      "./src/components/react",
+      "./src/components/solid",
+    ],
   }
 }

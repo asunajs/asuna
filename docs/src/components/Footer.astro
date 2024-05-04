@@ -5,7 +5,7 @@ import EditLink from '@astrojs/starlight/components/EditLink.astro';
 import LastUpdated from '@astrojs/starlight/components/LastUpdated.astro';
 import Pagination from '@astrojs/starlight/components/Pagination.astro';
 
-import Comments from './Comment.tsx';
+import Comments from './solid/Comment.tsx';
 
 const isHomepage = Astro.props.slug === '';
 ---
@@ -18,12 +18,13 @@ const isHomepage = Astro.props.slug === '';
 	</div>
 	<Pagination {...Astro.props} />
 
+
   <!-- 是否是首页，则不显示评论 -->
   {
     !isHomepage ? (
       <>
         <hr class="hr-dotted"/>
-        <Comments client:only="react"/>
+        <Comments client:only="solid-js"/>
       </>
     ) : null
   }
