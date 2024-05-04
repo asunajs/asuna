@@ -121,7 +121,7 @@ export function isWps(): boolean {
 }
 
 export function createTime() {
-  return new Date().toLocaleString('zh-CN').split(/[/:\s]/).reduce(
+  return new Date().toLocaleString('zh-CN').split(/[/\W\s:-]/).reduce(
     (str, cur) => `${str}${cur.length === 1 ? 0 + cur : cur}`,
     '',
   )
@@ -151,7 +151,7 @@ export function sortStringify(obj: Record<string, any>) {
 
 export function getBeijingTime(timestamp?: string | number | Date) {
   const time = timestamp ? new Date(timestamp) : new Date()
-  const [year, monthStr, dayStr] = time.toLocaleDateString('zh-CN').split('/')
+  const [year, monthStr, dayStr] = time.toLocaleDateString('zh-CN').split(/[/:-]/)
 
   return { year: parseInt(year, 10), month: parseInt(monthStr, 10), day: parseInt(dayStr, 10) }
 }
