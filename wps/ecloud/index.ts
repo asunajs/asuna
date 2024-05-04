@@ -1,7 +1,6 @@
 import { createApi, type M, run } from '@asign/ecloud-core'
 import { createLogger } from '@asign/utils-pure'
 import { createRequest, getPushConfig, md5, sendWpsNotify } from '@asign/wps-utils'
-import { rsaEncrypt } from './utils'
 
 function main(config: M['config'], option?: { pushData: any }) {
   if (!config) return
@@ -21,7 +20,6 @@ function main(config: M['config'], option?: { pushData: any }) {
     logger: logger as any,
     sleep: Time.sleep,
     md5,
-    rsaEncrypt,
     config,
   }
 

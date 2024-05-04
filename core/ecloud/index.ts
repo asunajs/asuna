@@ -72,7 +72,12 @@ export async function login($: M) {
 
   const publicKey = `-----BEGIN PUBLIC KEY-----\n${pubKey}\n-----END PUBLIC KEY-----`
 
-  const { username, password } = $.rsaEncrypt(publicKey, $.config.username, $.config.password)
+  let username = $.config.username
+  let password = $.config.password
+
+  if ($.rsaEncrypt) {
+    ;({ username, password } = $.rsaEncrypt(publicKey, $.config.username, $.config.password))
+  }
 
   const { result, toUrl, msg } = await $.api.loginSubmit({
     username,

@@ -6,7 +6,7 @@ export interface M {
   api: ApiType
   logger: LoggerType
   sleep: (time: number) => Promise<number>
-  rsaEncrypt: (pubKey: string, username: string, password: string) => {
+  rsaEncrypt?: (pubKey: string, username: string, password: string) => {
     password: string
     username: string
   }
