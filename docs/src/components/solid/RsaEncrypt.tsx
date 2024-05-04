@@ -1,6 +1,16 @@
 import { createSignal, Show } from 'solid-js';
 import Coder from './Coder.jsx';
 
+function base64ToHex(str: string) {
+  const raw = atob(str);
+  let result = '';
+  for (let i = 0; i < raw.length; i++) {
+    const hex = raw.charCodeAt(i).toString(16);
+    result += hex.length === 2 ? hex : '0' + hex;
+  }
+  return result.toUpperCase();
+}
+
 async function encryptMessage(pubkey: string, message: string) {
   pubkey = `-----BEGIN PUBLIC KEY-----\n${pubkey}\n-----END PUBLIC KEY-----`;
   const { JSEncrypt } = await import('jsencrypt');
@@ -32,10 +42,10 @@ export function RsaEncrypt() {
 
     switch (type) {
       case 'phone':
-        encrypted && setPhone(() => encrypted);
+        encrypted && setPhone(() => base64ToHex(encrypted));
         break;
       case 'password':
-        encrypted && setPassword(() => encrypted);
+        encrypted && setPassword(() => base64ToHex(encrypted));
         break;
     }
   }
