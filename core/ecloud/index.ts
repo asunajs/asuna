@@ -68,15 +68,15 @@ export async function login($: M) {
 
   const appConfig = await $.api.appConf()
 
-  const { pre, pubKey } = await getEncryptConf($)
-
-  const publicKey = `-----BEGIN PUBLIC KEY-----\n${pubKey}\n-----END PUBLIC KEY-----`
-
   let username = $.config.username
   let password = $.config.password
+  let pre: string | undefined
 
   if ($.rsaEncrypt) {
+    const encryptCon = await getEncryptConf($)
+    const publicKey = `-----BEGIN PUBLIC KEY-----\n${encryptCon.pubKey}\n-----END PUBLIC KEY-----`
     ;({ username, password } = $.rsaEncrypt(publicKey, $.config.username, $.config.password))
+    pre = encryptCon.pre
   }
 
   const { result, toUrl, msg } = await $.api.loginSubmit({

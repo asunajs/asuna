@@ -109,7 +109,7 @@ export function createApi(http: Http) {
         note_token: headers.note_token,
       }
     },
-    syncNoteBook: function syncNoteBook(headers: Record<string, string>) {
+    syncNoteBook(headers: Record<string, string>) {
       return http.post<NoteBooks>(
         `${mnoteUrl}/noteServer/api/syncNotebook.do `,
         { addNotebooks: [], delNotebooks: [], updateNotebooks: [] },
@@ -122,7 +122,7 @@ export function createApi(http: Http) {
         },
       )
     },
-    createNote: function createNote(
+    createNote(
       noteId: string,
       title: string,
       account: string | number,
@@ -192,23 +192,28 @@ export function createApi(http: Http) {
         },
       )
     },
-    tyrzLogin: function tyrzLogin(ssoToken: string) {
+    tyrzLogin(ssoToken: string) {
       return http.get<TyrzLogin>(
         `${caiyunUrl}/portal/auth/tyrzLogin.action?ssoToken=${ssoToken}`,
       )
     },
-    signInInfo: function signInInfo() {
+    signInInfo() {
       return http.get<SignInInfo>(
         `${caiyunUrl}/market/signin/page/info?client=app`,
       )
     },
-    getDrawInWx: function getDrawInWx() {
+    singInMultiple() {
+      return http.get<BaseType<{ multiple: number; cloudCount: number }>>(
+        `${caiyunUrl}/market/signin/page/multiple`,
+      )
+    },
+    getDrawInWx() {
       return http.get<DrawInfoInWx>(`${caiyunUrl}/market/playoffic/drawInfo`)
     },
-    drawInWx: function getWxDrawInfo() {
+    drawInWx() {
       return http.get<DrawInWx>(`${caiyunUrl}/market/playoffic/draw`)
     },
-    signInfoInWx: function signInfoInWx() {
+    signInfoInWx() {
       return http.get<SignInfoInWx>(
         `${caiyunUrl}/market/playoffic/followSignInfo?isWx=true`,
       )

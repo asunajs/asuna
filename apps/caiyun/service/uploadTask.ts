@@ -17,13 +17,15 @@ function getRandomFile($: M) {
 
 async function _upload($: M) {
   const file = getRandomFile($)
-  const success = await uploadFile($, getParentCatalogID(), {
+  const uploadInfo = {
     digest: file.fileMd5,
     contentSize: file.fileSize,
     manualRename: 2,
     ext: '.mp4',
     createTime: _createTime(),
-  }, file.randomBuffer)
+  }
+  $.logger.debug(new Date().toLocaleString(), JSON.stringify(uploadInfo))
+  const success = await uploadFile($, getParentCatalogID(), uploadInfo, file.randomBuffer)
 
   if (success) {
     $.logger.debug('上传成功')

@@ -79,6 +79,9 @@ export interface SignInInfo {
   code: number
   msg: string
   result: {
+    curMonthBackup?: boolean
+    monthDays?: number
+    curMonthBackupSignAccept?: boolean
     todaySignIn: boolean
     total: number
     canExchangeText: string

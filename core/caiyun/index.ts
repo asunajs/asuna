@@ -73,10 +73,22 @@ export async function refreshToken($: M) {
     $.logger.error(`刷新 token 失败`, error)
   }
 }
+/**
+ * 签到翻倍
+ */
+async function signInMulti($: M) {
+  const { cloudCount, multiple } = await request($, $.api.singInMultiple, '备份签到翻倍')
+  if (multiple) {
+    $.logger.success('成功获得', multiple, '倍云朵，共计', cloudCount)
+  }
+}
 
 async function signIn($: M) {
-  const { todaySignIn, total, toReceive } = (await signInApi($)) || {}
-  $.logger.info(`当前积分${total}${toReceive ? `，待领取${toReceive}` : ''}`)
+  const { todaySignIn, total, toReceive, curMonthBackup, curMonthBackupSignAccept } = await signInApi($)
+  $.logger.info(`当前云朵${total}${toReceive ? `，待领取${toReceive}` : ''}`)
+  if (curMonthBackup && !curMonthBackupSignAccept) {
+    await signInMulti($)
+  }
   if (todaySignIn === true) {
     $.logger.info(`网盘今日已签到`)
     return

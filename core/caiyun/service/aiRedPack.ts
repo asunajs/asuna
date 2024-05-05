@@ -130,6 +130,7 @@ async function getMailChatMsg($: M, sid: string, id: string) {
     const { code, summary, var: data } = await $.api.mailChatMsg(sid, id)
     if (code !== 'S_OK' || (data && data.result === '')) {
       $.logger.fail('获取AI聊天消息失败', summary)
+      summary === 'loading' && await $.sleep(5000)
       return
     }
     return data.result
