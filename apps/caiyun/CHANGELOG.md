@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.12
+
+### Patch Changes
+
+- [`bc421ed`](https://github.com/yuiasn/asuna/commit/bc421edcb31fa4fdd5aa6010af76febb1f2e009c) Thanks [@catlair](https://github.com/catlair)! - feat(caiyun): 备份签到翻倍
+
 ## 0.2.11
 
 ### Patch Changes
