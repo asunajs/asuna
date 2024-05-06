@@ -1,0 +1,45 @@
+---
+title: 华为云函数
+description: 在华为云函数中使用
+sidebar:
+  order: 8
+---
+
+:::tip[提示]
+文档在建设中，精力有限，欢迎 PR
+:::
+
+## 依赖
+
+会使用华为云函数的可自行制作依赖。
+
+这里放一个做好的，包含：
+
+- @asunajs/quark@0.0.3
+- @asunajs/ecloud@0.0.2
+
+https://www.lanzoub.com/b0fofrj2d
+密码:7rfu
+
+依赖使用，略，这个是云函数的使用，和本项目无关
+
+## 配置
+
+在 `index.js` 旁边新建文件，例如叫 `asign.config.mjs`（然后根据本文裆进行配置）
+
+## 核心代码
+
+`index.js`：以 `ecloud` 为例，因为华为云函数的特殊性，一定手动指定配置文件路径，如下所示。
+
+```js
+const { run } = require('@asunajs/ecloud');
+const path = require('path');
+
+exports.handler = async (event, context) => {
+  return await run(path.resolve(__dirname, './asign.config.mjs'));
+};
+```
+
+## 其它
+
+出现 （invoke Timeout）错误时记得设置超时时间

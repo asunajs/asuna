@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@asign/remark-plugins": "workspace:^",
+    "@astrojs/starlight-tailwind": "^2.0.2",
     "daisyui": "^4.10.5",
     "jsencrypt": "^3.3.2",
     "marked": "^12.0.1"
