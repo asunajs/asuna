@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.13
+
+### Patch Changes
+
+- [`878d6ca`](https://github.com/yuiasn/asuna/commit/878d6cac81739203179cccd4907b5f27d36e1007) Thanks [@catlair](https://github.com/catlair)! - feat: 合成大西瓜
+
 ## 0.2.12
 
 ### Patch Changes
