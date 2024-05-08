@@ -62,6 +62,13 @@ export const emailTaskList = {
     id: 1017,
     group: 'month',
   },
+
+  /** 月月开通 月月有礼 */
+  1021: {
+    id: 1021,
+    group: 'month',
+    runner: true,
+  },
 }
 
 // 移动云盘支持的任务列表
@@ -191,5 +198,4 @@ export const SKIP_TASK_LIST = [
   /** 开启通知领云朵 */ 406,
   /** 月月备份领好礼 */ 385,
   /** 30G流量0元领 */ 120,
-  /** 月月开通 月月有礼 */ 1021,
 ]

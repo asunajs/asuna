@@ -16,6 +16,7 @@ import type {
   DiskResult,
   DrawInfoInWx,
   DrawInWx,
+  Hecheng1T,
   NoteBooks,
   OpenBlindbox,
   Orchestration,
@@ -364,6 +365,9 @@ export function createApi(http: Http) {
     },
     finishHecheng1T() {
       return http.get(`${caiyunUrl}/market/signin/hecheng1T/finish?flag=true`)
+    },
+    getHecheng1T() {
+      return http.get<Hecheng1T>(`${caiyunUrl}/market/signin/hecheng1T/info`)
     },
     getOutLink(account: string, coIDLst: string[], dedicatedName: string) {
       return http.post<Orchestration<{ getOutLinkRes: any }>>(

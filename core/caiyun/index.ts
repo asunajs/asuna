@@ -5,11 +5,14 @@ import { gardenTask } from './service/garden.js'
 import { aiRedPackTask, getParentCatalogID, pcUploadFileRequest } from './service/index.js'
 import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
+import type { TaskList } from './TaskType.js'
 import type { M } from './types.js'
 import { request } from './utils/index.js'
 
 export * from './api.js'
 export * from './types.js'
+
+type TaskItem = TaskList['result'][keyof TaskList['result']][number]
 
 export async function getSsoTokenApi($: M, phone: number | string) {
   try {
@@ -269,13 +272,38 @@ function getTaskRunner($: M) {
     107: createNoteDaily,
     434: shareTime,
     110: $.node && $.node.uploadTask,
+    1021: emailNotice,
+  }
+}
+
+async function emailNotice($: M, task: TaskItem) {
+  try {
+    const { out } = task.button
+    if (!out) return
+    if (out.canReceive === 1) {
+      $.logger.info(`可以领取奖励`)
+      return
+    }
+    out.day && $.logger.debug(`邮箱通知已经开启`, out.day, '天')
+  } catch (error) {
+    $.logger.error(`邮件通知异常`, error)
+  }
+}
+
+async function _handleAppTask($: M, task: TaskItem) {
+  const taskRunner = getTaskRunner($)
+
+  switch (task.id) {
+    case 110:
+      return await taskRunner[task.id]?.($, task.process)
+    default:
+      return await taskRunner[task.id]?.($, task)
   }
 }
 
 async function appTask($: M) {
   $.logger.start('------【任务列表】------')
   const taskList = await getAllAppTaskList($)
-  const taskRunner = getTaskRunner($)
 
   const doingList: number[] = []
 
@@ -291,16 +319,12 @@ async function appTask($: M) {
         task.marketname === 'sign_in_3' && task.groupid === 'month'
         && ($.store.curMonthBackup === false && new Date().getDate() < 20)
       ) {
-        $.logger.debug('跳过过任务（未开启备份）', task.name)
+        $.logger.debug('跳过任务（未开启备份）', task.name)
         continue
       }
 
       if (await _clickTask($, task.id, task.currstep)) {
-        if (task.id === 110) {
-          await taskRunner[task.id]?.($, task.process)
-        } else {
-          await taskRunner[task.id]?.($)
-        }
+        await _handleAppTask($, task)
         doingList.push(task.id)
         await $.sleep(500)
       }
@@ -309,17 +333,20 @@ async function appTask($: M) {
     }
   }
 
-  const skipCheck = [434]
+  const skipCheck = [434, 1021]
 
   if (doingList.length) {
     for (const task of await getAllAppTaskList($)) {
+      if (skipCheck.includes(task.id)) continue
       if (doingList.includes(task.id)) {
         if (task.state === 'FINISH') {
           $.logger.success('成功', task.name)
-        } else {
-          !skipCheck.includes(task.id) && $.logger.fail('失败', task.name, '请手动完成')
+          continue
         }
-      } else if (task.groupid === 'month' || task.groupid === 'day') {
+        $.logger.fail('失败', task.name, '请手动完成')
+        continue
+      }
+      if (task.groupid === 'month' || task.groupid === 'day') {
         if (task.state !== 'FINISH') {
           $.logger.fail('未完成', task.name, '请手动完成')
         }
@@ -573,27 +600,18 @@ async function blindboxTask($: M) {
   }
 }
 
-function checkHc1T({ localStorage }: M) {
-  if (localStorage.hc1T) {
-    const { lastUpdate } = localStorage.hc1T
-    if (new Date().getMonth() <= new Date(lastUpdate).getMonth()) {
-      return true
-    }
-  }
-}
-
 async function hc1Task($: M) {
   $.logger.start('------【合成芝麻】------')
-  if (checkHc1T($)) {
-    $.logger.info('本月已领取')
-    return
-  }
   try {
-    await request($, $.api.beinviteHecheng1T, '合成芝麻')
-    await $.sleep(5000)
-    await request($, $.api.finishHecheng1T, '合成芝麻')
+    const { info } = await request($, $.api.getHecheng1T, '获取合成芝麻')
+
+    for (let index = 0; index < info.curr; index++) {
+      await request($, $.api.beinviteHecheng1T, '合成芝麻开始')
+      await $.sleep(5000)
+      await request($, $.api.finishHecheng1T, '合成芝麻完成')
+    }
+
     $.logger.success('完成合成芝麻')
-    $.localStorage.hc1T = { lastUpdate: new Date().getTime() }
   } catch (error) {
     $.logger.error('合成芝麻失败', error)
   }

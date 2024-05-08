@@ -32,9 +32,6 @@ export interface M {
       /** 完成次数 */
       count: number
     }
-    hc1T?: {
-      lastUpdate: number
-    }
   }
   node?: {
     uploadTask: ($: M, progressNum: number) => Promise<void>
@@ -431,4 +428,24 @@ export type CloudRecord = BaseType<{
   }[]
   searchCount: boolean
   orders: any[]
+}>
+
+export type Hecheng1T = BaseType<{
+  history: {
+    [key: number]: {
+      count: string
+      rank: string
+    }
+  }
+  info: {
+    phone: string
+    inner: number
+    stage: number
+    curr: number
+    exchange: number
+    invite: number
+    succ: number
+    lastSucc: string
+    flag: boolean
+  }
 }>

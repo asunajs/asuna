@@ -28,7 +28,7 @@ interface ItemBaseType {
 }
 
 type ResultItem<T> = ({
-  button: T
+  button: T & { [key: string]: any }
   buttonProperty: T
 } & ItemBaseType)[]
 
