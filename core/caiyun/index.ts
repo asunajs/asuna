@@ -603,6 +603,10 @@ async function blindboxTask($: M) {
 async function hc1Task($: M) {
   $.logger.start('------【合成芝麻】------')
   try {
+    if ($.config.inviter) {
+      $.logger.info('不支持邀请好友，跳过执行')
+      return
+    }
     const { info } = await request($, $.api.getHecheng1T, '获取合成芝麻')
 
     for (let index = 0; index < info.curr; index++) {

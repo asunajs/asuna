@@ -12,6 +12,7 @@ export interface M {
   config: Caiyun & {
     phone: string
     token: string
+    inviter?: string
   }
   DATA: {
     baseUA: string

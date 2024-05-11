@@ -121,10 +121,18 @@ export function isWps(): boolean {
 }
 
 export function createTime() {
-  return new Date().toLocaleString('zh-CN').split(/[/\W\s:-]/).reduce(
-    (str, cur) => `${str}${cur.length === 1 ? 0 + cur : cur}`,
-    '',
-  )
+  const now = new Date()
+  return now.getUTCFullYear()
+    + pad2(now.getUTCMonth() + 1)
+    + pad2(now.getUTCDate())
+    // +8 时区
+    + pad2(now.getUTCHours() + 8)
+    + pad2(now.getUTCMinutes())
+    + pad2(now.getUTCSeconds())
+}
+
+export function pad2(num: number) {
+  return num < 10 ? `0${num}` : `${num}`
 }
 
 export function toLowerCaseHeaders(headers?: Record<string, string | string[]>) {
