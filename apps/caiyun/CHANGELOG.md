@@ -1,5 +1,11 @@
 # @asunajs/caiyun
 
+## 0.2.14
+
+### Patch Changes
+
+- [`8a3ef92`](https://github.com/yuiasn/asuna/commit/8a3ef92fa93717fb99bd30dd29ff1e6ac82a55bb) Thanks [@catlair](https://github.com/catlair)! - fix: 改变 createTime 逻辑，避免兼容性问题
+
 ## 0.2.13
 
 ### Patch Changes
