@@ -1,5 +1,15 @@
 # @asunajs/caiyun
 
+## 0.2.15
+
+### Patch Changes
+
+- [`f6b775e`](https://github.com/yuiasn/asuna/commit/f6b775e2cc1abeba1fa2f97c71ccf0d1c7539613) Thanks [@catlair](https://github.com/catlair)! - feat: 为 beiyong1 增加可能完成的任务
+
+- [`dcf2366`](https://github.com/yuiasn/asuna/commit/dcf2366c1482dfc30e1183f3246098eef761d658) Thanks [@catlair](https://github.com/catlair)! - feat(caiyun): 领取通知奖励
+
+  wip(caiyun): 果园邀请助力
+
 ## 0.2.14
 
 ### Patch Changes
