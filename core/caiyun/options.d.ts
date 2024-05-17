@@ -35,6 +35,10 @@ export interface Caiyun {
      * 上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务
      */
     digest?: string
+    /**
+     * 邀请码
+     */
+    inviteCodes?: string[]
   }
   /**
    * AI 红包

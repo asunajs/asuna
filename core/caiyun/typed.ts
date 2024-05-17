@@ -15,6 +15,7 @@ export const config = z.object({
     digest: z.string().length(32).optional().describe(
       '上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务',
     ).default('202CB962AC59075B964B07152D234B70'),
+    inviteCodes: z.array(z.string()).optional().describe('邀请码'),
   }).optional().describe('果园配置'),
   aiRedPack: z.object({
     enable: z.boolean().default(true).optional().describe('是否开启该功能'),

@@ -3,6 +3,7 @@ import type {
   CartoonResult,
   Cartoons,
   CartoonType,
+  Garden,
   GivenTask,
   InitTree,
   SignIn,
@@ -14,6 +15,7 @@ import type {
 export interface ClientTypeHeaders {
   'user-agent'?: string
   'x-requested-with'?: string
+  [key: string]: string
 }
 
 /**
@@ -79,6 +81,29 @@ export function createGardenApi(http: Http) {
       return http.get<Cartoons>(`${gardenUrl}/user/gotCartoons.do`, {
         headers,
       })
+    },
+    getInviteCode() {
+      return http.get<Garden<string>>(`${gardenUrl}/friend/inviteCode.do`)
+    },
+    getBackupUser() {
+      return http.get<Garden<any[]>>(`${gardenUrl}/friend/backupUser.do`)
+    },
+    inviteFriend(inviteCode: string | number, inviteType: 'invite' | 'backup' = 'backup') {
+      return http.get<
+        Garden<{
+          /**
+           * 1 邀请成功
+           *
+           * -2 不能邀请自己
+           *
+           * -4 您今天已为好友助力过，请勿重复
+           */
+          msg: string
+          code: number
+        }>
+      >(
+        `${gardenUrl}/wx/inviteFriend.do?inviteCode=${inviteCode}&inviteType=${inviteType}&clientName=HCY`,
+      )
     },
   }
 }

@@ -78,3 +78,5 @@ export type TaskList = Garden<
 export type Cartoons = Garden<Array<CartoonType>>
 
 export type CartoonType = 'color' | 'cloud' | 'widget' | 'mail'
+
+export type InviteCode = Garden<string>

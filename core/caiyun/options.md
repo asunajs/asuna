@@ -43,6 +43,12 @@ cookie authorization 字段
 
 上传文件的 md5，必须为本账号已经上传过的文件的 md5。用于上传视频和图片任务
 
+#### `inviteCodes`
+
+- **类型**: `数组`
+
+邀请码
+
 ### `aiRedPack`
 
 #### `enable`
@@ -65,15 +71,18 @@ cookie authorization 字段
 {
   "caiyun": [
     {
-      "auth": "temeritas",
+      "auth": "aegrotatio",
       "shake": {
         "enable": true,
-        "num": 7335417093292032,
-        "delay": 1190027881086976
+        "num": 2903637084864512,
+        "delay": 8549206916595712
       },
       "garden": {
         "enable": false,
-        "digest": "202CB962AC59075B964B07152D234B70"
+        "digest": "perferendisOnwhevQNWlrOOADfHzXpC",
+        "inviteCodes": [
+          "utilis"
+        ]
       },
       "aiRedPack": {
         "enable": true
@@ -95,7 +104,8 @@ cookie authorization 字段
   },
   "garden": {
     "enable": true,
-    "digest": "202CB962AC59075B964B07152D234B70"
+    "digest": "202CB962AC59075B964B07152D234B70",
+    "inviteCodes": []
   },
   "aiRedPack": {
     "enable": true

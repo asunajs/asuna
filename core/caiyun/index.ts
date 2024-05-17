@@ -290,7 +290,8 @@ async function emailNotice($: M, task: TaskItem) {
     const { out } = task.button
     if (!out) return
     if (out.canReceive === 1) {
-      $.logger.info(`可以领取奖励`)
+      $.logger.debug(`可以领取通知奖励`)
+      await request($, $.api.receiveTask, '领取邮件通知奖励', task.id)
       return
     }
     out.day && $.logger.debug(`邮箱通知已经开启`, out.day, '天')
@@ -372,12 +373,12 @@ async function appTask($: M) {
           $.logger.success('成功', task.name)
           continue
         }
-        $.logger.fail('失败', task.name, '请手动完成')
+        $.logger.fail('失败', task.name, '请手动完成', task.id)
         continue
       }
       if (task.groupid === 'month' || task.groupid === 'day') {
         if (task.state !== 'FINISH') {
-          $.logger.fail('未完成', task.name, '请手动完成')
+          $.logger.fail('未完成', task.name, '请手动完成', task.id)
         }
       }
     }

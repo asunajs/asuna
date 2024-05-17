@@ -355,6 +355,9 @@ export function createApi(http: Http) {
     receive() {
       return http.get(`${caiyunUrl}/market/signin/page/receive`)
     },
+    receiveTask(taskId: number | string) {
+      return http.get(`${caiyunUrl}/market/signin/page/receiveTask?taskId=${taskId}`)
+    },
     shake() {
       return http.post<Shake>(
         `${caiyunUrl}/market/shake-server/shake/shakeIt?flag=1`,

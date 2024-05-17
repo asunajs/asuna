@@ -51,14 +51,6 @@ async function request<T extends (...args: any[]) => any>(
   return defu
 }
 
-async function loginGarden($: M, token: string, phone: string) {
-  try {
-    await $.gardenApi.login(token, phone)
-  } catch (error) {
-    $.logger.error(`登录果园失败`, error)
-  }
-}
-
 async function getTodaySign($: M) {
   const { todayCheckin } = await request(
     $,
@@ -247,12 +239,49 @@ async function givenWater(
   )
 }
 
+async function _backupFriend($: M, inviteCode: string | number) {
+  try {
+    $.logger.debug(`助力：${inviteCode}`)
+    const { success, msg, result } = await $.gardenApi.inviteFriend(inviteCode, 'backup')
+    if (success) {
+      if (result.code === 0) {
+        $.logger.success(result.msg)
+        return
+      }
+
+      $.logger.fail('助力失败', result.code, result.msg)
+      return
+    }
+    $.logger.fail('助力失败', msg)
+  } catch (error) {
+    $.logger.fail('果园助力异常', error)
+  }
+}
+
+/**
+ * 果园助力
+ */
+async function backupFriend($: M) {
+  try {
+    for (const inviteCode of $.config.garden.inviteCodes) {
+      await _backupFriend($, inviteCode)
+      await $.sleep(5000)
+    }
+  } catch (error) {
+    $.logger.error('果园助力异常', error)
+  }
+}
+
+export async function loginGarden($: M) {
+  const token = await getSsoTokenApi($, $.config.phone)
+  if (!token) throw new Error('获取 ssoToken 失败')
+  await $.gardenApi.login(token, $.config.phone)
+}
+
 export async function gardenTask($: M) {
   try {
     $.logger.info(`------【果园】------`)
-    const token = await getSsoTokenApi($, $.config.phone)
-    if (!token) return $.logger.error(`跳过果园任务`)
-    await loginGarden($, token, $.config.phone)
+    await loginGarden($)
 
     if (!(await initTree($))) {
       $.logger.warn('获取果园信息失败，请确认已经激活果园')
@@ -277,6 +306,11 @@ export async function gardenTask($: M) {
       'user-agent': $.DATA.baseUA,
       'x-requested-with': $.DATA.mcloudRequested,
     })
+
+    if ($.config.garden?.inviteCodes?.length) {
+      $.logger.info('果园微信助力')
+      await backupFriend($)
+    }
   } catch (error) {
     $.logger.error('果园任务异常', error)
   }
