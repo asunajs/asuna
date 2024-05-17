@@ -2,7 +2,7 @@ import { getXmlElement, randomHex, setStoreArray } from '@asign/utils-pure'
 import { SKIP_TASK_LIST, TASK_LIST } from './constant/taskList.js'
 import { backupGiftTask } from './service/backupGift.js'
 import { gardenTask } from './service/garden.js'
-import { aiRedPackTask, getParentCatalogID, pcUploadFileRequest } from './service/index.js'
+import { aiRedPackTask, getParentCatalogID, pcUploadFileRequest, uploadFile } from './service/index.js'
 import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
 import type { TaskList } from './TaskType.js'
@@ -214,7 +214,7 @@ async function createNoteDaily($: M) {
   }
 }
 
-async function _clickTask($: M, id: number, currstep: number) {
+async function _clickTask($: M, id: number, currstep = 0) {
   const idCurrstepMap = {
     434: 22,
   }
@@ -248,14 +248,14 @@ async function shareTime($: M) {
 }
 
 async function getAppTaskList($: M, marketname: 'sign_in_3' | 'newsign_139mail' = 'sign_in_3') {
-  const { month = [], day = [], time = [], new: new_ = [] } = await request(
+  const { month = [], day = [], time = [], new: new_ = [], beiyong1 = [] } = await request(
     $,
     $.api.getTaskList,
     '获取任务列表',
     marketname,
   )
 
-  return [...month, ...day, ...time, ...new_]
+  return [...month, ...day, ...time, ...new_, ...beiyong1]
 }
 
 async function getAllAppTaskList($: M) {
@@ -263,6 +263,15 @@ async function getAllAppTaskList($: M) {
   const list2 = await getAppTaskList($, 'newsign_139mail')
 
   return list1.concat(list2)
+}
+
+async function beiyong1UploadImg($: M) {
+  try {
+    const buffer = randomHex(32)
+    await uploadFile($, getParentCatalogID(), { ext: '.png', digest: $.md5(buffer) }, buffer)
+  } catch (error) {
+    $.logger.error(`beiyong1UploadImg异常`, error)
+  }
 }
 
 function getTaskRunner($: M) {
@@ -313,24 +322,44 @@ async function appTask($: M) {
   for (const task of taskList) {
     if (task.state === 'FINISH' || task.enable !== 1) continue
 
-    if (TASK_LIST[task.id]) {
-      // 在没开启备份的前提下，本月 20 号前不做 app 的月任务
-      if (
-        task.marketname === 'sign_in_3' && task.groupid === 'month'
-        && ($.store.curMonthBackup === false && new Date().getDate() < 20)
-      ) {
-        $.logger.debug('跳过任务（未开启备份）', task.name)
-        continue
-      }
-
+    const _handleClick = async () => {
       if (await _clickTask($, task.id, task.currstep)) {
         await _handleAppTask($, task)
         doingList.push(task.id)
         await $.sleep(500)
       }
-    } else if (!SKIP_TASK_LIST.includes(task.id)) {
-      await clickTask($, task.id)
     }
+    const _switchAppTask = async () => {
+      switch (task.groupid) {
+        case 'beiyong1': {
+          await _handleClick()
+          // 如果是上传任务，则主动上传
+          if (task.name.includes('上传') && (task.name.includes('图') || task.name.includes('照'))) {
+            await beiyong1UploadImg($)
+            return
+          }
+        }
+        case 'month': {
+          // 在没开启备份的前提下，本月 20 号前不做 app 的月任务
+          if (task.marketname === 'sign_in_3' && ($.store.curMonthBackup === false && new Date().getDate() < 20)) {
+            $.logger.debug('跳过任务（未开启备份）', task.name)
+            return
+          }
+        }
+        default: {
+          if (TASK_LIST[task.id]) {
+            await _handleClick()
+            return
+          }
+          if (!SKIP_TASK_LIST.includes(task.id)) {
+            await clickTask($, task.id)
+            return
+          }
+        }
+      }
+    }
+
+    await _switchAppTask()
   }
 
   const skipCheck = [434, 1021]
