@@ -1,4 +1,4 @@
-import type { LoggerType } from '@asunajs/utils'
+import type { LoggerType } from '@asign/types'
 import type { ApiType } from './api.js'
 
 import type { Alipan } from './options.js'

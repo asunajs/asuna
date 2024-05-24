@@ -1,9 +1,9 @@
 import { Config, createApi, type M, refreshToken, run as runCore } from '@asign/alipan-core'
 import { randomHex } from '@asign/utils-pure'
 import { loadConfig, rewriteConfigSync } from '@asunajs/conf'
+import { createRequest } from '@asunajs/http'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, type LoggerPushData, pushMessage, sleep } from '@asunajs/utils'
-import { createRequest, type NormalizedOptions } from '@catlair/node-got'
 import { getSignature } from './utils.js'
 
 function getXSignature(DATA: M['DATA'], userId: string) {
@@ -35,7 +35,7 @@ export async function main(config: Config, option?: Option) {
       createRequest({
         hooks: {
           beforeRequest: [
-            (options: NormalizedOptions) => {
+            (options) => {
               options.headers = {
                 'x-device-id': DATA.deviceId,
                 'authorization': accessToken ? `Bearer ${accessToken}` : '',
@@ -49,9 +49,9 @@ export async function main(config: Config, option?: Option) {
           'content-type': 'application/json;charset=UTF-8',
           'referer': 'https://alipan.com/',
           'origin': 'https://alipan.com/',
-          'x-canary': 'client=Android,app=adrive,version=v5.3.0',
+          'x-canary': 'client=Android,app=adrive,version=v5.8.0',
           'user-agent':
-            'AliApp(AYSD/5.3.0) com.alicloud.databox/34760760 Channel/36176727979800@rimet_android_5.3.0 language/zh-CN /Android Mobile/Mi 6X',
+            'AliApp(AYSD/5.8.0) com.alicloud.databox/37029260 Channel/36176727979800@rimet_android_5.8.0 language/zh-CN /Android Mobile/Mi 6X',
         },
       }),
     ),

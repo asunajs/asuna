@@ -132,7 +132,8 @@ async function deviceRoomListHandle(deviceRooms: DeviceRoom['items']) {
   for (const { canCollectEnergy, id, gmtCollectEnergy } of deviceRooms) {
     if (
       !canCollectEnergy
-      && new Date(gmtCollectEnergy).getDate() !== new Date().getDate()
+      // 已经领取过
+      && new Date(gmtCollectEnergy).getUTCDate() !== new Date().getUTCDate()
     ) {
       nofinishDevices.add(id)
     } else if (canCollectEnergy) {
@@ -200,9 +201,13 @@ async function deviceRoomTask($: M) {
 
   await createDevice($)
 
-  while (await _deviceRoomTask()) {
-    await $.sleep(2000)
-  }
+  // while (await _deviceRoomTask()) {
+  //   await $.sleep(2000)
+  // }
+
+  // TODO 跳过领取设备间奖励
+  await _deviceRoomTask()
+  await $.sleep(2000)
 
   await deleteFiles($, needDeleteFiles, driveId)
 
@@ -227,18 +232,25 @@ async function deviceRoomTask($: M) {
       return false
     }
 
-    let tempNum = 0
+    // TODO 跳过领取设备间奖励
+    $.logger.info('跳过领取设备间奖励')
 
     for (const deviceId of rewardEnergys) {
-      const size = await getDeviceRoomRewardApi($, deviceId)
-      if (size) {
-        $.logger.info(`领取设备间成功，获得${size}M`)
-        tempNum++
-      }
-      // 防止出现有超过 5 个设备间可领取
-      if (tempNum + okNum >= 5) break
-      await $.sleep(1000)
+      $.logger.info(`${deviceId} 可领取`)
     }
+
+    // let tempNum = 0
+
+    // for (const deviceId of rewardEnergys) {
+    //   const size = await getDeviceRoomRewardApi($, deviceId)
+    //   if (size) {
+    //     $.logger.info(`领取设备间成功，获得${size}M`)
+    //     tempNum++
+    //   }
+    //   // 防止出现有超过 5 个设备间可领取
+    //   if (tempNum + okNum >= 5) break
+    //   await $.sleep(1000)
+    // }
 
     for (const deviceId of nofinishDevices) {
       const { file_id } = (await uploadFile($, deviceId, driveId)) || {}
@@ -250,29 +262,29 @@ async function deviceRoomTask($: M) {
   }
 }
 
-async function signIn($: M) {
-  const { rewards, signInDay } = await request($, $.api.signIn, '签到')
+// async function signIn($: M) {
+//   const { rewards, signInDay } = await request($, $.api.signIn, '签到')
 
-  if (!rewards) {
-    return
-  }
+//   if (!rewards) {
+//     return
+//   }
 
-  for (const { status, type } of rewards) {
-    if (status !== 'finished') {
-      continue
-    }
-    switch (type) {
-      case 'dailySignIn':
-        await request($, $.api.signInReward, '领取签到奖励', signInDay)
-        break
-      case 'dailyTask':
-        await request($, $.api.signInTaskReward, '领取每日任务奖励', signInDay)
-        break
-      default:
-        break
-    }
-  }
-}
+//   for (const { status, type } of rewards) {
+//     if (status !== 'finished') {
+//       continue
+//     }
+//     switch (type) {
+//       case 'dailySignIn':
+//         await request($, $.api.signInReward, '领取签到奖励', signInDay)
+//         break
+//       case 'dailyTask':
+//         await request($, $.api.signInTaskReward, '领取每日任务奖励', signInDay)
+//         break
+//       default:
+//         break
+//     }
+//   }
+// }
 
 async function getDeviceList($: M) {
   try {
@@ -326,7 +338,10 @@ async function signInTask($: M) {
 
   await request($, $.api.updateDeviceExtras, '上报备份')
 
-  if ($.config.skipUpload === true) return
+  $.logger.info(`不再完成备份任务`)
+  return
+
+  // if ($.config.skipUpload === true) return
 
   const needDeleteFiles = new Map<string, string>()
 
@@ -359,7 +374,8 @@ async function printSignInInfo($: M) {
 }
 
 export async function run($: M) {
-  const taskList = [signInTask, signIn, printSignInInfo]
+  // const taskList = [signInTask, signIn, printSignInInfo]
+  const taskList = [signInTask, printSignInInfo]
   if ($.config.skipUpload !== true) {
     taskList.unshift(deviceRoomTask)
   }

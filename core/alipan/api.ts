@@ -14,10 +14,10 @@ import type {
 } from './types.js'
 
 export function createApi(http: Http) {
-  const memberUrl: string = 'https://member.aliyundrive.com'
-  const aliyundriveUrl: string = 'https://api.aliyundrive.com'
-  const authUrl: string = 'https://auth.aliyundrive.com'
-  const apiUrl: string = 'https://api.alipan.com'
+  const memberUrl = 'https://member.aliyundrive.com' as const
+  const aliyundriveUrl = 'https://api.aliyundrive.com' as const
+  const authUrl = 'https://auth.aliyundrive.com' as const
+  const apiUrl = 'https://api.alipan.com' as const
 
   return {
     refreshToken(refreshToken: string) {

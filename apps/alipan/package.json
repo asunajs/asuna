@@ -21,7 +21,7 @@
   "dependencies": {
     "@asunajs/conf": "workspace:^",
     "@asunajs/push": "workspace:^",
-    "@catlair/node-got": "^0.0.10",
+    "@asunajs/http": "workspace:^",
     "secp256k1": "^5.0.0"
   },
   "devDependencies": {
