@@ -1,5 +1,11 @@
 # @asunajs/alipan
 
+## 0.1.5
+
+### Patch Changes
+
+- [`cfbac25`](https://github.com/yuiasn/asuna/commit/cfbac252ca9c19017f068c02291630f27de7c71c) Thanks [@catlair](https://github.com/catlair)! - wip(alipan): 暂时归档 alipan
+
 ## 0.1.4
 
 ### Patch Changes
