@@ -156,7 +156,7 @@ async function submitAnswered($: M, id: string, a: string) {
         $.logger.debug('回答问题成功')
         return 0
       case 201:
-        $.logger.fail('回答问题成功，但', code, msg)
+        $.logger.fail('回答问题成功，但', msg)
         return -1
       default:
         $.logger.fail('回答问题失败', code, msg)

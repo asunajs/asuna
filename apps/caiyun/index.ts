@@ -70,6 +70,10 @@ export async function main(
       'charset': 'utf-8',
       'content-type': 'application/json;charset=UTF-8',
     },
+    retry: {
+      limit: 3,
+      methods: ['POST', 'GET', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE'],
+    },
   })
 
   const $: M = {
@@ -123,7 +127,7 @@ export async function run(inputPath?: string) {
 
   if (!caiyun || !caiyun.length) return logger.error('未找到配置文件/变量')
 
-  const pushData: LoggerPushData[] = []
+  const pushData: LoggerPushData[] = [{ level: 3, type: 'info', date: new Date(), msg: '文档地址：https://as.js.cool' }]
   const ls = getLocalStorage(path, 'caiyun')
 
   for (let index = 0; index < caiyun.length; index++) {

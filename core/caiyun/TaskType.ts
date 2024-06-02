@@ -1,4 +1,4 @@
-interface ItemBaseType {
+export interface ItemBaseType {
   id: number
   marketname: 'sign_in_3' | 'newsign_139mail'
   groupid: 'day' | 'month' | 'new' | 'time' | 'hiddenabc' | 'hidden' | 'beiyong1'

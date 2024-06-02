@@ -103,7 +103,7 @@ const usedRange = sheet.UsedRange
 const AColumn = sheet.Columns('A')
 const len = usedRange.Row + usedRange.Rows.Count - 1,
   BColumn = sheet.Columns('B')
-const pushData = []
+const pushData = [{ type: 'info', date: new Date(), msg: '唯一发布地址：https://as.js.cool' }]
 
 for (let i = 1; i <= len; i++) {
   const cell = AColumn.Rows(i)

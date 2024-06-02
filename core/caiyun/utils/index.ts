@@ -1,3 +1,4 @@
+import type { ItemBaseType } from '../TaskType.js'
 import type { M } from '../types.js'
 
 type RequestOptions = {
@@ -35,4 +36,26 @@ export async function request<T extends (...args: any[]) => any>(
     $.logger.error(`${name}异常`, error)
   }
   return typeof options === 'object' ? options.isArray === false ? {} : [] : {}
+}
+
+export function getMarketName(marketId: ItemBaseType['marketname']) {
+  const obj = {
+    newsign_139mail: '139 邮箱',
+    sign_in_3: '移动云盘',
+  }
+
+  return obj[marketId] || '未知应用'
+}
+
+export function getGroupName(groupId: ItemBaseType['groupid']) {
+  const obj = {
+    day: '每日任务',
+    month: '每月任务',
+    new: '新用户任务',
+    time: '热门任务',
+    hiddenabc: '隐藏任务',
+    hidden: '隐藏任务',
+    beiyong1: '临时任务',
+  }
+  return obj[groupId] || '未知任务'
 }

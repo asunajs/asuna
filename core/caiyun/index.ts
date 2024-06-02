@@ -7,7 +7,7 @@ import { msgPushOnTask } from './service/msgPush.js'
 import { taskExpansionTask } from './service/taskExpansion.js'
 import type { TaskList } from './TaskType.js'
 import type { M } from './types.js'
-import { request } from './utils/index.js'
+import { getGroupName, getMarketName, request } from './utils/index.js'
 
 export * from './api.js'
 export * from './types.js'
@@ -232,18 +232,19 @@ async function shareTime($: M) {
       $.logger.fail(`未获取到文件列表，跳过分享任务`)
       return
     }
+    $.logger.debug('分享', files[0])
     const { code, message } = await $.api.getOutLink(
       $.config.phone,
       [files[0]],
       '',
     )
     if (code === '0') {
-      $.logger.success(`分享链接成功`)
+      $.logger.success(`分享文件成功`)
       return true
     }
-    $.logger.fail(`分享链接失败`, code, message)
+    $.logger.fail(`分享文件失败`, code, message)
   } catch (error) {
-    $.logger.error(`分享链接异常`, error)
+    $.logger.error(`分享文件异常`, error)
   }
 }
 
@@ -368,17 +369,23 @@ async function appTask($: M) {
   if (doingList.length) {
     for (const task of await getAllAppTaskList($)) {
       if (skipCheck.includes(task.id)) continue
+      const printFail = (msg: string) =>
+        $.logger.fail(
+          msg,
+          `请前往${getMarketName(task.marketname)}手动完成${getGroupName(task.groupid)}：${task.name}(${task.id})`,
+        )
+
       if (doingList.includes(task.id)) {
         if (task.state === 'FINISH') {
           $.logger.success('成功', task.name)
           continue
         }
-        $.logger.fail('失败', task.name, '请手动完成', task.id)
+        printFail('失败')
         continue
       }
       if (task.groupid === 'month' || task.groupid === 'day') {
         if (task.state !== 'FINISH') {
-          $.logger.fail('未完成', task.name, '请手动完成', task.id)
+          printFail('未完成')
         }
       }
     }
@@ -543,6 +550,8 @@ async function openBlindbox($: M) {
     switch (code) {
       case 0:
         return $.logger.info('获得', result.prizeName)
+      case 200103:
+        return $.logger.fail('本月奖励已领完', code, msg)
       case 200105:
         return $.logger.debug('什么都没有哦')
       case 200106:
@@ -652,7 +661,7 @@ async function hc1Task($: M) {
 }
 
 async function afterTask($: M) {
-  $.logger.start('------【搽屁股】------')
+  $.logger.debug('------【搽屁股】------')
   // 删除文件
   try {
     $.store && $.store.files && (await deleteFiles($, $.store.files))
