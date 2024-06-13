@@ -20,15 +20,16 @@
   "license": "MIT",
   "dependencies": {
     "@asunajs/conf": "workspace:^",
-    "@asunajs/push": "workspace:^",
-    "@catlair/node-got": "^0.0.10"
+    "@asunajs/http": "workspace:^",
+    "@asunajs/push": "workspace:^"
   },
   "devDependencies": {
-    "@asign/quark-core": "workspace:^",
+    "@asign/cookie": "workspace:^",
     "@asign/build": "workspace:^",
+    "@asign/quark-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
-    "tsconfig": "workspace:*",
-    "@asunajs/utils": "workspace:^"
+    "@asunajs/utils": "workspace:^",
+    "tsconfig": "workspace:*"
   },
   "publishConfig": {
     "directory": "dist",

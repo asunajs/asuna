@@ -1,0 +1,35 @@
+{
+  "name": "@asign/cookie",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "catlair",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "tsconfig": "workspace:*",
+    "lodash-es": "^4.17.21"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "linkDirectory": false,
+    "exports": {
+      ".": {
+        "import": "./index.mjs",
+        "require": "./index.cjs"
+      }
+    },
+    "main": "index.cjs",
+    "module": "index.mjs",
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

@@ -1,8 +1,9 @@
+import { createCookieJar } from '@asign/cookie'
 import { createApi, type M, run as runCore } from '@asign/quark-core'
 import { loadConfig } from '@asunajs/conf'
+import { createRequest } from '@asunajs/http'
 import { sendNotify } from '@asunajs/push'
 import { createLogger, type LoggerPushData, pushMessage, sleep } from '@asunajs/utils'
-import { createRequest } from '@catlair/node-got'
 
 export type Config = { cookie: string }
 export type Option = { pushData?: LoggerPushData[] }
@@ -11,6 +12,9 @@ export async function main({ cookie }: Config, option?: Option) {
   if (!cookie) return
   const logger = await createLogger({ pushData: option?.pushData })
 
+  const cookieJar = createCookieJar()
+  cookieJar.setCookieString(cookie)
+
   const $: M = {
     api: createApi(
       createRequest({
@@ -18,8 +22,8 @@ export async function main({ cookie }: Config, option?: Option) {
           'content-type': 'application/json',
           'user-agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0',
-          cookie,
         },
+        cookieJar,
       }),
     ),
     logger,
