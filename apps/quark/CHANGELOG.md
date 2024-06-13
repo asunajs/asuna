@@ -1,5 +1,11 @@
 # @asunajs/quark
 
+## 0.1.0
+
+### Minor Changes
+
+- [`11284da`](https://github.com/yuiasn/asuna/commit/11284da6a78e8ee0450094b332674212d648e1be) Thanks [@catlair](https://github.com/catlair)! - feat: 升级 got@14
+
 ## 0.0.3
 
 ### Patch Changes

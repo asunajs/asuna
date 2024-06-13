@@ -1,6 +1,6 @@
 {
   "name": "@asunajs/quark",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "type": "module",
   "description": "夸克云盘签到",
   "main": "index.ts",
