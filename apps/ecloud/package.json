@@ -20,20 +20,20 @@
   "license": "MIT",
   "dependencies": {
     "@asunajs/conf": "workspace:^",
-    "@asunajs/push": "workspace:^",
-    "@asunajs/http": "workspace:^"
+    "@asunajs/http": "workspace:^",
+    "@asunajs/push": "workspace:^"
   },
   "devDependencies": {
     "@asign/build": "workspace:^",
-    "tsconfig": "workspace:*",
     "@asign/ecloud-core": "workspace:^",
     "@asign/utils-pure": "workspace:^",
     "@asunajs/utils": "workspace:^",
     "@types/lodash-es": "^4.17.12",
     "@types/tough-cookie": "^4.0.5",
     "dotenv": "^16.4.5",
-    "got": "^14.2.1",
-    "lodash-es": "^4.17.21"
+    "got": "^14.4.1",
+    "lodash-es": "^4.17.21",
+    "tsconfig": "workspace:*"
   },
   "publishConfig": {
     "directory": "dist",

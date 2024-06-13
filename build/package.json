@@ -19,7 +19,7 @@
   "author": "catlair",
   "license": "MIT",
   "devDependencies": {
-    "tsconfig": "workspace:*",
-    "@swc/core": "^1.4.12"
+    "@swc/core": "^1.5.29",
+    "tsconfig": "workspace:*"
   }
 }

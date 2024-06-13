@@ -33,11 +33,11 @@
   },
   "devDependencies": {
     "@asign/build": "workspace:^",
-    "tsconfig": "workspace:*",
     "defu": "^6.1.4",
-    "jiti": "^1.21.0",
-    "magicast": "^0.3.3",
-    "yaml": "^2.4.1"
+    "jiti": "^1.21.6",
+    "magicast": "^0.3.4",
+    "tsconfig": "workspace:*",
+    "yaml": "^2.4.5"
   },
   "repository": {
     "url": "git+https://github.com/asunajs/asign.git"
