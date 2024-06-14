@@ -23,7 +23,7 @@
         "require": "./index.cjs"
       }
     },
-    "main": "index.cjs",
+    "main": "./index.cjs",
     "module": "index.js",
     "access": "public",
     "registry": "https://registry.npmjs.org/"

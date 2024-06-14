@@ -41,6 +41,7 @@
     "exports": {
       ".": {
         "import": "./index.mjs",
+        "types": "./index.d.ts",
         "require": "./index.cjs"
       }
     },

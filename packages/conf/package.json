@@ -21,11 +21,13 @@
     "exports": {
       ".": {
         "import": "./index.mjs",
+        "types": "./index.d.ts",
         "require": "./index.cjs"
       }
     },
-    "main": "index.cjs",
-    "module": "index.mjs",
+    "main": "./index.cjs",
+    "types": "./index.d.cts",
+    "module": "./index.mjs",
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {

@@ -39,10 +39,12 @@
     "exports": {
       ".": {
         "import": "./index.mjs",
+        "types": "./index.d.ts",
         "require": "./index.cjs"
       }
     },
     "main": "./index.cjs",
+    "types": "./index.d.cts",
     "module": "./index.mjs",
     "access": "public",
     "registry": "https://registry.npmjs.org/"
