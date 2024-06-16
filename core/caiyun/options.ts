@@ -1,16 +1,1 @@
-export const defuConfig = {
-  shake: {
-    enable: true,
-    num: 15,
-    delay: 2,
-  },
-  garden: {
-    enable: true,
-    digest: '202CB962AC59075B964B07152D234B70',
-    inviteCodes: [],
-  },
-  aiRedPack: {
-    enable: true,
-  },
-  backupWaitTime: 20,
-}
+export const _hiddenText = '9a985eafae7f3a90a891ff38a39d4b9d4b893ac7d55117c2c3ac9ce6c45cdd2ed1b601ddd468fcb87efa1e3e3fd32b0e0590fae7c2db7788a019a488c43bc51c11f192dcaad6e05e6999b0efeecf2c35b2c17e23df4eab9acae21d1fa951030f9f38001a5f5b014c532a76d885ba3a852dcb1f1b70c02985e2e64856e9fba2a7621457dc2b22e0f41b48857f6311c149bd0140ec58619884ab0d724c96728c2f596b7177d3dad325b99bae5018f9b20c22dc330d1c39047cd6272a902a948bbc0c4823a3afead779b8781f601ac3934a09a9189a3d980b44af701d964800bb003dd8eecd0cbbc8ede957294480d8d7b50f8b1b68fa473d334450b97dbe6c8870'

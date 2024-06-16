@@ -8,6 +8,8 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
+  GIT_HIDDEN_PASSWORD: ${{ secrets.GIT_HIDDEN_PASSWORD }}
+  GIT_HIDDEN_IV: ${{ secrets.GIT_HIDDEN_IV }}
 jobs:
   version:
     timeout-minutes: 15
@@ -36,6 +38,10 @@ jobs:
 
       - name: install dependencies
         run: pnpm install
+
+      - name: smudge config
+        run: |
+          node ./scripts/hidden_smudge.mjs
 
       - name: create and publish versions
         uses: changesets/action@v1.4.6
